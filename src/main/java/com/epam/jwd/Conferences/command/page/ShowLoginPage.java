@@ -1,0 +1,34 @@
+package com.epam.jwd.Conferences.command.page;
+
+import com.epam.jwd.Conferences.command.Command;
+import com.epam.jwd.Conferences.command.CommandRequest;
+import com.epam.jwd.Conferences.command.CommandResponse;
+
+public class ShowLoginPage implements Command {
+
+    private static final CommandResponse LOGIN_PAGE_RESPONSE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/login.jsp");
+
+    // the private default constructor, to not create the instance of the class with 'new' outside the class
+    private ShowLoginPage() {
+    }
+
+    private static class ShowLoginPageHolder {
+        private final static ShowLoginPage instance
+                = new ShowLoginPage();
+    }
+
+    /**
+     * Returns the instance of this class.
+     *
+     * @return Object of this class.
+     */
+    public static ShowLoginPage getInstance() {
+        return ShowLoginPage.ShowLoginPageHolder.instance;
+    }
+
+    @Override
+    public CommandResponse execute(CommandRequest request) {
+        return LOGIN_PAGE_RESPONSE;
+    }
+}
