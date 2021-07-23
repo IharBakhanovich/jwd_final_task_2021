@@ -68,7 +68,6 @@ public class ApplicationLifecycleListener implements ServletContextListener {
      */
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        // Maintenancer.getInstance().shutdown();
         logger.info("Shutting down Connection Pool...");
         AppConnectionPool.getInstance().destroy();
 

@@ -17,7 +17,7 @@ public class ShowSectionReportsPage implements Command {
     public static final String ID_PARAMETER_NAME = "id";
     public static final String REPORTS_ATTRIBUTE_NAME = "reports";
     private static final CommandResponse SHOW_REPORTS_PAGE_RESPONSE
-            = CommandResponse.getCommandResponse(false, "WEB-INF/jsp/reports.jsp");
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/reports.jsp");
     public static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
     public static final String SECTION_NAME_PARAMETER_NAME = "sectionName";
     public static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";

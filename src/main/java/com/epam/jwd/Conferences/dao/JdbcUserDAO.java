@@ -29,7 +29,7 @@ public class JdbcUserDAO extends CommonDAO<User> implements UserDAO {
     private static final String SURNAME_COLUMN = "surname";
     private static final String ROLE_COLUMN = "role";
 
-    private static final String TABLE_NAME = "app_user";
+    private static final String TABLE_NAME = "users";
     private static final String[] columnNames
             = {ID_COLUMN, EMAIL_COLUMN, PASSWORD_COLUMN,
             SALT_COLUMN, NUMBER_LOGIN_ATTEMPTS_COLUMN, VERIFICATION_TOKEN_COLUMN,
@@ -97,11 +97,11 @@ public class JdbcUserDAO extends CommonDAO<User> implements UserDAO {
                 + EMAIL_COLUMN
                 + " = ?, "
                 + NICK_NAME_COLUMN
-                + " = ?"
+                + " = ?, "
                 + FIRST_NAME_COLUMN
-                + " = ?"
+                + " = ?, "
                 + SURNAME_COLUMN
-                + " = ?"
+                + " = ?, "
                 + " where "
                 + ID_COLUMN
                 + " = ?";

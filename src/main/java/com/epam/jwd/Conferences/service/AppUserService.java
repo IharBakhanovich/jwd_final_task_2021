@@ -9,6 +9,7 @@ import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.exception.EntityNotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 import static at.favre.lib.crypto.bcrypt.BCrypt.MIN_COST;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -91,7 +92,8 @@ public class AppUserService implements UserService {
         try {
             final User persistedUser = this.findByLogin(user.getNickname());
             final byte[] encryptedPasswordFromDb = persistedUser.getPassword().getBytes(UTF_8);
-            return verifyer.verify(enteredPassword, encryptedPasswordFromDb).verified;
+            boolean result = verifyer.verify(enteredPassword, encryptedPasswordFromDb).verified;
+            return result;
         } catch (EntityNotFoundException exception) {
             return false;
         }
@@ -126,5 +128,10 @@ public class AppUserService implements UserService {
     @Override
     public List<Report> findAllReportsBySectionID(Long sectionId, Long conferenceId) {
         return ReportDAO.retrieve().findAllReportsBySectionID(sectionId, conferenceId);
+    }
+
+    @Override
+    public Optional<User> findUserByID(Long id) {
+        return UserDAO.retrieve().findById(id);
     }
 }

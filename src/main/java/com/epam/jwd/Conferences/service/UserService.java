@@ -6,6 +6,7 @@ import com.epam.jwd.Conferences.dto.Section;
 import com.epam.jwd.Conferences.dto.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
@@ -28,4 +29,6 @@ public interface UserService {
     List<Section> findAllSectionsByConferenceID(Long id);
 
     List<Report> findAllReportsBySectionID(Long sectionId, Long conferenceId);
+
+    Optional<User> findUserByID(Long id);
 }

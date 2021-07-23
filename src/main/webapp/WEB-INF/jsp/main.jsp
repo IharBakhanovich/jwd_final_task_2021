@@ -15,9 +15,10 @@
     </c:otherwise>
 </c:choose>
 <!-- show all the conferences in the system-->
-<h2>User List:</h2>
+
+<h2>Conference List:</h2>
 <c:if test="${not empty requestScope.conferences}">
-    <h3>Users</h3>
+    <h3>Conferences</h3>
     <tr>
         <th>ConferenceID</th>
         <th>ConferenceTitle</th>
@@ -30,14 +31,14 @@
             <td>${conference.conferenceTitle}</td>
         </tr>
     </c:forEach>
-    <!--
+
     <ul>
         <c:forEach var="conference" items="${requestScope.conferences}">
             <a href="${pageContext.request.contextPath}/controller?command=show_sections?id=${conference.id}?conferenceTitle=${conference.conferenceTitle}">${conference.id}</a>
             <li>${conference.conferenceTitle}</li>
         </c:forEach>
     </ul>
-    -->
+
 </c:if>
 
 <!-- не хотим показывать незарегистрированным userам-->

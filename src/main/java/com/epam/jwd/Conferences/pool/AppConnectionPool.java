@@ -24,7 +24,8 @@ public class AppConnectionPool implements ConnectionPool {
 
     private static final Logger logger = LogManager.getLogger(AppConnectionPool.class);
     public static final String DB_MYSQL_PATH = "jdbc:mysql://";
-    private final String DB_READ_UNSUCCESSFULLY = "DB read unsuccessfully";
+    public static final String SUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE = "ConnectionPool was successfully initialized. Amount of available connections: ";
+    private final String UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE = "DB read unsuccessfully. ConnectionPool was NOT initialized";
 
     private static final int INIT_CONNECTIONS_AMOUNT = 8;
     private final int MAX_CONNECTIONS_AMOUNT;
@@ -62,8 +63,6 @@ public class AppConnectionPool implements ConnectionPool {
         this.lock = new ReentrantLock();
         connectionsOpened = new AtomicInteger(0);
 
-        //TODO посмотреть как используется init() и где
-
 //        try {
 //            init();
 //        } catch (CouldNotInitializeConnectionPoolException e) {
@@ -92,10 +91,11 @@ public class AppConnectionPool implements ConnectionPool {
                         final Connection connection = DriverManager.getConnection(DB_PATH, DB_USER, DB_PASSWORD);
                         final ProxyConnection proxyConnection = new ProxyConnection(connection);
                         availableConnections.add(proxyConnection);
+                        logger.info(SUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE + availableConnections.size());
                         //initialize connection
                     }
                 } catch (SQLException e) {
-                    logger.error(DB_READ_UNSUCCESSFULLY);
+                    logger.error(UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE);
                     initialized.set(false);
                     throw new CouldNotInitializeConnectionPoolException("failed to open connection", e);
                 }
@@ -160,14 +160,14 @@ public class AppConnectionPool implements ConnectionPool {
                     try {
                         addConnections(currentOpenedConnections, CONNECTIONS_GROW_FACTOR);
                     } catch (SQLException e) {
-                        logger.error(DB_READ_UNSUCCESSFULLY + " during crowing connectionPool");
+                        logger.error(UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE + " during crowing connectionPool");
                     }
                 } else {
                     int amountConnectionsToCreate = MAX_CONNECTIONS_AMOUNT - currentOpenedConnections;
                     try {
                         addConnections(currentOpenedConnections, amountConnectionsToCreate);
                     } catch (SQLException e) {
-                        logger.error(DB_READ_UNSUCCESSFULLY + " during crowing connectionPool");
+                        logger.error(UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE + " during crowing connectionPool");
                     }
                 }
             }

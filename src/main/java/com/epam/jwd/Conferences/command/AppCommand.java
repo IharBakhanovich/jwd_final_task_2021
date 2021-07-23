@@ -24,6 +24,7 @@ public enum AppCommand {
     ERROR(ShowErrorPage.getInstance()),//для всех пользователей, поэтому не выделяем,
     SHOW_SECTIONS(ShowConferenceSectionsPage.getInstance(), USER, ADMIN),
     SHOW_REPORTS(ShowSectionReportsPage.getInstance(), USER, ADMIN),
+    SHOW_USER(ShowUserPage.getInstance(), USER, ADMIN),
     DEFAULT(ShowMainPage.getInstance()); // по дефолту показываем главную страницу
 
     // поле, которое будет заполняться из конструктора
