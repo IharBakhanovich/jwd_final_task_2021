@@ -1,7 +1,10 @@
 package com.epam.jwd.Conferences.dao;
 
 import com.epam.jwd.Conferences.dto.DatabaseEntity;
+import com.epam.jwd.Conferences.exception.DatabaseException;
+import com.epam.jwd.Conferences.exception.DuplicateException;
 import com.epam.jwd.Conferences.exception.EntityNotFoundException;
+import com.epam.jwd.Conferences.exception.NoConnectionException;
 import com.epam.jwd.Conferences.pool.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,7 +58,7 @@ public abstract class CommonDAO<T extends DatabaseEntity<Long>> implements DAO<T
         saveEntitySql.append(String.join(",", secondPartOfQuery));
         saveEntitySql.append(")");
 
-        return String.valueOf(saveEntitySql);
+        return String.format(String.valueOf(saveEntitySql), tableName);
 
 //        switch (tableColumns.length) {
 //            case 2:
@@ -126,18 +129,28 @@ public abstract class CommonDAO<T extends DatabaseEntity<Long>> implements DAO<T
      * @param entity The {@link T} entity to save.
      */
     @Override
-    public void save(T entity) {
+    public void save(T entity) throws DuplicateException {
         saveEntity(saveEntitySql, entity);
     }
 
-    private void saveEntity(String saveEntitySql, T entity) {
+    private void saveEntity(String saveEntitySql, T entity) throws DuplicateException {
         try (final Connection conn = ConnectionPool.retrieve().takeConnection();
              PreparedStatement statement = conn.prepareStatement(saveEntitySql)) {
             updateStatementBySave(statement, entity);
             statement.executeUpdate();
-            logger.info("entity data was inserted");
+            logger.info("Entity data was inserted");
         } catch (SQLException e) {
-            logger.error(String.format("User name read unsuccessfully. The SQLState is '%s'", e.getSQLState()));
+            String state = e.getSQLState();
+            if (state.startsWith("08")) {
+                logger.error("No Database Connection.");
+                throw new NoConnectionException("No Connection.");
+            } else if (state.equals("23505")) {
+                logger.error("An attempt at updating User data violated unique constraints.");
+                throw new DuplicateException("Violation of unique constraints.");
+            } else {
+                logger.error(String.format("Entity was NOT saved. The SQLState is '%s'", e.getSQLState()));
+                throw new DatabaseException(String.format("SQLException was caught with state: %s", state));
+            }
         } catch (InterruptedException exception) {
             logger.error("The thread "
                     + Thread.currentThread().getName()

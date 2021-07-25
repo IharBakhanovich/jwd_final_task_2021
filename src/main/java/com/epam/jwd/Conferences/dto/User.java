@@ -50,7 +50,7 @@ public class User implements DatabaseEntity<Long> {
      * Constructor to make a logIn.
      */
     public User( String nickname, String password) {
-        this(null, null, password, null,
+        this(null, "default@email.com", password, null,
                 0, null, false,
                 nickname, null, null, USER);
     }

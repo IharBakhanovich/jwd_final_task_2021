@@ -1,6 +1,7 @@
 package com.epam.jwd.Conferences.dao;
 
 import com.epam.jwd.Conferences.dto.DatabaseEntity;
+import com.epam.jwd.Conferences.exception.DuplicateException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.Optional;
  */
 public interface DAO<T extends DatabaseEntity<I>, I extends Serializable> {
 
-    void save (T entity);
+    void save (T entity) throws DuplicateException;
 
     List<T> findAll();
 

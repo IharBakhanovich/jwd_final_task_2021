@@ -4,13 +4,14 @@ import com.epam.jwd.Conferences.dto.Conference;
 import com.epam.jwd.Conferences.dto.Report;
 import com.epam.jwd.Conferences.dto.Section;
 import com.epam.jwd.Conferences.dto.User;
+import com.epam.jwd.Conferences.exception.DuplicateException;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
 
-    void create(User user);
+    void create(User user) throws DuplicateException;
 
     boolean canLogIn(User user);
 

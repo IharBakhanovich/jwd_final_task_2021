@@ -6,6 +6,7 @@ import com.epam.jwd.Conferences.dto.Conference;
 import com.epam.jwd.Conferences.dto.Report;
 import com.epam.jwd.Conferences.dto.Section;
 import com.epam.jwd.Conferences.dto.User;
+import com.epam.jwd.Conferences.exception.DuplicateException;
 import com.epam.jwd.Conferences.exception.EntityNotFoundException;
 
 import java.util.List;
@@ -55,7 +56,7 @@ public class AppUserService implements UserService {
 
 
     @Override
-    public void create(User user) {
+    public void create(User user) throws DuplicateException {
         // encryptedPassword зашифруем с помощью bcrypt
         // hash-функции необратимы, т.е. расхешировать пароль не получится,
         // поэтому при логине verifier будет хэшировать то, что ввел пользователь

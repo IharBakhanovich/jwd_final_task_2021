@@ -79,11 +79,12 @@ public class JdbcUserDAO extends CommonDAO<User> implements UserDAO {
             statement.setString(2, entity.getPassword());
             statement.setString(3, entity.getSalt());
             statement.setInt(4, entity.getNumberLoginAttempts());
-            statement.setBoolean(5, entity.isEmailVerified());
-            statement.setString(6, entity.getNickname());
-            statement.setString(7, entity.getFirstName());
-            statement.setString(8, entity.getSurname());
-            statement.setLong(9, entity.getRole().getId());
+            statement.setString(5, entity.getVerificationToken());
+            statement.setBoolean(6, entity.isEmailVerified());
+            statement.setString(7, entity.getNickname());
+            statement.setString(8, entity.getFirstName());
+            statement.setString(9, entity.getSurname());
+            statement.setLong(10, entity.getRole().getId());
         } catch (SQLException e) {
             logger.error("Error by updating the statement. The SQLState is " + e.getSQLState());
         }
