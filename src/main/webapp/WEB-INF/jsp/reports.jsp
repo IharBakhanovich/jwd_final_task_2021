@@ -1,12 +1,16 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <style>
+        <%@include file="/resources/appStyle.css"%>
+    </style>
     <title>Reports</title>
 </head>
 <body>
 <h2>Report List:</h2>
 <c:if test="${not empty requestScope.reports}">
-    <h3>Sections of '${requestScope.sectionName}' section</h3>
+    <h3>Reports of '${requestScope.sectionName}' section</h3>
     <tr>
         <th>ReportID</th>
         <th>SectionId</th>
@@ -15,33 +19,26 @@
         <th>ReportType</th>
         <th>Applicant</th>
     </tr>
-    <c:forEach var="report " items="${requestScope.reports}">
+    <br>
+    <c:forEach var="report" items="${requestScope.reports}">
         <tr>
             <td>
-                <a href="${pageContext.request.contextPath}/controller?command=show_report?id=${report.id}">${report.id}</a>
+                <a href="${pageContext.request.contextPath}/controller?command=show_report&id=${report.id}">${report.id}</a>
             </td>
             <td>${report.sectionId}</td>
             <td>${report.conferenceId}</td>
             <td>${report.reportText}</td>
             <td>${report.reportType}</td>
-            <td>
-                <a href="${pageContext.request.contextPath}/controller?command=show_user?id=${report.applicant}">${report.applicant}</a>
-            </td>
+            <c:forEach var="user" items="${requestScope.users}">
+                <c:if test="${report.applicant==user.id}">
+                    <td>
+                        <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}">${user.nickname}</a>
+                    </td>
+                </c:if>
+            </c:forEach>
         </tr>
+        <br>
     </c:forEach>
-
-    <!--
-    <ul>
-    <c:forEach var="report" items="${requestScope.reports}">
-        <a href="${pageContext.request.contextPath}/controller?command=show_report?id=${report.id}">${report.id}</a>
-        <li>${report.sectionId}</li>
-        <li>${report.conferenceId}</li>
-        <li>${report.reportText}</li>
-        <li>${report.reportType}</li>
-        <a href="${pageContext.request.contextPath}/controller?command=show_user?id=${report.applicant}">${report.applicant}</a>
-    </c:forEach>
-    </ul>
-    -->
 </c:if>
 </body>
 </html>

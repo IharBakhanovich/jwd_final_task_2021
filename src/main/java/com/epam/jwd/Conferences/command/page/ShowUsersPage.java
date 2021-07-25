@@ -3,7 +3,6 @@ package com.epam.jwd.Conferences.command.page;
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
-import com.epam.jwd.Conferences.dao.DBConferenceDAO;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.service.UserService;
 
@@ -44,7 +43,7 @@ public class ShowUsersPage implements Command {
         //перед тем как отдать респонс нужно в атрибуты HttpServletRequest положить пользователя
         //т.е. в CommandRequest (интерфейс) будет метод void setAttribute()
         //TODO из репозитория с помощью сервиса забрать конференции о положить в аттрибут users
-        final List<User> users = userService.findAll();
+        final List<User> users = userService.findAllUsers();
         request.setAttribute(USERS_ATTRIBUTE_NAME, users);
         return SHOW_USERS_PAGE_RESPONSE;
     }

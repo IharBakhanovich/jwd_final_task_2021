@@ -2,7 +2,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@page import="com.epam.jwd.Conferences.dto.Role" %>
 <html>
+
 <head>
+    <style>
+        <%@include file="/resources/appStyle.css"%>
+    </style>
     <title>Main Page</title>
 </head>
 <body>
@@ -16,31 +20,34 @@
 </c:choose>
 <!-- show all the conferences in the system-->
 
-<h2>Conference List:</h2>
+<h2>Conference section</h2>
 <c:if test="${not empty requestScope.conferences}">
-    <h3>Conferences</h3>
+    <h3>Available conferences</h3>
     <tr>
-        <th>ConferenceID</th>
-        <th>ConferenceTitle</th>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Manager(Nickname)</th>
     </tr>
+    <br>
     <c:forEach var="conference" items="${requestScope.conferences}">
         <tr>
             <td>
-                <a href="${pageContext.request.contextPath}/controller?command=show_sections?id=${conference.id}?conferenceTitle=${conference.conferenceTitle}">${conference.id}</a>
+                <a href="${pageContext.request.contextPath}/controller?command=show_sections&id=${conference.id}&conferenceTitle=${conference.conferenceTitle}">${conference.id}</a>
             </td>
             <td>${conference.conferenceTitle}</td>
+            <c:forEach var="user" items="${requestScope.users}">
+                <c:if test="${conference.managerConf==user.id}">
+                    <td>
+                        <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}">${user.nickname}</a>
+                    </td>
+                </c:if>
+            </c:forEach>
         </tr>
+        <br>
     </c:forEach>
-
-    <ul>
-        <c:forEach var="conference" items="${requestScope.conferences}">
-            <a href="${pageContext.request.contextPath}/controller?command=show_sections?id=${conference.id}?conferenceTitle=${conference.conferenceTitle}">${conference.id}</a>
-            <li>${conference.conferenceTitle}</li>
-        </c:forEach>
-    </ul>
-
 </c:if>
 
+<h2>Authentication section</h2>
 <!-- не хотим показывать незарегистрированным userам-->
 <c:choose>
     <c:when test="${empty sessionScope.userName}">

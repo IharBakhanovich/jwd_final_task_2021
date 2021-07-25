@@ -16,7 +16,7 @@ public interface UserService {
 
     User findByLogin(String login);
 
-    List<User> findAll();
+    List<User> findAllUsers();
 
     void clean();
 
@@ -31,4 +31,8 @@ public interface UserService {
     List<Report> findAllReportsBySectionID(Long sectionId, Long conferenceId);
 
     Optional<User> findUserByID(Long id);
+
+    Optional<Report> findReportByID(Long id);
+
+    List<Section> findAllSections();
 }

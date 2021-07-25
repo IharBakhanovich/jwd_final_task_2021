@@ -4,6 +4,7 @@ import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.dto.Section;
+import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.service.UserService;
 
 import java.util.List;
@@ -13,10 +14,11 @@ public class ShowConferenceSectionsPage implements Command {
     public static final String ID_PARAMETER_NAME = "id";
     public static final String SECTIONS_ATTRIBUTE_NAME = "sections";
     private static final CommandResponse SHOW_SECTIONS_PAGE_RESPONSE
-            = CommandResponse.getCommandResponse(false, "WEB-INF/jsp/sections.jsp");
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/sections.jsp");
     public static final String CONFERENCE_TITLE_PARAMETER_NAME = "conferenceTitle";
     public static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
-    public static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceID";
+    public static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
+    public static final String USERS_ATTRIBUTE_NAME = "users";
     // the AppService, that communicates with the repo
     private final UserService service;
 
@@ -47,6 +49,8 @@ public class ShowConferenceSectionsPage implements Command {
         request.setAttribute(SECTIONS_ATTRIBUTE_NAME, sections);
         request.setAttribute(CONFERENCE_TITLE_ATTRIBUTE_NAME, conferenceTitle);
         request.setAttribute(CONFERENCE_ID_ATTRIBUTE_NAME, id);
+        final List<User> users = service.findAllUsers();
+        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
         return SHOW_SECTIONS_PAGE_RESPONSE;
     }
 }

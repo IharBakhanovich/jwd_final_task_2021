@@ -30,13 +30,13 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
             REPORT_TEXT_COLUMN, REPORT_TYPE_COLUMN, APPLICANT_COLUMN};
 
     private final String findReportByApplicantIdSql;
-    private final String findAllReportsBySectionIdSql;
+    private final String findAllReportsByConferenceIdAndSectionIdSql;
 
     protected DBReportDAO(String tableName) {
         super(tableName, columnNames);
         findReportByApplicantIdSql = String.format("select * from %s where %s = ?",
                 TABLE_NAME, APPLICANT_COLUMN);
-        findAllReportsBySectionIdSql = String.format("select * from %s where %s = ? and %s = ?",
+        findAllReportsByConferenceIdAndSectionIdSql = String.format("select * from %s where %s = ? and %s = ?",
                 TABLE_NAME, SECTION_ID_COLUMN, CONFERENCE_ID_COLUMN);
     }
 
@@ -131,7 +131,7 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
     public List<Report> findAllReportsBySectionID(Long sectionId, Long conferenceId) {
         return findPreparedEntities(
                 statement -> setParameters(statement, sectionId, conferenceId),
-                findReportByApplicantIdSql
+                findAllReportsByConferenceIdAndSectionIdSql
         );
     }
 

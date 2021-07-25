@@ -1,0 +1,28 @@
+tr:nth-of-type(odd) {
+    background: #eee;
+}
+
+th {
+    background: #404040;
+    color: white;
+    text-align: center;
+}
+
+td, th {
+    padding: 8px;
+    border: 1px solid #C0C0C0;
+}
+
+* {
+    font-family: Arial;
+    color: #202020;
+}
+
+.button {
+    border: 1px solid #C0C0C0;
+    background-color: #eee;
+    border-radius: 10px;
+    font-size: 16px;
+    padding: 6px;
+    color: #202020;
+}

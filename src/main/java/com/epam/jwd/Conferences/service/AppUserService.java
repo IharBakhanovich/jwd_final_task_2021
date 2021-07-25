@@ -106,7 +106,7 @@ public class AppUserService implements UserService {
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> findAllUsers() {
         return userDAO.findAll();
     }
 
@@ -133,5 +133,15 @@ public class AppUserService implements UserService {
     @Override
     public Optional<User> findUserByID(Long id) {
         return UserDAO.retrieve().findById(id);
+    }
+
+    @Override
+    public Optional<Report> findReportByID(Long id) {
+        return ReportDAO.retrieve().findById(id);
+    }
+
+    @Override
+    public List<Section> findAllSections() {
+        return SectionDAO.retrieve().findAll();
     }
 }

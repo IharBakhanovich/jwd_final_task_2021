@@ -4,7 +4,7 @@ import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.dto.Conference;
-import com.epam.jwd.Conferences.dto.Section;
+import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.service.UserService;
 
 import java.util.List;
@@ -17,6 +17,7 @@ public class ShowMainPage implements Command {
     private static final CommandResponse SHOW_MAIN_PAGE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     public static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
+    public static final String USERS_ATTRIBUTE_NAME = "users";
     // the AppService, that communicates with the repo
     private final UserService service;
 
@@ -43,6 +44,8 @@ public class ShowMainPage implements Command {
     public CommandResponse execute(CommandRequest request) {
         final List<Conference> conferences = service.findAllConferences();
         request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
+        final List<User> users = service.findAllUsers();
+        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
         return SHOW_MAIN_PAGE;
     }
 }

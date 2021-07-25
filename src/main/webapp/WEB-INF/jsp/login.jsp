@@ -2,9 +2,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <style>
+        <%@include file="/resources/appStyle.css"%>
+    </style>
     <title>Login</title>
 </head>
 <body>
+<h3>To authenticate in the system enter your login and password and press 'Log In' button</h3>
 <!--как switch в java. но если необходимо if else - делаем when/otherwise это как switch с одним case-->
 <c:choose>
     <c:when test="${not empty requestScope.error}">
@@ -19,7 +23,7 @@
             <label for="passwordField"> Password: </label>
             <input type="password" id="passwordField" name="password">
             <br>
-            <input type="submit" value="Log In">
+            <input type="submit" value="Log In" class="button">
         </form>
     </c:otherwise>
 </c:choose>

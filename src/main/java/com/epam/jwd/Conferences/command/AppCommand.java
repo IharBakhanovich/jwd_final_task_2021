@@ -20,11 +20,12 @@ public enum AppCommand {
     SHOW_USERS(ShowUsersPage.getInstance(), ADMIN), //посмотреть юзеров может только админ
     SHOW_LOGIN(ShowLoginPage.getInstance(), UNAUTHORIZED), // открывать логин страницу может только UNAUTHORIZED
     LOGOUT(LogoutCommand.getInstance(), USER, ADMIN), //USER и ADMIN могут logout
-    LOGIN(LoginCommand.getInstance(), UNAUTHORIZED), //переделать этот енам в потокобезопасный. логиниться может только UNAUTHORIZED
+    LOGIN(LoginCommand.getInstance(), UNAUTHORIZED), //логиниться может только UNAUTHORIZED
     ERROR(ShowErrorPage.getInstance()),//для всех пользователей, поэтому не выделяем,
-    SHOW_SECTIONS(ShowConferenceSectionsPage.getInstance(), USER, ADMIN),
-    SHOW_REPORTS(ShowSectionReportsPage.getInstance(), USER, ADMIN),
-    SHOW_USER(ShowUserPage.getInstance(), USER, ADMIN),
+    SHOW_SECTIONS(ShowConferenceSectionsPage.getInstance(), USER, ADMIN, UNAUTHORIZED),
+    SHOW_REPORTS(ShowSectionReportsPage.getInstance(), USER, ADMIN, UNAUTHORIZED),
+    SHOW_USER(ShowUserPage.getInstance(), USER, ADMIN), //shows a user
+    SHOW_REPORT(ShowReportPage.getInstance(), USER, ADMIN, UNAUTHORIZED), // shows a report
     DEFAULT(ShowMainPage.getInstance()); // по дефолту показываем главную страницу
 
     // поле, которое будет заполняться из конструктора
