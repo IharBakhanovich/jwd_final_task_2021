@@ -166,10 +166,10 @@ public abstract class CommonDAO<T extends DatabaseEntity<Long>> implements DAO<T
     }
 
     /**
-     * Finds the {@link T} entity by id.
+     * Finds the Optional{@link T} entity by id.
      *
      * @param id The id of the {@link T} entity to find.
-     * @return {@link T}.
+     * @return Optional{@link T}.
      */
     @Override
     public Optional<T> findById(Long id) {

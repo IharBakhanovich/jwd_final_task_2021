@@ -103,6 +103,8 @@ public class JdbcUserDAO extends CommonDAO<User> implements UserDAO {
                 + " = ?, "
                 + SURNAME_COLUMN
                 + " = ?, "
+                + ROLE_COLUMN
+                + " = ?"
                 + " where "
                 + ID_COLUMN
                 + " = ?";
@@ -115,7 +117,8 @@ public class JdbcUserDAO extends CommonDAO<User> implements UserDAO {
             statement.setString(2, entity.getNickname());
             statement.setString(3, entity.getFirstName());
             statement.setString(4, entity.getSurname());
-            statement.setLong(5, entity.getId());
+            statement.setLong(5, entity.getRole().getId());
+            statement.setLong(6, entity.getId());
         } catch (SQLException e) {
             logger.error("Error by updating the statement. The SQLState is " + e.getSQLState());
         }

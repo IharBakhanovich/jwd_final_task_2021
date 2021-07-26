@@ -36,4 +36,6 @@ public interface UserService {
     Optional<Report> findReportByID(Long id);
 
     List<Section> findAllSections();
+
+    void updateUser(User userToUpdate);
 }

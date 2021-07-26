@@ -24,6 +24,7 @@ public class LoginCommand implements Command {
 
     private static final String USER_NAME_SESSION_ATTRIBUTE = "userName";
     public static final String USER_ROLE_SESSION_ATTRIBUTE = "userRole";
+    public static final String USER_ID_SESSION_ATTRIBUTE = "userId";
 
     private final UserService service;
 
@@ -72,10 +73,12 @@ public class LoginCommand implements Command {
         // во вторых в сессии не хочется хранить пароль
         //поэтому достанем текущего user из сервиса
         final User loggedInUser = service.findByLogin(login);
-        //просетали текущего юзера в сессию
+        //просетали ник текущего юзера в сессию
         session.setAttribute(USER_NAME_SESSION_ATTRIBUTE, loggedInUser.getNickname());
         //просетали роль текущего юзера в сессию
         session.setAttribute(USER_ROLE_SESSION_ATTRIBUTE, loggedInUser.getRole());
+        //просетали id текущего юзера в сессию
+        session.setAttribute(USER_ID_SESSION_ATTRIBUTE, loggedInUser.getId());
 
         // далее необходимо сделать паттерн PostRedirectGet
         return LOGIN_SUCCESS_RESPONSE;

@@ -145,4 +145,9 @@ public class AppUserService implements UserService {
     public List<Section> findAllSections() {
         return SectionDAO.retrieve().findAll();
     }
+
+    @Override
+    public void updateUser(User userToUpdate) {
+        UserDAO.retrieve().update(userToUpdate);
+    }
 }

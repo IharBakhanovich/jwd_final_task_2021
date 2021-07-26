@@ -38,6 +38,7 @@ public class ShowUserPage implements Command {
     public CommandResponse execute(CommandRequest request) {
         final Long id = Long.valueOf(request.getParameter(ID_PARAMETER_NAME));
         final Optional<User> user = service.findUserByID(id);
+
         request.setAttribute(USER_ATTRIBUTE_NAME, user);
         return SHOW_USER_PAGE_RESPONSE;
     }

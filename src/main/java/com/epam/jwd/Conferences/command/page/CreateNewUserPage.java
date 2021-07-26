@@ -14,16 +14,16 @@ public class CreateNewUserPage implements Command {
 
     private static final Logger logger = LogManager.getLogger(CreateNewUserPage.class);
 
-    public static final String NICKNAME_PARAMETER_NAME = "nickname";
-    public static final String PASSWORD_PARAMETER_NAME = "password";
-    public static final String PASSWORD_REPEAT_PARAMETER_NAME = "passwordRepeat";
+    private static final String NICKNAME_PARAMETER_NAME = "nickname";
+    private static final String PASSWORD_PARAMETER_NAME = "password";
+    private static final String PASSWORD_REPEAT_PARAMETER_NAME = "passwordRepeat";
     private static final String ERROR_ATTRIBUTE_NAME = "error";
-    public static final CommandResponse LOGIN_ERROR_RESPONSE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/show_create_new_user.jsp");
-    public static final CommandResponse USER_CREATION_SUCCESS_RESPONSE
+    private static final CommandResponse CREATE_NEW_USER_ERROR_RESPONSE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createNewUser.jsp");
+    private static final CommandResponse USER_CREATION_SUCCESS_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/users.jsp");
-    public static final String DUPLICATE_USER_MESSAGE = "The user with such a nickname already exist in the system. Please choose an other nick.";
-    public static final String USERS_ATTRIBUTE_NAME = "users";
+    private static final String DUPLICATE_USER_MESSAGE = "The user with such a nickname already exist in the system. Please choose an other nick.";
+    private static final String USERS_ATTRIBUTE_NAME = "users";
 
     private final UserService service;
 
@@ -54,8 +54,8 @@ public class CreateNewUserPage implements Command {
         final List<User> users = service.findAllUsers();
         if (nickname == null || nickname.trim().equals("")) {
             return prepareErrorPage(request, "Nickname should be not empty or contains only spaces. Please try again");
-        } else if (password == null || password.trim().equals("Password should be not empty or contains only spaces. Please try again")) {
-            return prepareErrorPage(request, "");
+        } else if (password == null || password.trim().equals("")) {
+            return prepareErrorPage(request, "Password should be not empty or contains only spaces. Please try again");
         }
         for (User user : users
         ) {
@@ -81,6 +81,6 @@ public class CreateNewUserPage implements Command {
 
     private CommandResponse prepareErrorPage(CommandRequest request, String errorMessage) {
         request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
-        return LOGIN_ERROR_RESPONSE;
+        return CREATE_NEW_USER_ERROR_RESPONSE;
     }
 }
