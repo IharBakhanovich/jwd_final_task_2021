@@ -29,6 +29,7 @@ public enum AppCommand {
     SHOW_CREATE_NEW_USER(ShowCreateNewUserPage.getInstance(), ADMIN), // shows createNewUser.jsp page
     CREATE_NEW_USER(CreateNewUserPage.getInstance(), ADMIN), // shows createNewUser.jsp page
     UPDATE_USER(UpdateUser.getInstance(), ADMIN, USER), // updates user data
+    UPDATE_REPORT(UpdateReport.getInstance(), ADMIN, USER), // updates report data
     DEFAULT(ShowMainPage.getInstance()); // по дефолту показываем главную страницу
 
     // поле, которое будет заполняться из конструктора

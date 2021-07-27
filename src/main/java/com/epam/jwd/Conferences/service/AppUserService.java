@@ -150,4 +150,9 @@ public class AppUserService implements UserService {
     public void updateUser(User userToUpdate) {
         UserDAO.retrieve().update(userToUpdate);
     }
+
+    @Override
+    public void updateReport(Report reportToUpdate) {
+        reportDAO.update(reportToUpdate);
+    }
 }

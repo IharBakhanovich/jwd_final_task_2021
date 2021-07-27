@@ -76,24 +76,24 @@ public class UpdateUser implements Command {
         // validation of permission to update
         if (!updaterId.equals(String.valueOf(id)) && !updaterRole.equals("ADMIN")) {
             return prepareErrorPage(request,
-                    "You has no permission to update this user. Please try again",
-                    UPDATE_USER_ERROR_RESPONSE_TO_INDEX);
+                    "You has no permission to update this user. Please DO NOT try again"
+            );
         }
         // validation of matching the id and login of user to update
         if (!userFromDB.getId().equals(id)) {
             final Optional<User> user = service.findUserByID(id);
             request.setAttribute(USER_ATTRIBUTE_NAME, user);
             return prepareErrorPage(request,
-                    "User to update don't match with its id. Please try again",
-                    UPDATE_USER_ERROR_RESPONSE_TO_USER);
+                    "User to update don't match with its id. Please try again"
+            );
         }
         // email validation
         else if (!isEmailValid(eMail)) {
             final Optional<User> user = service.findUserByID(id);
             request.setAttribute(USER_ATTRIBUTE_NAME, user);
             return prepareErrorPage(request,
-                    "Email is not valid. Please try again",
-                    UPDATE_USER_ERROR_RESPONSE_TO_USER);
+                    "Email is not valid. Please try again"
+            );
         }
         // string validation (firstName)
         else if (!firstName.trim().equals("")) {
@@ -101,8 +101,8 @@ public class UpdateUser implements Command {
                 final Optional<User> user = service.findUserByID(id);
                 request.setAttribute(USER_ATTRIBUTE_NAME, user);
                 return prepareErrorPage(request,
-                        "FirstName is not valid. Please try again",
-                        UPDATE_USER_ERROR_RESPONSE_TO_USER);
+                        "FirstName is not valid. Please try again"
+                );
             }
         }
         // string validation (surname)
@@ -111,8 +111,8 @@ public class UpdateUser implements Command {
                 final Optional<User> user = service.findUserByID(id);
                 request.setAttribute(USER_ATTRIBUTE_NAME, user);
                 return prepareErrorPage(request,
-                        "Surname is not valid. Please try again",
-                        UPDATE_USER_ERROR_RESPONSE_TO_USER);
+                        "Surname is not valid. Please try again"
+                );
             }
         }
         User userToUpdate
@@ -133,14 +133,13 @@ public class UpdateUser implements Command {
     }
 
     private CommandResponse prepareErrorPage(CommandRequest request,
-                                             String errorMessage,
-                                             CommandResponse commandResponse) {
+                                             String errorMessage) {
         request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
 
-        return commandResponse;
+        return UPDATE_USER_ERROR_RESPONSE_TO_USER;
     }
 
-    public boolean isStringValid(String toValidate) {
+    private boolean isStringValid(String toValidate) {
         byte[] byteArrray = toValidate.getBytes();
         return isUTF8(byteArrray);
     }

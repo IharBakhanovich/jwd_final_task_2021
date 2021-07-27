@@ -38,4 +38,6 @@ public interface UserService {
     List<Section> findAllSections();
 
     void updateUser(User userToUpdate);
+
+    void updateReport(Report reportToUpdate);
 }

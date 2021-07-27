@@ -46,19 +46,26 @@
                 <label for="roleField"> Role: </label>
                 <c:choose>
                     <c:when test="${sessionScope.userRole eq Role.ADMIN}">
-                        <select name="role" id="roleField">
-                            <c:forEach var="role" items="${Role.valuesAsList()}">
-                                <c:choose>
-                                    <c:when test="${requestScope.user.get().role eq role}">
-                                        <option selected>${role}</option>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <option>${role}</option>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:forEach>
-                        </select>
-                        <%--                <input type="text" id="roleField" name="role" value="${requestScope.user.get().role}">--%>
+                        <c:choose>
+                            <c:when test="${requestScope.user.get().role eq Role.ADMIN}">
+                                <input type="text" id="roleField" name="role" value="${requestScope.user.get().role}" readonly>
+                            </c:when>
+                            <c:otherwise>
+                                <select name="role" id="roleField">
+                                    <c:forEach var="role" items="${Role.valuesAsList()}">
+                                        <c:choose>
+                                            <c:when test="${requestScope.user.get().role eq role}">
+                                                <option selected>${role}</option>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <option>${role}</option>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </select>
+                                <%--                <input type="text" id="roleField" name="role" value="${requestScope.user.get().role}">--%>
+                            </c:otherwise>
+                        </c:choose>
                     </c:when>
                     <c:otherwise>
                         <input type="text" id="roleField" name="role" value="${requestScope.user.get().role}" readonly>

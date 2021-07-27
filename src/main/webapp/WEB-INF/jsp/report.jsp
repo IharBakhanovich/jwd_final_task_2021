@@ -26,12 +26,42 @@
                 <!-- name запихнет в пост запрос значения -->
                 <br>
                 <label for="sectionField"> Section:</label>
-                <c:forEach var="section" items="${requestScope.sections}">
-                    <c:if test="${report.get().sectionId==section.id}">
-                        <a href="${pageContext.request.contextPath}/controller?command=show_reports&id=${section.id}&conferenceId=${report.get().conferenceId}&&sectionName=${section.sectionName}"
-                           id="sectionField" name="sectionName">${section.sectionName}</a>
-                    </c:if>
-                </c:forEach>
+                <c:choose>
+                    <c:when test="${sessionScope.userRole eq Role.ADMIN}">
+                        <select name="sectionName" id="sectionField">
+                            <c:forEach var="section" items="${requestScope.sections}">
+                                <c:choose>
+                                    <c:when test="${requestScope.report.get().sectionId==section.id}">
+                                        <option selected>${section.sectionName}</option>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option>${section.sectionName}</option>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                        </select>
+                        <%--                <input type="text" id="roleField" name="role" value="${requestScope.user.get().role}">--%>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="section" items="${requestScope.sections}">
+                            <c:if test="${requestScope.report.get().sectionId==section.id}">
+                                <c:choose>
+                                    <c:when test="${requestScope.report.get().applicant==sessionScope.userId}">
+                                        <input type="text" id="sectionField" name="sectionName"
+                                               value="${section.sectionName}" readonly>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${pageContext.request.contextPath}/controller?command=show_reports&id=${section.id}&conferenceId=${report.get().conferenceId}&&sectionName=${section.sectionName}"
+                                           id="sectionField" name="sectionName">${section.sectionName}</a>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:if>
+                        </c:forEach>
+                        <%--                        <input type="text" id="roleField" name="role" value="${requestScope.user.get().role}" readonly>--%>
+                    </c:otherwise>
+                </c:choose>
+
+
                     <%--                <c:choose>--%>
                     <%--                    <c:when test="${requestScope.user.get().firstName == 'default@email.com'} ">--%>
                     <%--                        <input type="text" id="emailField" name="email">--%>
@@ -43,20 +73,50 @@
                     <%--                <!-- name запихнет в пост запрос значения -->--%>
                 <br>
                 <label for="conferenceField"> Conference: </label>
-                <c:forEach var="conference" items="${requestScope.conferences}">
-                    <c:if test="${report.get().conferenceId==conference.id}">
-                        <a href="${pageContext.request.contextPath}/controller?command=show_sections&id=${conference.id}&conferenceTitle=${conference.conferenceTitle}"
-                           id="conferenceField" name="conferenceTitle">${conference.conferenceTitle}</a>
-                    </c:if>
-                </c:forEach>
+                <c:choose>
+                    <c:when test="${sessionScope.userRole eq Role.ADMIN}">
+                        <select name="conferenceTitle" id="conferenceField">
+                            <c:forEach var="conference" items="${requestScope.conferences}">
+                                <c:choose>
+                                    <c:when test="${requestScope.report.get().conferenceId==conference.id}">
+                                        <option selected>${conference.conferenceTitle}</option>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option>${conference.conferenceTitle}</option>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                        </select>
+                        <%--                <input type="text" id="roleField" name="role" value="${requestScope.user.get().role}">--%>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="conference" items="${requestScope.conferences}">
+                            <c:if test="${requestScope.report.get().conferenceId==conference.id}">
+                                <c:choose>
+                                    <c:when test="${requestScope.report.get().applicant==sessionScope.userId}">
+                                        <input type="text" id="conferenceField" name="conferenceTitle"
+                                               value="${conference.conferenceTitle}" readonly>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="${pageContext.request.contextPath}/controller?command=show_sections&id=${conference.id}&conferenceTitle=${conference.conferenceTitle}"
+                                           id="conferenceField" name="conferenceTitle">${conference.conferenceTitle}</a>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:if>
+                        </c:forEach>
+                        <%--                        <input type="text" id="roleField" name="role" value="${requestScope.user.get().role}" readonly>--%>
+                    </c:otherwise>
+                </c:choose>
+
+
                     <%--                <input type="text" id="nicknameField" name="nickname" value="${requestScope.user.get().nickname}"--%>
                     <%--                       readonly>--%>
                 <br>
                 <label for="reportTextField"> ReportText: </label>
-                <textarea name="reportText" id="reportTextField" rows="2" cols="46"
-                          wrap="soft" >${requestScope.report.get().reportText}</textarea>
-<%--                <input type="text" id="reportTextField" name="reportText"--%>
-<%--                       value="${requestScope.report.get().reportText}">--%>
+                <textarea name="reportText" id="reportTextField" rows="1" cols="75"
+                          wrap="soft">${requestScope.report.get().reportText}</textarea>
+                    <%--                <input type="text" id="reportTextField" name="reportText"--%>
+                    <%--                       value="${requestScope.report.get().reportText}">--%>
                 <br>
                 <label for="reportTypeField"> ReportType: </label>
                 <c:choose>
@@ -84,10 +144,16 @@
                 <label for="applicantField"> Applicant: </label>
                 <c:forEach var="user" items="${requestScope.users}">
                     <c:if test="${report.get().applicant==user.id}">
-                        <td>
-                            <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}"
-                               id="applicantField" name="applicant">${user.nickname}</a>
-                        </td>
+                        <c:choose>
+                            <c:when test="${requestScope.report.get().applicant==sessionScope.userId}">
+                                <input type="text" id="applicantField" name="applicant"
+                                       value="${user.nickname}" readonly>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}"
+                                   id="applicantField" name="applicant">${user.nickname}</a>
+                            </c:otherwise>
+                        </c:choose>
                     </c:if>
                 </c:forEach>
                     <%--                <input type="text" id="surNameField" name="surname" value="${requestScope.user.get().surname}">--%>
