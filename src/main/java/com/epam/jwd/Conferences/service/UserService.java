@@ -42,4 +42,6 @@ public interface UserService {
     void updateReport(Report reportToUpdate);
 
     void createConference(Conference conferenceToCreate) throws DuplicateException;
+
+    void createSection(Section sectionToCreate) throws DuplicateException;
 }

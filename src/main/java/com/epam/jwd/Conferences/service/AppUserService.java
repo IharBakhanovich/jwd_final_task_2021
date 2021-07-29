@@ -160,4 +160,9 @@ public class AppUserService implements UserService {
     public void createConference(Conference conferenceToCreate) throws DuplicateException {
         conferenceDAO.save(conferenceToCreate);
     }
+
+    @Override
+    public void createSection(Section sectionToCreate) throws DuplicateException {
+        sectionDAO.save(sectionToCreate);
+    }
 }

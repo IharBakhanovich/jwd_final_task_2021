@@ -60,9 +60,9 @@ public class DBSectionDAO extends CommonDAO<Section> implements SectionDAO {
     @Override
     protected void updateStatementBySave(PreparedStatement statement, Section entity) {
         try {
-            statement.setString(1, entity.getSectionName());
-            statement.setLong(2, entity.getManagerSect());
-            statement.setLong(3, entity.getId());
+            statement.setLong(1, entity.getConferenceId());
+            statement.setString(2, entity.getSectionName());
+            statement.setLong(3, entity.getManagerSect());
         } catch (SQLException e) {
             logger.error("Error by updating the statement. The SQLState is " + e.getSQLState());
         }

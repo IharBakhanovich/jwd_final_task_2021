@@ -27,9 +27,11 @@ public enum AppCommand {
     SHOW_USER(ShowUserPage.getInstance(), USER, ADMIN), //shows a user
     SHOW_REPORT(ShowReportPage.getInstance(), USER, ADMIN, UNAUTHORIZED), // shows a report
     SHOW_CREATE_NEW_USER(ShowCreateNewUserPage.getInstance(), ADMIN, UNAUTHORIZED), // shows createNewUser.jsp page
-    SHOW_CREATE_CONFERENCE(ShowCreateConferencePage.getInstance(), ADMIN), // shows createNewUser.jsp page
+    SHOW_CREATE_CONFERENCE(ShowCreateConferencePage.getInstance(), ADMIN), // shows createConference.jsp page
+    SHOW_CREATE_SECTION(ShowCreateSectionPage.getInstance(), ADMIN, USER), // shows createSection.jsp page
     CREATE_NEW_USER(CreateNewUser.getInstance(), ADMIN, UNAUTHORIZED), // creates new user and users.jsp/login.jsp page
     CREATE_NEW_CONFERENCE(CreateConference.getInstance(), ADMIN), // creates new conference and shows main.jsp page
+    CREATE_NEW_SECTION(CreateSection.getInstance(), ADMIN, USER), // creates new section and shows sections.jsp page
     UPDATE_USER(UpdateUser.getInstance(), ADMIN, USER), // updates user data
     UPDATE_REPORT(UpdateReport.getInstance(), ADMIN, USER), // updates report data
     DEFAULT(ShowMainPage.getInstance()); // по дефолту показываем главную страницу

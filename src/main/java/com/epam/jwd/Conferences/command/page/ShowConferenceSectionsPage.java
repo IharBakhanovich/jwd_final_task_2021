@@ -3,6 +3,7 @@ package com.epam.jwd.Conferences.command.page;
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
+import com.epam.jwd.Conferences.dto.Conference;
 import com.epam.jwd.Conferences.dto.Section;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.service.UserService;
@@ -19,6 +20,7 @@ public class ShowConferenceSectionsPage implements Command {
     public static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
     public static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
     public static final String USERS_ATTRIBUTE_NAME = "users";
+    public static final String CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME = "conferenceManager";
     // the AppService, that communicates with the repo
     private final UserService service;
 
@@ -44,6 +46,15 @@ public class ShowConferenceSectionsPage implements Command {
     @Override
     public CommandResponse execute(CommandRequest request) {
         final Long id = Long.valueOf(request.getParameter(ID_PARAMETER_NAME));
+        final List<Conference> conferences = service.findAllConferences();
+        Long conferenceManagerId = null;
+        for (Conference conference: conferences
+             ) {
+            if(conference.getId() == id) {
+                conferenceManagerId = conference.getManagerConf();
+            }
+        }
+        request.setAttribute(CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME, conferenceManagerId);
         final String conferenceTitle = request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME);
         final List<Section> sections = service.findAllSectionsByConferenceID(id);
         request.setAttribute(SECTIONS_ATTRIBUTE_NAME, sections);

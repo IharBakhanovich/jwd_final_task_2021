@@ -27,8 +27,8 @@ public class CreateConference implements Command {
     private static final CommandResponse CREATE_NEW_USER_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createConference.jsp");
     private static final String ERROR_ATTRIBUTE_NAME = "error";
-    public static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
-    public static final String USERS_ATTRIBUTE_NAME = "users";
+    private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
+    private static final String USERS_ATTRIBUTE_NAME = "users";
     private static final CommandResponse CONFERENCE_CREATION_SUCCESS_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     private static final String DUPLICATE_CONFERENCE_MESSAGE

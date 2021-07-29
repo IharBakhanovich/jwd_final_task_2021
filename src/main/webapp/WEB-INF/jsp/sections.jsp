@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="com.epam.jwd.Conferences.dto.Role" %>
 <html>
 <head>
     <style>
@@ -37,11 +38,17 @@
     </c:when>
     <c:otherwise>
         <p class="error_message">There are no sections in this conference</p>
-        <a href="${pageContext.request.contextPath}/controller">Back to main page</a>
     </c:otherwise>
 </c:choose>
-<c:if test="">
-
+<br>
+<c:if test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userId == requestScope.conferenceManager}">
+    <br>
+    <a href="${pageContext.request.contextPath}/controller?command=show_create_section&conferenceId=${requestScope.conferenceId}&conferenceTitle=${requestScope.conferenceTitle}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}">Create
+        New Section in '${requestScope.conferenceTitle}' conference</a>
 </c:if>
+
+<br>
+<br>
+<a href="${pageContext.request.contextPath}/controller">Back to the main page</a>
 </body>
 </html>
