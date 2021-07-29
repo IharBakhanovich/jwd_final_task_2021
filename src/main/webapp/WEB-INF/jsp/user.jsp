@@ -78,8 +78,6 @@
             </form>
         </c:otherwise>
     </c:choose>
-
-
 </c:if>
 <br>
 <br>

@@ -14,6 +14,9 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Implements 'update_user' action. The singleton.
+ */
 public class UpdateUser implements Command {
 
     private static final String ID_PARAMETER_NAME = "id";

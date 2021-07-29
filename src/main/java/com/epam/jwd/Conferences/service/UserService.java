@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    void create(User user) throws DuplicateException;
+    void createUser(User user) throws DuplicateException;
 
     boolean canLogIn(User user);
 
@@ -40,4 +40,6 @@ public interface UserService {
     void updateUser(User userToUpdate);
 
     void updateReport(Report reportToUpdate);
+
+    void createConference(Conference conferenceToCreate) throws DuplicateException;
 }

@@ -56,7 +56,7 @@ public class AppUserService implements UserService {
 
 
     @Override
-    public void create(User user) throws DuplicateException {
+    public void createUser(User user) throws DuplicateException {
         // encryptedPassword зашифруем с помощью bcrypt
         // hash-функции необратимы, т.е. расхешировать пароль не получится,
         // поэтому при логине verifier будет хэшировать то, что ввел пользователь
@@ -123,36 +123,41 @@ public class AppUserService implements UserService {
 
     @Override
     public List<Section> findAllSectionsByConferenceID(Long id) {
-        return SectionDAO.retrieve().findAllSectionsByConferenceID(id);
+        return sectionDAO.findAllSectionsByConferenceID(id);
     }
 
     @Override
     public List<Report> findAllReportsBySectionID(Long sectionId, Long conferenceId) {
-        return ReportDAO.retrieve().findAllReportsBySectionID(sectionId, conferenceId);
+        return reportDAO.findAllReportsBySectionID(sectionId, conferenceId);
     }
 
     @Override
     public Optional<User> findUserByID(Long id) {
-        return UserDAO.retrieve().findById(id);
+        return userDAO.findById(id);
     }
 
     @Override
     public Optional<Report> findReportByID(Long id) {
-        return ReportDAO.retrieve().findById(id);
+        return reportDAO.findById(id);
     }
 
     @Override
     public List<Section> findAllSections() {
-        return SectionDAO.retrieve().findAll();
+        return sectionDAO.findAll();
     }
 
     @Override
     public void updateUser(User userToUpdate) {
-        UserDAO.retrieve().update(userToUpdate);
+        userDAO.update(userToUpdate);
     }
 
     @Override
     public void updateReport(Report reportToUpdate) {
         reportDAO.update(reportToUpdate);
+    }
+
+    @Override
+    public void createConference(Conference conferenceToCreate) throws DuplicateException {
+        conferenceDAO.save(conferenceToCreate);
     }
 }

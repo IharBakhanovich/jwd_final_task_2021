@@ -9,15 +9,16 @@
 </head>
 <body>
 <h2>Sections List</h2>
-<c:if test="${not empty requestScope.sections}">
-    <h3>Available sections of ${requestScope.conferenceTitle} conference</h3>
-    <tr>
-        <th>ID</th>
-        <th>SectionName</th>
-        <th>Manager</th>
-    </tr>
-    <br>
-    <c:forEach var="section" items="${requestScope.sections}">
+<c:choose>
+    <c:when test="${not empty requestScope.sections}">
+        <h3>Available sections of ${requestScope.conferenceTitle} conference</h3>
+        <tr>
+            <th>ID</th>
+            <th>SectionName</th>
+            <th>Manager</th>
+        </tr>
+        <br>
+        <c:forEach var="section" items="${requestScope.sections}">
             <tr>
                 <td>
                     <a href="${pageContext.request.contextPath}/controller?command=show_reports&id=${section.id}&sectionName=${section.sectionName}&conferenceId=${requestScope.conferenceId}">${section.id}</a>
@@ -32,7 +33,15 @@
                 </c:forEach>
             </tr>
             <br>
-    </c:forEach>
+        </c:forEach>
+    </c:when>
+    <c:otherwise>
+        <p class="error_message">There are no sections in this conference</p>
+        <a href="${pageContext.request.contextPath}/controller">Back to main page</a>
+    </c:otherwise>
+</c:choose>
+<c:if test="">
+
 </c:if>
 </body>
 </html>

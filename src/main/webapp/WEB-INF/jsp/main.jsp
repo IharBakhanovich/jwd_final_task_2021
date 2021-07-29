@@ -54,13 +54,23 @@
 
         <!-- ссылка это a тег. pageContext.request.contextPath подставит автоматически contextPath когда таковой появиться -->
         <a href="${pageContext.request.contextPath}/controller?command=show_login">LoginPage</a>
+        <br>
+        <br>
+        <a href="${pageContext.request.contextPath}/controller?command=show_create_new_user">Register</a>
+        <br>
     </c:when>
     <c:otherwise>
         <c:if test="${sessionScope.userRole eq Role.ADMIN}">
-            <p>Hello. Click below to see all users</p>
+            <p>Click below to see all users</p>
             <a href="${pageContext.request.contextPath}/controller?command=show_users">UsersPage</a>
             <br>
+
+            <p>Click below to add a new conference</p>
+            <a href="${pageContext.request.contextPath}/controller?command=show_create_conference&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}">Create
+                conference</a>
+            <br>
         </c:if>
+        <br>
         <a href="${pageContext.request.contextPath}/controller?command=logout">Logout</a>
     </c:otherwise>
 </c:choose>
