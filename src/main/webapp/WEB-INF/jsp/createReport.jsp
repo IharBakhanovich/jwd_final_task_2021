@@ -16,7 +16,7 @@
     </c:when>
     <c:otherwise>
         <h3>To create new report enter a report text, choose type of a new report and press
-            'Submit new REport Creation' button</h3>
+            'Submit new Report Creation' button</h3>
     </c:otherwise>
 </c:choose>
 
@@ -52,8 +52,8 @@
             </select>
                 <%--                <input type="text" id="roleField" name="role" value="${requestScope.user.get().role}">--%>
             <br>
-            <label for="applicantIdField"> Applicant:</label>
-            <input type="text" id="applicantIdField" name="conferenceTitle" value="${sessionScope.userName}"
+            <label for="applicantNicknameField"> Applicant:</label>
+            <input type="text" id="applicantNicknameField" name="applicantNickname" value="${sessionScope.userName}"
                    readonly>
 
             <br>

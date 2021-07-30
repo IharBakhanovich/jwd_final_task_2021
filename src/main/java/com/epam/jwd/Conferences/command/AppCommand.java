@@ -33,6 +33,7 @@ public enum AppCommand {
     CREATE_NEW_USER(CreateNewUser.getInstance(), ADMIN, UNAUTHORIZED), // creates new user and users.jsp/login.jsp page
     CREATE_NEW_CONFERENCE(CreateConference.getInstance(), ADMIN), // creates new conference and shows main.jsp page
     CREATE_NEW_SECTION(CreateSection.getInstance(), ADMIN, USER), // creates new section and shows sections.jsp page
+    CREATE_NEW_REPORT(CreateReport.getInstance(), ADMIN, USER), // creates new report and shows reports.jsp page
     UPDATE_USER(UpdateUser.getInstance(), ADMIN, USER), // updates user data
     UPDATE_REPORT(UpdateReport.getInstance(), ADMIN, USER), // updates report data
     DEFAULT(ShowMainPage.getInstance()); // по дефолту показываем главную страницу

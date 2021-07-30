@@ -16,17 +16,17 @@ import java.util.List;
  */
 public class ShowSectionReportsPage implements Command {
 
-    public static final String ID_PARAMETER_NAME = "id";
-    public static final String REPORTS_ATTRIBUTE_NAME = "reports";
-    public static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
+    private static final String ID_PARAMETER_NAME = "id";
+    private static final String REPORTS_ATTRIBUTE_NAME = "reports";
+    private static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
     private static final CommandResponse SHOW_REPORTS_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/reports.jsp");
-    public static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
-    public static final String SECTION_NAME_PARAMETER_NAME = "sectionName";
-    public static final String CONFERENCE_ID_PARAMETER_NAME = "conferenceId";
-    public static final String SECTION_ID_ATTRIBUTE_NAME = "sectionId";
-    public static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
-    public static final String USERS_ATTRIBUTE_NAME = "users";
+    private static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
+    private static final String SECTION_NAME_PARAMETER_NAME = "sectionName";
+    private static final String CONFERENCE_ID_PARAMETER_NAME = "conferenceId";
+    private static final String SECTION_ID_ATTRIBUTE_NAME = "sectionId";
+    private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
+    private static final String USERS_ATTRIBUTE_NAME = "users";
     private final UserService service;
 
     private static class ShowSectionReportsPagePageHolder {

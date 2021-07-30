@@ -16,14 +16,14 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CreateSection implements Command {
-    private static final Logger logger = LogManager.getLogger(CreateNewUser.class);
+    private static final Logger logger = LogManager.getLogger(CreateSection.class);
 
     private static final String CREATOR_ID_PARAMETER_NAME = "creatorId";
     private static final String CREATOR_ROLE_PARAMETER_NAME = "creatorRole";
     private static final String CONFERENCE_ID_PARAMETER_NAME = "conferenceId";
     private static final String SECTION_NAME_PARAMETER_NAME = "sectionName";
     private static final String MANAGER_SECTION_PARAMETER_NAME = "managerSect";
-    private static final CommandResponse CREATE_NEW_USER_ERROR_RESPONSE
+    private static final CommandResponse CREATE_NEW_SECTION_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createSection.jsp");
     private static final String ERROR_ATTRIBUTE_NAME = "error";
     private static final String SECTIONS_ATTRIBUTE_NAME = "sections";
@@ -116,7 +116,7 @@ public class CreateSection implements Command {
 
     private CommandResponse prepareErrorPage(CommandRequest request, String errorMessage) {
         request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
-        return CREATE_NEW_USER_ERROR_RESPONSE;
+        return CREATE_NEW_SECTION_ERROR_RESPONSE;
     }
 
     private boolean isStringValid(String toValidate) {
