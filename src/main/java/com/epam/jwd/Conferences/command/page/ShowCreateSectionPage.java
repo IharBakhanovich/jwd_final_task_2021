@@ -12,14 +12,16 @@ import java.util.List;
 public class ShowCreateSectionPage implements Command {
     private static final CommandResponse CREATE_SECTION_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createSection.jsp");
-    public static final String USERS_ATTRIBUTE_NAME = "users";
+    private static final CommandResponse SHOW_CREATE_SECTION_ERROR_RESPONSE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createSection.jsp");
+    private static final String USERS_ATTRIBUTE_NAME = "users";
     private static final String CREATOR_ID_PARAMETER_NAME = "creatorId";
     private static final String CREATOR_ROLE_PARAMETER_NAME = "creatorRole";
     private static final String CONFERENCE_ID_PARAMETER_NAME = "conferenceId";
     private static final String CONFERENCE_TITLE_PARAMETER_NAME = "conferenceTitle";
-    public static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
-    public static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
-    public static final String CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME = "conferenceManagerId";
+    private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
+    private static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
+    private static final String CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME = "conferenceManagerId";
 
 
     // the AppService, that communicates with the repo

@@ -11,8 +11,8 @@ public class ShowUserPage implements Command {
 
     private static final CommandResponse SHOW_USER_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/user.jsp");
-    public static final String ID_PARAMETER_NAME = "id";
-    public static final String USER_ATTRIBUTE_NAME = "user";
+    private static final String ID_PARAMETER_NAME = "id";
+    private static final String USER_ATTRIBUTE_NAME = "user";
     private final UserService service;
 
     private static class ShowUserPageHolder {

@@ -1,4 +1,4 @@
-package com.epam.jwd.Conferences.command.page;
+package com.epam.jwd.Conferences.command.action;
 
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
@@ -34,6 +34,8 @@ public class CreateReport implements Command {
     public static final String SECTION_ID_ATTRIBUTE_NAME = "sectionId";
     public static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
     public static final String USERS_ATTRIBUTE_NAME = "users";
+    private static final String CREATOR_ID_ATTRIBUTE_NAME = "creatorId";
+    private static final String CREATOR_ROLE_ATTRIBUTE_NAME = "creatorRole";
 
     private static final String ERROR_ATTRIBUTE_NAME = "error";
     private static final CommandResponse CREATE_NEW_REPORT_ERROR_RESPONSE
@@ -70,8 +72,6 @@ public class CreateReport implements Command {
     public CommandResponse execute(CommandRequest request) {
         final Long conferenceId = Long.valueOf(request.getParameter(CONFERENCE_ID_PARAMETER_NAME));
         final String sectionName = request.getParameter(SECTION_NAME_PARAMETER_NAME);
-        final Long creatorId = Long.valueOf(request.getParameter(CREATOR_ID_PARAMETER_NAME));
-        final String creatorRole = String.valueOf(request.getParameter(CREATOR_ROLE_PARAMETER_NAME));
         final String conferenceTitle = String.valueOf(request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME));
         final Long sectionId = Long.valueOf(request.getParameter(SECTION_ID_PARAMETER_NAME));
         final String reportText = String.valueOf(request.getParameter(REPORT_TEXT_PARAMETER_NAME));
@@ -82,7 +82,7 @@ public class CreateReport implements Command {
         if (reportText == null || reportText.trim().equals("")) {
             return prepareErrorPage(request,
                     "Report text should be not empty or contains only spaces. Please try again");
-        } else if (!isStringValid(sectionName)) {
+        } else if (!isStringValid(reportText)) {
             return prepareErrorPage(request,
                     "The entered report text is not valid. It should contain only latin letters. Please try again");
         }
@@ -116,6 +116,18 @@ public class CreateReport implements Command {
     }
 
     private CommandResponse prepareErrorPage(CommandRequest request, String errorMessage) {
+        final Long creatorId = Long.valueOf(request.getParameter(CREATOR_ID_PARAMETER_NAME));
+        final String creatorRole = String.valueOf(request.getParameter(CREATOR_ROLE_PARAMETER_NAME));
+        final Long conferenceId = Long.valueOf(request.getParameter(CONFERENCE_ID_PARAMETER_NAME));
+        final String sectionName = request.getParameter(SECTION_NAME_PARAMETER_NAME);
+        final String conferenceTitle = String.valueOf(request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME));
+        final Long sectionId = Long.valueOf(request.getParameter(SECTION_ID_PARAMETER_NAME));
+        request.setAttribute(CONFERENCE_TITLE_ATTRIBUTE_NAME, conferenceTitle);
+        request.setAttribute(CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
+        request.setAttribute(CREATOR_ID_ATTRIBUTE_NAME, creatorId);
+        request.setAttribute(CREATOR_ROLE_ATTRIBUTE_NAME, creatorRole);
+        request.setAttribute(SECTION_ID_ATTRIBUTE_NAME, sectionId);
+        request.setAttribute(SECTION_NAME_ATTRIBUTE_NAME, sectionName);
         request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
         return CREATE_NEW_REPORT_ERROR_RESPONSE;
     }

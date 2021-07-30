@@ -12,15 +12,15 @@ import java.util.List;
 
 public class ShowConferenceSectionsPage implements Command {
 
-    public static final String ID_PARAMETER_NAME = "id";
-    public static final String SECTIONS_ATTRIBUTE_NAME = "sections";
+    private static final String ID_PARAMETER_NAME = "id";
+    private static final String SECTIONS_ATTRIBUTE_NAME = "sections";
     private static final CommandResponse SHOW_SECTIONS_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/sections.jsp");
-    public static final String CONFERENCE_TITLE_PARAMETER_NAME = "conferenceTitle";
-    public static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
-    public static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
-    public static final String USERS_ATTRIBUTE_NAME = "users";
-    public static final String CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME = "conferenceManager";
+    private static final String CONFERENCE_TITLE_PARAMETER_NAME = "conferenceTitle";
+    private static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
+    private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
+    private static final String USERS_ATTRIBUTE_NAME = "users";
+    private static final String CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME = "conferenceManager";
     // the AppService, that communicates with the repo
     private final UserService service;
 

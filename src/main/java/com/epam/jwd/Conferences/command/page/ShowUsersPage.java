@@ -14,7 +14,7 @@ public class ShowUsersPage implements Command {
     private static final CommandResponse SHOW_USERS_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "WEB-INF/jsp/users.jsp");
 
-    public static final String USERS_ATTRIBUTE_NAME = "users";
+    private static final String USERS_ATTRIBUTE_NAME = "users";
 
     // the AppService, that communicates with the repo
     private final UserService userService;

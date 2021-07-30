@@ -1,4 +1,4 @@
-package com.epam.jwd.Conferences.command.page;
+package com.epam.jwd.Conferences.command.action;
 
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;

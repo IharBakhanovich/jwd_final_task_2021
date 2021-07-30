@@ -1,4 +1,4 @@
-package com.epam.jwd.Conferences.command.page;
+package com.epam.jwd.Conferences.command.action;
 
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
@@ -25,17 +25,17 @@ public class UpdateReport implements Command {
     private static final String UPDATER_ID_PARAMETER_NAME = "updaterId";
     private static final String UPDATER_ROLE_PARAMETER_NAME = "updaterRole";
     private static final String ERROR_ATTRIBUTE_NAME = "error";
-    public static final String REPORT_ATTRIBUTE_NAME = "report";
-    public static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
-    public static final String SECTIONS_ATTRIBUTE_NAME = "sections";
-    public static final String USERS_ATTRIBUTE_NAME = "users";
-    public static final String REPORTS_ATTRIBUTE_NAME = "reports";
+    private static final String REPORT_ATTRIBUTE_NAME = "report";
+    private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
+    private static final String SECTIONS_ATTRIBUTE_NAME = "sections";
+    private static final String USERS_ATTRIBUTE_NAME = "users";
+    private static final String REPORTS_ATTRIBUTE_NAME = "reports";
     private static final CommandResponse SHOW_REPORTS_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/reports.jsp");
-    public static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
-    public static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
+    private static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
+    private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
 
-    private static final CommandResponse SHOW_REPORT_PAGE_RESPONSE
+    private static final CommandResponse UPDATE_REPORT_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/report.jsp");
 
     private final UserService service;
@@ -148,7 +148,7 @@ public class UpdateReport implements Command {
                                              String errorMessage) {
         request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
 
-        return SHOW_REPORT_PAGE_RESPONSE;
+        return UPDATE_REPORT_ERROR_RESPONSE;
     }
 
     private boolean isStringValid(String toValidate) {

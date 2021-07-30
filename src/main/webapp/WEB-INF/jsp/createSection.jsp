@@ -14,8 +14,8 @@
         <h3>Error</h3>
     </c:when>
     <c:otherwise>
-        <h3>To create new section enter a title of a new section, choose an appointed section manager and press
-            'Submit new Section Creation' button</h3>
+        <h3>To create new section in '${requestScope.conferenceTitle}' conference enter a title of a new section, choose
+            an appointed section manager and press 'Submit new Section Creation' button</h3>
     </c:otherwise>
 </c:choose>
 
@@ -23,9 +23,10 @@
 <c:choose>
     <c:when test="${not empty requestScope.error}">
         <c:choose>
-            <c:when test="${sessionScope.userRole eq Role.ADMIN}">
+            <c:when test="${(sessionScope.userRole eq Role.ADMIN) or (sessionScope.userId == requestScope.conferenceManagerId)}">
                 <p class="error_message">${requestScope.error}</p>
-                <a href="${pageContext.request.contextPath}/controller?command=show_create_section&conferenceId=${requestScope.conferenceId}&conferenceTitle=${requestScope.conferenceTitle}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}">Try again</a>
+                <a href="${pageContext.request.contextPath}/controller?command=show_create_section&conferenceId=${requestScope.conferenceId}&conferenceTitle=${requestScope.conferenceTitle}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}">Try
+                    again</a>
             </c:when>
             <c:otherwise>
                 <p class="error_message">${requestScope.error}</p>

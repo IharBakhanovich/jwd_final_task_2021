@@ -1,4 +1,4 @@
-package com.epam.jwd.Conferences.command.page;
+package com.epam.jwd.Conferences.command.action;
 
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
@@ -31,12 +31,10 @@ public class UpdateUser implements Command {
     private static final String EMAIL_REGEX = "^(.+)@(.+)$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
     private static final String USERS_ATTRIBUTE_NAME = "users";
-    public static final String USER_ATTRIBUTE_NAME = "user";
+    private static final String USER_ATTRIBUTE_NAME = "user";
 
-    private static final CommandResponse UPDATE_USER_ERROR_RESPONSE_TO_USER
+    private static final CommandResponse UPDATE_USER_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/user.jsp");
-    private static final CommandResponse UPDATE_USER_ERROR_RESPONSE_TO_INDEX
-            = CommandResponse.getCommandResponse(true, "index.jsp");
     private static final CommandResponse UPDATE_USER_SUCCESS_RESPONSE_FOR_ADMIN
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/users.jsp");
     private static final CommandResponse UPDATE_USER_SUCCESS_RESPONSE_FOR_USER
@@ -139,7 +137,7 @@ public class UpdateUser implements Command {
                                              String errorMessage) {
         request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
 
-        return UPDATE_USER_ERROR_RESPONSE_TO_USER;
+        return UPDATE_USER_ERROR_RESPONSE;
     }
 
     private boolean isStringValid(String toValidate) {

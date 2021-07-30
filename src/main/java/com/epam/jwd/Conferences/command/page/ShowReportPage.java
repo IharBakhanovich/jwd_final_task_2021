@@ -16,11 +16,11 @@ import java.util.Optional;
 public class ShowReportPage implements Command {
     private static final CommandResponse SHOW_REPORT_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/report.jsp");
-    public static final String ID_PARAMETER_NAME = "id";
-    public static final String REPORT_ATTRIBUTE_NAME = "report";
-    public static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
-    public static final String SECTIONS_ATTRIBUTE_NAME = "sections";
-    public static final String USERS_ATTRIBUTE_NAME = "users";
+    private static final String ID_PARAMETER_NAME = "id";
+    private static final String REPORT_ATTRIBUTE_NAME = "report";
+    private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
+    private static final String SECTIONS_ATTRIBUTE_NAME = "sections";
+    private static final String USERS_ATTRIBUTE_NAME = "users";
     private final UserService service;
 
     private static class ShowReportPageHolder {

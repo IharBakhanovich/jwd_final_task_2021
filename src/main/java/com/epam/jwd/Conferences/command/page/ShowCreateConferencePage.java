@@ -12,7 +12,7 @@ public class ShowCreateConferencePage implements Command {
 
     private static final CommandResponse CREATE_CONFERENCE_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createConference.jsp");
-    public static final String USERS_ATTRIBUTE_NAME = "users";
+    private static final String USERS_ATTRIBUTE_NAME = "users";
 
     // the AppService, that communicates with the repo
     private final UserService userService;

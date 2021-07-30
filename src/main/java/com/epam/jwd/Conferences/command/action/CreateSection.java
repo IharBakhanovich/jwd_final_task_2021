@@ -1,4 +1,4 @@
-package com.epam.jwd.Conferences.command.page;
+package com.epam.jwd.Conferences.command.action;
 
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
@@ -35,7 +35,8 @@ public class CreateSection implements Command {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/sections.jsp");
     private static final String DUPLICATE_SECTION_MESSAGE
             = "The section with such an section name title already exist in the system. Please choose an other section name.";
-    public static final String CONFERENCE_MANAGER_ATTRIBUTE_NAME = "conferenceManager";
+    private static final String CONFERENCE_MANAGER_ATTRIBUTE_NAME = "conferenceManager";
+    private static final String CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME = "conferenceManagerId";
 
     private final UserService service;
 
@@ -116,6 +117,22 @@ public class CreateSection implements Command {
 
     private CommandResponse prepareErrorPage(CommandRequest request, String errorMessage) {
         request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
+        final String conferenceTitle = request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME);
+        final String conferenceId = request.getParameter(CONFERENCE_ID_PARAMETER_NAME);
+        final List<User> users = service.findAllUsers();
+        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
+        request.setAttribute(CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
+        request.setAttribute(CONFERENCE_TITLE_ATTRIBUTE_NAME, conferenceTitle);
+        final List<Conference> conferences = service.findAllConferences();
+        Long conferenceManagerId = null;
+        for (Conference conference: conferences
+        ) {
+            if (conference.getConferenceTitle().equals(conferenceTitle)) {
+                conferenceManagerId = conference.getManagerConf();
+            }
+        }
+        request.setAttribute(CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME, conferenceManagerId);
+
         return CREATE_NEW_SECTION_ERROR_RESPONSE;
     }
 

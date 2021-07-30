@@ -1,4 +1,4 @@
-package com.epam.jwd.Conferences.command.page;
+package com.epam.jwd.Conferences.command.action;
 
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
@@ -24,7 +24,7 @@ public class CreateConference implements Command {
     private static final String CREATOR_ROLE_PARAMETER_NAME = "creatorRole";
     private static final String CONFERENCE_TITLE_PARAMETER_NAME = "conferenceTitle";
     private static final String MANAGER_CONF_PARAMETER_NAME = "managerConf";
-    private static final CommandResponse CREATE_NEW_USER_ERROR_RESPONSE
+    private static final CommandResponse CREATE_NEW_CONFERENCE_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createConference.jsp");
     private static final String ERROR_ATTRIBUTE_NAME = "error";
     private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
@@ -99,7 +99,7 @@ public class CreateConference implements Command {
 
     private CommandResponse prepareErrorPage(CommandRequest request, String errorMessage) {
         request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
-        return CREATE_NEW_USER_ERROR_RESPONSE;
+        return CREATE_NEW_CONFERENCE_ERROR_RESPONSE;
     }
 
     private boolean isStringValid(String toValidate) {

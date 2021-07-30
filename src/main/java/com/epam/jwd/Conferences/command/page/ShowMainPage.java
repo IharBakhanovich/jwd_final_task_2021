@@ -16,8 +16,8 @@ public class ShowMainPage implements Command {
 
     private static final CommandResponse SHOW_MAIN_PAGE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
-    public static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
-    public static final String USERS_ATTRIBUTE_NAME = "users";
+    private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
+    private static final String USERS_ATTRIBUTE_NAME = "users";
     // the AppService, that communicates with the repo
     private final UserService service;
 

@@ -1,6 +1,7 @@
 package com.epam.jwd.Conferences.command;
 
 
+import com.epam.jwd.Conferences.command.action.*;
 import com.epam.jwd.Conferences.command.authentication.LoginCommand;
 import com.epam.jwd.Conferences.command.authentication.LogoutCommand;
 import com.epam.jwd.Conferences.command.page.*;
