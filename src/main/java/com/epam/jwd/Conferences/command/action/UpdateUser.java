@@ -32,6 +32,9 @@ public class UpdateUser implements Command {
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
     private static final String USERS_ATTRIBUTE_NAME = "users";
     private static final String USER_ATTRIBUTE_NAME = "user";
+    public static final int MAX_LENGTH_OF_EMAIL_IN_DB = 320;
+    public static final int MAX_LENGTH_OF_FIRST_NAME_IN_DB = 30;
+    public static final int MAX_LENGTH_OF_SURNAME_IN_DB = 30;
 
     private static final CommandResponse UPDATE_USER_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/user.jsp");
@@ -82,39 +85,64 @@ public class UpdateUser implements Command {
         }
         // validation of matching the id and login of user to update
         if (!userFromDB.getId().equals(id)) {
-            final Optional<User> user = service.findUserByID(id);
-            request.setAttribute(USER_ATTRIBUTE_NAME, user);
             return prepareErrorPage(request,
                     "User to update don't match with its id. Please try again"
             );
         }
         // email validation
         else if (!isEmailValid(eMail)) {
-            final Optional<User> user = service.findUserByID(id);
-            request.setAttribute(USER_ATTRIBUTE_NAME, user);
             return prepareErrorPage(request,
                     "Email is not valid. Please try again"
             );
         }
+
+        // email string validation
+        else if (!isStringValid(eMail)) {
+            return prepareErrorPage(request,
+                    "Email is not valid. It should contain only latin letters. Please try again"
+            );
+        }
+
         // string validation (firstName)
         else if (!firstName.trim().equals("")) {
             if (!isStringValid(firstName)) {
-                final Optional<User> user = service.findUserByID(id);
-                request.setAttribute(USER_ATTRIBUTE_NAME, user);
                 return prepareErrorPage(request,
-                        "FirstName is not valid. Please try again"
+                        "FirstName is not valid. It should contain only latin letters. Please try again"
                 );
             }
         }
+
         // string validation (surname)
         else if (!surname.trim().equals("")) {
             if (!isStringValid(surname)) {
-                final Optional<User> user = service.findUserByID(id);
-                request.setAttribute(USER_ATTRIBUTE_NAME, user);
                 return prepareErrorPage(request,
-                        "Surname is not valid. Please try again"
+                        "Surname is not valid. It should contain only latin letters. Please try again"
                 );
             }
+        }
+
+        if (eMail.length() > MAX_LENGTH_OF_EMAIL_IN_DB) {
+            return prepareErrorPage(request,
+                    "The entered email is too long. It should be not more as "
+                            + MAX_LENGTH_OF_EMAIL_IN_DB
+                            + " signs. Please try again"
+            );
+        }
+
+        if (firstName.length() > MAX_LENGTH_OF_FIRST_NAME_IN_DB) {
+            return prepareErrorPage(request,
+                    "The entered first name is too long. It should be not more as "
+                            + MAX_LENGTH_OF_FIRST_NAME_IN_DB
+                            + " signs. Please try again"
+            );
+        }
+
+        if (surname.length() > MAX_LENGTH_OF_SURNAME_IN_DB) {
+            return prepareErrorPage(request,
+                    "The entered surname is too long. It should be not more as "
+                            + MAX_LENGTH_OF_SURNAME_IN_DB
+                            + " signs. Please try again"
+            );
         }
         User userToUpdate
                 = new User(id, eMail, null,
@@ -135,6 +163,9 @@ public class UpdateUser implements Command {
 
     private CommandResponse prepareErrorPage(CommandRequest request,
                                              String errorMessage) {
+        final Long id = Long.valueOf(request.getParameter(ID_PARAMETER_NAME));
+        final Optional<User> user = service.findUserByID(id);
+        request.setAttribute(USER_ATTRIBUTE_NAME, user);
         request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
 
         return UPDATE_USER_ERROR_RESPONSE;

@@ -80,5 +80,8 @@
         </form>
     </c:otherwise>
 </c:choose>
+
+<br>
+<a href="${pageContext.request.contextPath}/controller">Back to the main page</a>
 </body>
 </html>

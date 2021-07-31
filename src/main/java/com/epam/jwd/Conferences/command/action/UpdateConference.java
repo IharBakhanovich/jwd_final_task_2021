@@ -29,6 +29,8 @@ public class UpdateConference implements Command {
     private static final String MANAGER_CONFERENCE_ATTRIBUTE_NAME = "managerConf";
     private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
 
+    public static final int MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB = 30;
+
     private static final CommandResponse CONFERENCE_UPDATE_SUCCESS_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     private static final CommandResponse CONFERENCE_UPDATE_ERROR_RESPONSE
@@ -75,6 +77,11 @@ public class UpdateConference implements Command {
         } else if (!isStringValid(conferenceTitle)) {
             return prepareErrorPage(request,
                     "The entered conference title is not valid. It should contain only latin letters. Please try again");
+        } else if (conferenceTitle.length() > MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB) {
+            return prepareErrorPage(request,
+                    "The entered conference title is too long. It should be not more as "
+                            + MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB
+                            + " signs. Please try again");
         }
 
         Long managerId = null;
