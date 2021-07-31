@@ -40,6 +40,7 @@ public enum AppCommand {
     UPDATE_USER(UpdateUser.getInstance(), ADMIN, USER), // updates user data
     UPDATE_REPORT(UpdateReport.getInstance(), ADMIN, USER), // updates report data
     UPDATE_CONFERENCE(UpdateConference.getInstance(), ADMIN), // updates report data
+    UPDATE_SECTION(UpdateSection.getInstance(), ADMIN, USER), // updates report data
     DEFAULT(ShowMainPage.getInstance()); // по дефолту показываем главную страницу
 
     // поле, которое будет заполняться из конструктора

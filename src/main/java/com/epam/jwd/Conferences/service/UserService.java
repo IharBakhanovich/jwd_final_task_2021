@@ -48,4 +48,6 @@ public interface UserService {
     void createReport(Report reportToCreate) throws DuplicateException;
 
     void updateConference(Conference conferenceToUpdate);
+
+    void updateSection(Section sectionToUpdate);
 }

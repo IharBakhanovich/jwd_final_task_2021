@@ -68,7 +68,7 @@ public class UpdateConference implements Command {
 
         if (!creatorRole.equals("ADMIN")) {
             return prepareErrorPage(request,
-                    "You have no permission to update a new conference. Please DO NOT try again");
+                    "You have no permission to update this conference. Please DO NOT try again");
         } else if (conferenceTitle == null || conferenceTitle.trim().equals("")) {
             return prepareErrorPage(request,
                     "Conference title should not be empty or contains only spaces. Please try again");

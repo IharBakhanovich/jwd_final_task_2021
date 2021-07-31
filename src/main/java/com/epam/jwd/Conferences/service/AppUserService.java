@@ -175,4 +175,9 @@ public class AppUserService implements UserService {
     public void updateConference(Conference conferenceToUpdate) {
         conferenceDAO.update(conferenceToUpdate);
     }
+
+    @Override
+    public void updateSection(Section sectionToUpdate) {
+        sectionDAO.update(sectionToUpdate);
+    }
 }

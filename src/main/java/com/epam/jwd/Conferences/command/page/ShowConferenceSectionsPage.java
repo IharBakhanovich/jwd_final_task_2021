@@ -50,7 +50,7 @@ public class ShowConferenceSectionsPage implements Command {
         Long conferenceManagerId = null;
         for (Conference conference: conferences
              ) {
-            if(conference.getId() == id) {
+            if(conference.getId().equals(id)) {
                 conferenceManagerId = conference.getManagerConf();
             }
         }

@@ -12,13 +12,12 @@ import java.util.List;
 public class ShowUpdateSectionPage implements Command {
     private static final CommandResponse UPDATE_SECTION_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/updateSection.jsp");
-    private static final String CREATOR_ID_PARAMETER_NAME = "creatorId";
-    private static final String CREATOR_ROLE_PARAMETER_NAME = "creatorRole";
     private static final String CONFERENCE_ID_PARAMETER_NAME = "conferenceId";
     private static final String CONFERENCE_TITLE_PARAMETER_NAME = "conferenceTitle";
     private static final String SECTION_ID_PARAMETER_NAME = "sectionId";
     private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
     private static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
+    private static final String CONFERENCE_MANAGER_ID_PARAMETER_NAME = "conferenceManagerId";
     private static final String CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME = "conferenceManagerId";
     private static final String SECTION_MANAGER_ID_ATTRIBUTE_NAME = "sectionManagerId";
     private static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
@@ -53,7 +52,7 @@ public class ShowUpdateSectionPage implements Command {
         final String conferenceTitle = request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME);
         final String conferenceId = request.getParameter(CONFERENCE_ID_PARAMETER_NAME);
         final Long sectionId = Long.valueOf(request.getParameter(SECTION_ID_PARAMETER_NAME));
-        final String conferenceManagerId = request.getParameter(CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME);
+        final String conferenceManagerId = request.getParameter(CONFERENCE_MANAGER_ID_PARAMETER_NAME);
         String sectionName = null;
         Long sectionManagerId = null;
         final List<Section> sections = service.findAllSections();
@@ -71,6 +70,7 @@ public class ShowUpdateSectionPage implements Command {
         request.setAttribute(SECTION_ID_ATTRIBUTE_NAME, sectionId);
         request.setAttribute(SECTION_NAME_ATTRIBUTE_NAME, sectionName);
         request.setAttribute(SECTION_MANAGER_ID_ATTRIBUTE_NAME, sectionManagerId);
+        request.setAttribute(CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME, conferenceManagerId);
         return UPDATE_SECTION_PAGE_RESPONSE;
     }
 }

@@ -24,7 +24,7 @@
         <c:choose>
             <c:when test="${(sessionScope.userRole eq Role.ADMIN) or (sessionScope.userId == requestScope.conferenceManagerId) or (sessionScope.userId == requestScope.sectionManager)}">
                 <p class="error_message">${requestScope.error}</p>
-                <a href="${pageContext.request.contextPath}/controller?command=show_update_section&conferenceId=${requestScope.conferenceId}&conferenceTitle=${requestScope.conferenceTitle}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}&sectionId=${requestScope.sectionId}&conferenceManagerId=${requestScope.conferenceManagerId}">Try
+                <a href="${pageContext.request.contextPath}/controller?command=show_update_section&conferenceId=${requestScope.conferenceId}&conferenceTitle=${requestScope.conferenceTitle}&sectionId=${requestScope.sectionId}&conferenceManagerId=${requestScope.conferenceManagerId}">Try
                     again</a>
             </c:when>
             <c:otherwise>
@@ -34,7 +34,7 @@
         </c:choose>
     </c:when>
     <c:otherwise>
-        <form action="${pageContext.request.contextPath}/controller?command=update_section&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}&conferenceTitle=${requestScope.conferenceTitle}"
+        <form action="${pageContext.request.contextPath}/controller?command=update_section&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}&conferenceTitle=${requestScope.conferenceTitle}&sectionId=${requestScope.sectionId}&conferenceManagerId=${requestScope.conferenceManagerId}"
               method="post">
             <label for="conferenceIdField"> ConferenceId:</label>
             <input type="text" id="conferenceIdField" name="conferenceId" value="${requestScope.conferenceId}" readonly>
@@ -42,38 +42,50 @@
 
             <label for="sectionNameField"> Section Name:</label>
             <input type="text" id="sectionNameField" name="sectionName" value="${requestScope.sectionName}">
-            <!-- name запихнет в пост запрос значения -->
 
             <br>
             <label for="managerField"> Section manager: </label>
-            <select name="managerSect" id="managerField">
-                <c:forEach var="user" items="${requestScope.users}">
-                    <c:choose>
-                        <c:when test="${requestScope.sectionManagerId==user.id}">
-                            <option selected>${user.nickname}</option>
-                        </c:when>
-                        <c:otherwise>
-                            <option>${user.nickname}</option>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
-            </select>
-                <%--                <input type="text" id="roleField" name="role" value="${requestScope.user.get().role}">--%>
-            <br>
+            <c:choose>
+                <c:when test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userId == requestScope.conferenceManagerId}">
+                    <select name="managerSectNickname" id="managerField">
+                        <c:forEach var="user" items="${requestScope.users}">
+                            <c:choose>
+                                <c:when test="${requestScope.sectionManagerId==user.id}">
+                                    <option selected>${user.nickname}</option>
+                                </c:when>
+                                <c:otherwise>
+                                    <option>${user.nickname}</option>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                    </select>
+                </c:when>
+                <c:otherwise>
+                    <c:forEach var="user" items="${requestScope.users}">
+                        <c:if test="${requestScope.sectionManagerId==user.id}">
+                            <input type="text" id="managerField" name="managerSectNickname" value="${user.nickname}" readonly>
+                        </c:if>
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>
 
+            <br>
             <br>
             <input type="submit" value="Submit Section Update" class="button">
-                <%--                            <c:choose>--%>
-                <%--                                <c:when test="${sessionScope.userRole eq Role.ADMIN}">--%>
+<%--                                            <c:choose>--%>
+<%--                                                <c:when test="${sessionScope.userRole eq Role.ADMIN}">--%>
 
-                <%--                                </c:when>--%>
-                <%--                                <c:otherwise>--%>
+<%--                                                </c:when>--%>
+<%--                                                <c:otherwise>--%>
 
-                <%--                                </c:otherwise>--%>
-                <%--                            </c:choose>--%>
+<%--                                                </c:otherwise>--%>
+<%--                                            </c:choose>--%>
         </form>
     </c:otherwise>
 </c:choose>
+
+<br>
+<a href="${pageContext.request.contextPath}/controller">Back to the main page</a>
 
 </body>
 </html>
