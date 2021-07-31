@@ -17,7 +17,9 @@
             <th>ID</th>
             <th>SectionName</th>
             <th>Manager</th>
+            <th>Update section reference</th>
         </tr>
+
         <br>
         <c:forEach var="section" items="${requestScope.sections}">
             <tr>
@@ -32,8 +34,15 @@
                         </td>
                     </c:if>
                 </c:forEach>
+                <c:if test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userId == requestScope.conferenceManager or sessionScope.userId == section.managerSect}">
+                    <td>
+                        <a href="${pageContext.request.contextPath}/controller?command=show_update_section&conferenceId=${requestScope.conferenceId}&conferenceTitle=${requestScope.conferenceTitle}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}&sectionId=${section.id}&conferenceManagerId=${requestScope.conferenceManager}">Update
+                            '${section.sectionName}'</a>
+                    </td>
+                </c:if>
             </tr>
             <br>
+
         </c:forEach>
     </c:when>
     <c:otherwise>

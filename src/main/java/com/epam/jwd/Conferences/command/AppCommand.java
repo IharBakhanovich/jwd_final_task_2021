@@ -32,6 +32,7 @@ public enum AppCommand {
     SHOW_CREATE_SECTION(ShowCreateSectionPage.getInstance(), ADMIN, USER), // shows createSection.jsp page
     SHOW_CREATE_REPORT(ShowCreateReportPage.getInstance(), ADMIN, USER, MANAGER), // shows createReport.jsp page
     SHOW_UPDATE_CONFERENCE(ShowUpdateConferencePage.getInstance(), ADMIN), // shows updateConference.jsp page
+    SHOW_UPDATE_SECTION(ShowUpdateSectionPage.getInstance(), ADMIN, USER), // shows updateConference.jsp page
     CREATE_NEW_USER(CreateNewUser.getInstance(), ADMIN, UNAUTHORIZED), // creates new user and users.jsp/login.jsp page
     CREATE_NEW_CONFERENCE(CreateConference.getInstance(), ADMIN), // creates new conference and shows main.jsp page
     CREATE_NEW_SECTION(CreateSection.getInstance(), ADMIN, USER), // creates new section and shows sections.jsp page
