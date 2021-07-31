@@ -16,7 +16,7 @@ public class ShowUpdateConferencePage implements Command {
     private static final String CONFERENCE_ID_PARAMETER_NAME = "conferenceId";
     private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
     private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
-    private static final String MANAGER_CONFERENCE_ATTRIBUTE_NAME = "managerConference";
+    private static final String MANAGER_CONFERENCE_ATTRIBUTE_NAME = "managerConf";
 
     // the AppService, that communicates with the repo
     private final UserService service;

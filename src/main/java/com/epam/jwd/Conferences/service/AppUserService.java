@@ -170,4 +170,9 @@ public class AppUserService implements UserService {
     public void createReport(Report reportToCreate) throws DuplicateException {
         reportDAO.save(reportToCreate);
     }
+
+    @Override
+    public void updateConference(Conference conferenceToUpdate) {
+        conferenceDAO.update(conferenceToUpdate);
+    }
 }

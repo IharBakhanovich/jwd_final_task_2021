@@ -14,36 +14,33 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Implements 'create_new_conference' action. The singleton.
- */
-public class CreateConference implements Command {
+public class UpdateConference implements Command {
+
     private static final Logger logger = LogManager.getLogger(CreateNewUser.class);
 
     private static final String CREATOR_ID_PARAMETER_NAME = "creatorId";
     private static final String CREATOR_ROLE_PARAMETER_NAME = "creatorRole";
     private static final String CONFERENCE_TITLE_PARAMETER_NAME = "conferenceTitle";
     private static final String MANAGER_CONF_PARAMETER_NAME = "managerConf";
-    private static final CommandResponse CREATE_NEW_CONFERENCE_ERROR_RESPONSE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createConference.jsp");
+    private static final String CONFERENCE_ID_PARAMETER_NAME = "conferenceId";
     private static final String ERROR_ATTRIBUTE_NAME = "error";
     private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
     private static final String USERS_ATTRIBUTE_NAME = "users";
-    private static final CommandResponse CONFERENCE_CREATION_SUCCESS_RESPONSE
+    private static final CommandResponse CONFERENCE_UPDATE_SUCCESS_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
-    private static final String DUPLICATE_CONFERENCE_MESSAGE
-            = "The conference with such a conference title already exist in the system. Please choose an other conference title.";
+    private static final CommandResponse CONFERENCE_UPDATE_ERROR_RESPONSE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/updateConference.jsp");
 
     private final UserService service;
 
     // the private default constructor, to not create the instance of the class with 'new' outside the class
-    CreateConference() {
+    UpdateConference() {
         service = UserService.retrieve();
     }
 
-    private static class CreateConferenceHolder {
-        private final static CreateConference instance
-                = new CreateConference();
+    private static class UpdateConferenceHolder {
+        private final static UpdateConference instance
+                = new UpdateConference();
     }
 
     /**
@@ -51,25 +48,28 @@ public class CreateConference implements Command {
      *
      * @return Object of this class.
      */
-    public static CreateConference getInstance() {
-        return CreateConference.CreateConferenceHolder.instance;
+    public static UpdateConference getInstance() {
+        return UpdateConference.UpdateConferenceHolder.instance;
     }
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        final String confTitle = request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME);
+
+        final String conferenceTitle = request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME);
         final String managerConf = request.getParameter(MANAGER_CONF_PARAMETER_NAME);
         final String creatorId = String.valueOf(request.getParameter(CREATOR_ID_PARAMETER_NAME));
         final String creatorRole = String.valueOf(request.getParameter(CREATOR_ROLE_PARAMETER_NAME));
+        final Long conferenceId = Long.valueOf(request.getParameter(CONFERENCE_ID_PARAMETER_NAME));
+
         final List<User> users = service.findAllUsers();
 
         if (!creatorRole.equals("ADMIN")) {
             return prepareErrorPage(request,
-                    "You have no permission to create a new conference. Please DO NOT try again");
-        } else if (confTitle == null || confTitle.trim().equals("")) {
+                    "You have no permission to update a new conference. Please DO NOT try again");
+        } else if (conferenceTitle == null || conferenceTitle.trim().equals("")) {
             return prepareErrorPage(request,
                     "Conference title should not be empty or contains only spaces. Please try again");
-        } else if (!isStringValid(confTitle)) {
+        } else if (!isStringValid(conferenceTitle)) {
             return prepareErrorPage(request,
                     "The entered conference title is not valid. It should contain only latin letters. Please try again");
         }
@@ -82,24 +82,18 @@ public class CreateConference implements Command {
             }
         }
 
-        Conference conferenceToCreate = new Conference(1L, confTitle, managerId);
-        try {
-            service.createConference(conferenceToCreate);
-            final List<Conference> updatedConferences = service.findAllConferences();
-            request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, updatedConferences);
-            final List<User> users1 = service.findAllUsers();
-            request.setAttribute(USERS_ATTRIBUTE_NAME, users1);
+        Conference conferencetoUpdate = new Conference(conferenceId, conferenceTitle, managerId);
+        service.updateConference(conferencetoUpdate);
+        final List<Conference> conferences = service.findAllConferences();
+        request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
+        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
 
-            return CONFERENCE_CREATION_SUCCESS_RESPONSE;
-        } catch (DuplicateException e) {
-            logger.info(DUPLICATE_CONFERENCE_MESSAGE);
-            return prepareErrorPage(request, DUPLICATE_CONFERENCE_MESSAGE);
-        }
+        return CONFERENCE_UPDATE_SUCCESS_RESPONSE;
     }
 
     private CommandResponse prepareErrorPage(CommandRequest request, String errorMessage) {
         request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
-        return CREATE_NEW_CONFERENCE_ERROR_RESPONSE;
+        return CONFERENCE_UPDATE_ERROR_RESPONSE;
     }
 
     private boolean isStringValid(String toValidate) {

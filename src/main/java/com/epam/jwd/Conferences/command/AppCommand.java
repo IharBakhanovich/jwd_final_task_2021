@@ -38,6 +38,7 @@ public enum AppCommand {
     CREATE_NEW_REPORT(CreateReport.getInstance(), ADMIN, USER), // creates new report and shows reports.jsp page
     UPDATE_USER(UpdateUser.getInstance(), ADMIN, USER), // updates user data
     UPDATE_REPORT(UpdateReport.getInstance(), ADMIN, USER), // updates report data
+    UPDATE_CONFERENCE(UpdateConference.getInstance(), ADMIN), // updates report data
     DEFAULT(ShowMainPage.getInstance()); // по дефолту показываем главную страницу
 
     // поле, которое будет заполняться из конструктора

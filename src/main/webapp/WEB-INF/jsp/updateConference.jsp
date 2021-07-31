@@ -49,7 +49,7 @@
             <select name="managerConf" id="managerField">
                 <c:forEach var="user" items="${requestScope.users}">
                     <c:choose>
-                        <c:when test="${requestScope.managerConference == user.id}">
+                        <c:when test="${requestScope.managerConf == user.id}">
                             <option selected>${user.nickname}</option>
                         </c:when>
                         <c:otherwise>
