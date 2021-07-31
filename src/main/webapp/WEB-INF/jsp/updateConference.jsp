@@ -6,7 +6,7 @@
     <style>
         <%@include file="/resources/appStyle.css"%>
     </style>
-    <title>New Conference Creation</title>
+    <title>Conference Update</title>
 </head>
 <body>
 <c:choose>
@@ -14,40 +14,42 @@
         <h3>Error</h3>
     </c:when>
     <c:otherwise>
-        <h3>To create new conference enter a title of conference, choose an appointed conference manager and press
-            'Submit new Conference Creation' button</h3>
+        <h3>To update new conference edit a title of conference, choose an appointed conference manager and press
+            'Submit Conference Update' button</h3>
     </c:otherwise>
 </c:choose>
 
 <br>
-<!--как switch в java. но если необходимо if else - делаем when/otherwise это как switch с одним case-->
 <c:choose>
     <c:when test="${not empty requestScope.error}">
         <c:choose>
             <c:when test="${sessionScope.userRole eq Role.ADMIN}">
                 <p class="error_message">${requestScope.error}</p>
-                <a href="${pageContext.request.contextPath}/controller?command=show_create_conference">Try again</a>
+                <a href="${pageContext.request.contextPath}/controller?command=show_update_conference">Try again</a>
             </c:when>
             <c:otherwise>
                 <p class="error_message">${requestScope.error}</p>
                 <a href="${pageContext.request.contextPath}/controller?command=show_main_page">Do Not Try again :)))</a>
             </c:otherwise>
         </c:choose>
-
     </c:when>
     <c:otherwise>
-        <form action="${pageContext.request.contextPath}/controller?command=create_new_conference&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}"
+        <form action="${pageContext.request.contextPath}/controller?command=update_conference&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}&conferenceId=${requestScope.conferenceId}"
               method="post">
             <label for="conferenceTitleField"> Conference title:</label>
-            <input type="text" id="conferenceTitleField" name="conferenceTitle">
-            <!-- name запихнет в пост запрос значения -->
+            <c:forEach var="conference" items="${requestScope.conferences}">
+                <c:if test="${conference.id == requestScope.conferenceId}">
+                    <input type="text" id="conferenceTitleField" name="conferenceTitle"
+                           value="${conference.conferenceTitle}">
+                </c:if>
+            </c:forEach>
 
             <br>
             <label for="managerField"> Conference manager: </label>
             <select name="managerConf" id="managerField">
                 <c:forEach var="user" items="${requestScope.users}">
                     <c:choose>
-                        <c:when test="${sessionScope.userId==user.id}">
+                        <c:when test="${requestScope.managerConference == user.id}">
                             <option selected>${user.nickname}</option>
                         </c:when>
                         <c:otherwise>
@@ -56,19 +58,18 @@
                     </c:choose>
                 </c:forEach>
             </select>
-                <%--                <input type="text" id="roleField" name="role" value="${requestScope.user.get().role}">--%>
             <br>
 
             <br>
-            <input type="submit" value="Submit new Conference Creation" class="button">
-<%--                            <c:choose>--%>
-<%--                                <c:when test="${sessionScope.userRole eq Role.ADMIN}">--%>
+            <input type="submit" value="Submit Conference Update" class="button">
+                <%--                            <c:choose>--%>
+                <%--                                <c:when test="${sessionScope.userRole eq Role.ADMIN}">--%>
 
-<%--                                </c:when>--%>
-<%--                                <c:otherwise>--%>
+                <%--                                </c:when>--%>
+                <%--                                <c:otherwise>--%>
 
-<%--                                </c:otherwise>--%>
-<%--                            </c:choose>--%>
+                <%--                                </c:otherwise>--%>
+                <%--                            </c:choose>--%>
         </form>
     </c:otherwise>
 </c:choose>

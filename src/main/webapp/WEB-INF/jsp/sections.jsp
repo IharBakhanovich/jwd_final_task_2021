@@ -12,7 +12,7 @@
 <h2>Sections List</h2>
 <c:choose>
     <c:when test="${not empty requestScope.sections}">
-        <h3>Available sections of ${requestScope.conferenceTitle} conference</h3>
+        <h3>Available sections of '${requestScope.conferenceTitle}' conference</h3>
         <tr>
             <th>ID</th>
             <th>SectionName</th>

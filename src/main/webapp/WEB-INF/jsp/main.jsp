@@ -23,28 +23,61 @@
 <h2>Conference section</h2>
 <c:if test="${not empty requestScope.conferences}">
     <h3>Available conferences</h3>
-    <tr>
-        <th>ID</th>
-        <th>Title</th>
-        <th>Manager(Nickname)</th>
-    </tr>
-    <br>
-    <c:forEach var="conference" items="${requestScope.conferences}">
-        <tr>
-            <td>
-                <a href="${pageContext.request.contextPath}/controller?command=show_sections&id=${conference.id}&conferenceTitle=${conference.conferenceTitle}">${conference.id}</a>
-            </td>
-            <td>${conference.conferenceTitle}</td>
-            <c:forEach var="user" items="${requestScope.users}">
-                <c:if test="${conference.managerConf==user.id}">
+    <c:choose>
+        <c:when test="${sessionScope.userRole eq Role.ADMIN}">
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Manager(Nickname)</th>
+                <th>Update conference reference</th>
+            </tr>
+            <br>
+            <c:forEach var="conference" items="${requestScope.conferences}">
+                <tr>
                     <td>
-                        <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}">${user.nickname}</a>
+                        <a href="${pageContext.request.contextPath}/controller?command=show_sections&id=${conference.id}&conferenceTitle=${conference.conferenceTitle}">${conference.id}</a>
                     </td>
-                </c:if>
+                    <td>${conference.conferenceTitle}</td>
+                    <c:forEach var="user" items="${requestScope.users}">
+                        <c:if test="${conference.managerConf==user.id}">
+                            <td>
+                                <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}">${user.nickname}</a>
+                            </td>
+                        </c:if>
+                    </c:forEach>
+                    <td>
+                        <a href="${pageContext.request.contextPath}/controller?command=show_update_conference&conferenceId=${conference.id}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}">Update '${conference.conferenceTitle}'</a>
+                    </td>
+                </tr>
+                <br>
             </c:forEach>
-        </tr>
-        <br>
-    </c:forEach>
+        </c:when>
+        <c:otherwise>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Manager(Nickname)</th>
+            </tr>
+            <br>
+            <c:forEach var="conference" items="${requestScope.conferences}">
+                <tr>
+                    <td>
+                        <a href="${pageContext.request.contextPath}/controller?command=show_sections&id=${conference.id}&conferenceTitle=${conference.conferenceTitle}">${conference.id}</a>
+                    </td>
+                    <td>${conference.conferenceTitle}</td>
+                    <c:forEach var="user" items="${requestScope.users}">
+                        <c:if test="${conference.managerConf==user.id}">
+                            <td>
+                                <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}">${user.nickname}</a>
+                            </td>
+                        </c:if>
+                    </c:forEach>
+                </tr>
+                <br>
+            </c:forEach>
+        </c:otherwise>
+    </c:choose>
+
 </c:if>
 
 <h2>Authentication section</h2>
