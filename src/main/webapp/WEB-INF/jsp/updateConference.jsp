@@ -14,8 +14,12 @@
         <h3>Error</h3>
     </c:when>
     <c:otherwise>
-        <h3>To update new conference edit a title of conference, choose an appointed conference manager and press
-            'Submit Conference Update' button</h3>
+        <c:forEach var="conference" items="${requestScope.conferences}">
+            <c:if test="${conference.id == requestScope.conferenceId}">
+                <h3>To update '${conference.conferenceTitle}' conference edit a title of conference, choose an appointed conference manager and press
+                    'Submit Conference Update' button</h3>
+            </c:if>
+        </c:forEach>
     </c:otherwise>
 </c:choose>
 
@@ -25,7 +29,10 @@
         <c:choose>
             <c:when test="${sessionScope.userRole eq Role.ADMIN}">
                 <p class="error_message">${requestScope.error}</p>
-                <a href="${pageContext.request.contextPath}/controller?command=show_update_conference">Try again</a>
+<%--                <c:forEach var="conference" items="${requestScope.conferences}">--%>
+<%--                    --%>
+<%--                </c:forEach>--%>
+                <a href="${pageContext.request.contextPath}/controller?command=show_update_conference&conferenceId=${requestScope.conferenceId}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}">Try again</a>
             </c:when>
             <c:otherwise>
                 <p class="error_message">${requestScope.error}</p>

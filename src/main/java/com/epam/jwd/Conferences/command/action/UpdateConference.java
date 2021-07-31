@@ -26,6 +26,9 @@ public class UpdateConference implements Command {
     private static final String ERROR_ATTRIBUTE_NAME = "error";
     private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
     private static final String USERS_ATTRIBUTE_NAME = "users";
+    private static final String MANAGER_CONFERENCE_ATTRIBUTE_NAME = "managerConf";
+    private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
+
     private static final CommandResponse CONFERENCE_UPDATE_SUCCESS_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     private static final CommandResponse CONFERENCE_UPDATE_ERROR_RESPONSE
@@ -93,6 +96,18 @@ public class UpdateConference implements Command {
 
     private CommandResponse prepareErrorPage(CommandRequest request, String errorMessage) {
         request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
+        final Long conferenceId = Long.valueOf(request.getParameter(CONFERENCE_ID_PARAMETER_NAME));
+        final List<User> users = service.findAllUsers();
+        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
+        final List<Conference> conferences = service.findAllConferences();
+        for (Conference conference: conferences
+        ) {
+            if (conference.getId().equals(conferenceId)) {
+                request.setAttribute(MANAGER_CONFERENCE_ATTRIBUTE_NAME, conference.getManagerConf());
+            }
+        }
+        request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
+        request.setAttribute(CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
         return CONFERENCE_UPDATE_ERROR_RESPONSE;
     }
 
