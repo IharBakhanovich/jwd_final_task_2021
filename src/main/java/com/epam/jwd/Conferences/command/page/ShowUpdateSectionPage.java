@@ -28,7 +28,10 @@ public class ShowUpdateSectionPage implements Command {
     // the AppService, that communicates with the repo
     private final UserService service;
 
-    // the private default constructor, to not create the instance of the class with 'new' outside the class
+    /**
+     * Creates an ShowUpdateSectionPage object. It is the the private default constructor,
+     * to not create the instance of the class with 'new' outside the class
+     */
     private ShowUpdateSectionPage() {
         this.service = UserService.retrieve();
     }
@@ -47,6 +50,12 @@ public class ShowUpdateSectionPage implements Command {
         return ShowUpdateSectionPage.ShowUpdateSectionPageHolder.instance;
     }
 
+    /**
+     * Executes the command. Returns the commandResponse.
+     *
+     * @param request a CommandRequest object of this command.
+     * @return a CommandResponse object of this command.
+     */
     @Override
     public CommandResponse execute(CommandRequest request) {
         final String conferenceTitle = request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME);

@@ -40,6 +40,12 @@ public class ShowUpdateConferencePage implements Command {
         return ShowUpdateConferencePage.ShowUpdateConferencePageHolder.instance;
     }
 
+    /**
+     * Executes the command. Returns the commandResponse.
+     *
+     * @param request a CommandRequest object of this command.
+     * @return a CommandResponse object of this command.
+     */
     @Override
     public CommandResponse execute(CommandRequest request) {
         final Long conferenceId = Long.valueOf(request.getParameter(CONFERENCE_ID_PARAMETER_NAME));

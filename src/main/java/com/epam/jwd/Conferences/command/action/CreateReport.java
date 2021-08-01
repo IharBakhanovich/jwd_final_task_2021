@@ -15,6 +15,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Implements 'create_new_report' action. The singleton.
+ */
 public class CreateReport implements Command {
 
     private static final Logger logger = LogManager.getLogger(CreateReport.class);
@@ -67,7 +70,12 @@ public class CreateReport implements Command {
         return CreateReport.CreateReportHolder.instance;
     }
 
-
+    /**
+     * Executes the command. Returns the commandResponse.
+     *
+     * @param request a CommandRequest object of this command.
+     * @return a CommandResponse object of this command.
+     */
     @Override
     public CommandResponse execute(CommandRequest request) {
         final Long conferenceId = Long.valueOf(request.getParameter(CONFERENCE_ID_PARAMETER_NAME));

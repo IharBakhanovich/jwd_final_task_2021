@@ -9,7 +9,7 @@
     <title>Sections</title>
 </head>
 <body>
-<h2>Sections List</h2>
+<h2>Sections</h2>
 <c:choose>
     <c:when test="${not empty requestScope.sections}">
         <h3>Available sections of '${requestScope.conferenceTitle}' conference</h3>

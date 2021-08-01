@@ -37,6 +37,7 @@ public class CreateSection implements Command {
             = "The section with such an section name title already exist in the system. Please choose an other section name.";
     private static final String CONFERENCE_MANAGER_ATTRIBUTE_NAME = "conferenceManager";
     private static final String CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME = "conferenceManagerId";
+    public static final int MAX_LENGTH_OF_SECTION_NAME_IN_DB = 90;
 
     private final UserService service;
 
@@ -59,7 +60,12 @@ public class CreateSection implements Command {
         return CreateSection.CreateSectionHolder.instance;
     }
 
-
+    /**
+     * Executes the command. Returns the commandResponse.
+     *
+     * @param request a CommandRequest object of this command.
+     * @return a CommandResponse object of this command.
+     */
     @Override
     public CommandResponse execute(CommandRequest request) {
         final Long conferenceId = Long.valueOf(request.getParameter(CONFERENCE_ID_PARAMETER_NAME));
@@ -87,6 +93,11 @@ public class CreateSection implements Command {
         } else if (!isStringValid(sectionName)) {
             return prepareErrorPage(request,
                     "The entered section name is not valid. It should contain only latin letters. Please try again");
+        } else if (sectionName.length() > MAX_LENGTH_OF_SECTION_NAME_IN_DB) {
+            return prepareErrorPage(request,
+                    "The entered section name is too long. It should be not more as "
+                            + MAX_LENGTH_OF_SECTION_NAME_IN_DB
+                            + " signs. Please try again");
         }
 
         Long managerId = null;

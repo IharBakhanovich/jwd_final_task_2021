@@ -40,6 +40,12 @@ public class ShowMainPage implements Command {
         return ShowMainPage.ShowMainPageHolder.instance;
     }
 
+    /**
+     * Executes the command. Returns the commandResponse.
+     *
+     * @param request a CommandRequest object of this command.
+     * @return a CommandResponse object of this command.
+     */
     @Override
     public CommandResponse execute(CommandRequest request) {
         final List<Conference> conferences = service.findAllConferences();

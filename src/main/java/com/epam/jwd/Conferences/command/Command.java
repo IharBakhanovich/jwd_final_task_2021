@@ -1,5 +1,8 @@
 package com.epam.jwd.Conferences.command;
 
+/**
+ * The interface to implement commands in the application.
+ */
 public interface Command {
 
     // принимает запрос(request), что-то делает и возвращает респонз (CommandResponse)

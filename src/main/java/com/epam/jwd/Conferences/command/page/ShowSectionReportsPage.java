@@ -48,7 +48,12 @@ public class ShowSectionReportsPage implements Command {
         this.service = UserService.retrieve();
     }
 
-
+    /**
+     * Executes the command. Returns the commandResponse.
+     *
+     * @param request a CommandRequest object of this command.
+     * @return a CommandResponse object of this command.
+     */
     @Override
     public CommandResponse execute(CommandRequest request) {
         final Long sectionId = Long.valueOf(request.getParameter(ID_PARAMETER_NAME));

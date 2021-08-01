@@ -34,5 +34,8 @@
 <c:if test="${not empty sessionScope.userName and sessionScope.userRole eq Role.ADMIN}">
     <a href="${pageContext.request.contextPath}/controller?command=show_create_new_user">Create new user</a>
 </c:if>
+
+<br>
+<a href="${pageContext.request.contextPath}/controller">Back to the main page</a>
 </body>
 </html>

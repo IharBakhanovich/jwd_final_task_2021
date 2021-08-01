@@ -33,6 +33,7 @@ public class CreateConference implements Command {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     private static final String DUPLICATE_CONFERENCE_MESSAGE
             = "The conference with such a conference title already exist in the system. Please choose an other conference title.";
+    public static final int MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB = 30;
 
     private final UserService service;
 
@@ -55,6 +56,12 @@ public class CreateConference implements Command {
         return CreateConference.CreateConferenceHolder.instance;
     }
 
+    /**
+     * Executes the command. Returns the commandResponse.
+     *
+     * @param request a CommandRequest object of this command.
+     * @return a CommandResponse object of this command.
+     */
     @Override
     public CommandResponse execute(CommandRequest request) {
         final String confTitle = request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME);
@@ -72,6 +79,11 @@ public class CreateConference implements Command {
         } else if (!isStringValid(confTitle)) {
             return prepareErrorPage(request,
                     "The entered conference title is not valid. It should contain only latin letters. Please try again");
+        } else if (confTitle.length() > MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB) {
+            return prepareErrorPage(request,
+                    "The entered conference title is too long. It should be not more as "
+                            + MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB
+                            + " signs. Please try again");
         }
 
         Long managerId = null;

@@ -10,8 +10,14 @@
 </head>
 <body>
 <c:if test="${not empty requestScope.user}">
-
-    <h3>User</h3>
+    <c:choose>
+        <c:when test="${not empty requestScope.error}">
+            <h3>Error</h3>
+        </c:when>
+        <c:otherwise>
+            <h3>User</h3>
+        </c:otherwise>
+    </c:choose>
     <c:choose>
         <c:when test="${not empty requestScope.error}">
             <p>${requestScope.error}</p>
@@ -81,6 +87,6 @@
 </c:if>
 <br>
 <br>
-<a href="${pageContext.request.contextPath}/controller">Back to the future</a>
+<a href="${pageContext.request.contextPath}/controller">Back to the main page</a>
 </body>
 </html>

@@ -38,6 +38,7 @@ public class CreateNewUser implements Command {
     private static final String USERS_ATTRIBUTE_NAME = "users";
     private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}$";
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
+    public static final int MAX_LENGTH_OF_NICKNAME_IN_DB = 30;
 
     private final UserService service;
 
@@ -60,6 +61,12 @@ public class CreateNewUser implements Command {
         return CreateNewUser.CreateNewUserHolder.instance;
     }
 
+    /**
+     * Executes the command. Returns the commandResponse.
+     *
+     * @param request a CommandRequest object of this command.
+     * @return a CommandResponse object of this command.
+     */
     @Override
     public CommandResponse execute(CommandRequest request) {
         final String nickname = request.getParameter(NICKNAME_PARAMETER_NAME);
@@ -77,6 +84,14 @@ public class CreateNewUser implements Command {
             return prepareErrorPage(request, "The entered nickname is not valid. It should contain only latin letters. Please try again");
         } else if (!isStringValid(password)) {
             return prepareErrorPage(request, "The entered password is not valid. It should contain only latin letters. Please try again");
+        }
+
+        if (nickname.length() > MAX_LENGTH_OF_NICKNAME_IN_DB) {
+            return prepareErrorPage(request,
+                    "The entered first name is too long. It should be not more as "
+                            + MAX_LENGTH_OF_NICKNAME_IN_DB
+                            + " signs. Please try again"
+            );
         }
 
         for (User user : users

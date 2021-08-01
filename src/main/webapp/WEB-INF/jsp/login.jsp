@@ -8,8 +8,14 @@
     <title>Login</title>
 </head>
 <body>
-<h3>To authenticate in the system enter your login and password and press 'Log In' button</h3>
-<!--как switch в java. но если необходимо if else - делаем when/otherwise это как switch с одним case-->
+<c:choose>
+    <c:when test="${not empty requestScope.error}">
+        <h3>Error</h3>
+    </c:when>
+    <c:otherwise>
+        <h3>To authenticate in the system enter your login and password and press 'Log In' button</h3>
+    </c:otherwise>
+</c:choose>
 <c:choose>
     <c:when test="${not empty requestScope.error}">
         <p>${requestScope.error}</p>

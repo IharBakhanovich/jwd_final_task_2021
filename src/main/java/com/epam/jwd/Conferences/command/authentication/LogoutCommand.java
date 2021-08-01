@@ -28,6 +28,12 @@ public class LogoutCommand implements Command {
     }
 
 
+    /**
+     * Executes the command. Returns the commandResponse.
+     *
+     * @param request a CommandRequest object of this command.
+     * @return a CommandResponse object of this command.
+     */
     @Override
     public CommandResponse execute(CommandRequest request) {
         request.invalidateCurrentSession();

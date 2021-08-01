@@ -60,6 +60,12 @@ public class UpdateSection implements Command {
     }
 
 
+    /**
+     * Executes the command. Returns the commandResponse.
+     *
+     * @param request a CommandRequest object of this command.
+     * @return a CommandResponse object of this command.
+     */
     @Override
     public CommandResponse execute(CommandRequest request) {
         final String sectionManagerNickname = request.getParameter(MANAGER_SECTION_NICKNAME_PARAMETER_NAME);

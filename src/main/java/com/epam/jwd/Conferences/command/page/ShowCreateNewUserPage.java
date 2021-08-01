@@ -27,6 +27,12 @@ public class ShowCreateNewUserPage implements Command {
         return ShowCreateNewUserPage.ShowCreateNewUserPageHolder.instance;
     }
 
+    /**
+     * Executes the command. Returns the commandResponse.
+     *
+     * @param request a CommandRequest object of this command.
+     * @return a CommandResponse object of this command.
+     */
     @Override
     public CommandResponse execute(CommandRequest request) {
         return SHOW_CREATE_NEW_USER_PAGE_RESPONSE;

@@ -3,6 +3,9 @@ package com.epam.jwd.Conferences.command;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
+/**
+ * The interface to implement the command requests.
+ */
 public interface CommandRequest {
 
     /**

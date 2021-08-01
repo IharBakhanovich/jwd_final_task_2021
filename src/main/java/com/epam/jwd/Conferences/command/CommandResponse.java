@@ -3,6 +3,9 @@ package com.epam.jwd.Conferences.command;
 import com.epam.jwd.Conferences.dao.DBReportDAO;
 import com.epam.jwd.Conferences.dao.ReportDAO;
 
+/**
+ * The interface to implement the command response.
+ */
 public interface CommandResponse {
 
     boolean isRedirect();
@@ -10,7 +13,7 @@ public interface CommandResponse {
     String getPath();
 
     /**
-     * Returns the implementation of the CommandResponse.
+     * Returns the implementation of the CommandResponse that uses in the application.
      *
      * @return Object that is the implementation of the CommandResponse.
      */

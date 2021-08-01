@@ -46,6 +46,12 @@ public class ShowCreateReportPage implements Command {
         return ShowCreateReportPage.ShowCreateReportPageHolder.instance;
     }
 
+    /**
+     * Executes the command. Returns the commandResponse.
+     *
+     * @param request a CommandRequest object of this command.
+     * @return a CommandResponse object of this command.
+     */
     @Override
     public CommandResponse execute(CommandRequest request) {
         final String conferenceTitle = request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME);

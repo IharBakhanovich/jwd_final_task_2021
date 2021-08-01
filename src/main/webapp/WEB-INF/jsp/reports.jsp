@@ -8,7 +8,7 @@
     <title>Reports</title>
 </head>
 <body>
-<h2>Report List:</h2>
+<h2>Reports:</h2>
 <c:choose>
     <c:when test="${not empty requestScope.reports}">
         <h3>Reports of '${requestScope.sectionName}' section</h3>

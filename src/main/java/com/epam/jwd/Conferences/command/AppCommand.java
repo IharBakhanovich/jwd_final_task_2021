@@ -14,6 +14,9 @@ import static com.epam.jwd.Conferences.dto.Role.*;
 
 // для того, чтобы по значению параметра commandName (команде) в контроллере вытащить класс, соответствующий команде
 // класс содержит в себе все присутствующие в приложении команды
+/**
+ * To get the right Command by the 'commandName' parameter in Controller.
+ */
 public enum AppCommand {
     //соответственно для енама будем передавать параметр (class Command)
     // и в таком духе на каждую команду: название - команда
@@ -57,10 +60,20 @@ public enum AppCommand {
         this.allowedRoles = roles != null && roles.length > 0 ? Arrays.asList(roles) : Role.valuesAsList();
     }
 
+    /**
+     * Returns the command.
+     *
+     * @return a {@link Command}.
+     */
     public Command getCommand() {
         return command;
     }
 
+    /**
+     * Returns a List of allowed Roles for the command.
+     *
+     * @return a {@link List} of allowed {@link Role}s of the command.
+     */
     public List<Role> getAllowedRoles() {
         return allowedRoles;
     }
@@ -69,6 +82,13 @@ public enum AppCommand {
     // если имя константы в нижнем регистре совпадает с name, тогда возвращаем эту команду
     // в случае, если такой команды не нашлось - можем возвращать страницу 404 или дефолтную команду
     //
+    /**
+     * Returns the {@link AppCommand} by the name of the command.
+     *
+     * @param name ist the name of the command.
+     * @return the {@link AppCommand} in case if the command exists in the class.
+     *         Otherwise (if the command does not exist in the class) returns DEFAULT {@link AppCommand}.
+     */
     public static AppCommand of(String name) {
         // итерируемся по всем присутствующим в приложении командам
         for (AppCommand command : values()) {

@@ -38,6 +38,12 @@ public class ShowUsersPage implements Command {
         this.userService = UserService.retrieve();
     }
 
+    /**
+     * Executes the command. Returns the commandResponse.
+     *
+     * @param request a CommandRequest object of this command.
+     * @return a CommandResponse object of this command.
+     */
     @Override
     public CommandResponse execute(CommandRequest request) {
         //перед тем как отдать респонс нужно в атрибуты HttpServletRequest положить пользователя
