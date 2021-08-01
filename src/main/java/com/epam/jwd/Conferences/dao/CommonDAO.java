@@ -52,67 +52,13 @@ public abstract class CommonDAO<T extends DatabaseEntity<Long>> implements DAO<T
         saveEntitySql.append(") values (");
         String[] secondPartOfQuery = new String[tableColumns.length - 1];
 
-        for(int i = 0; i < tableColumns.length - 1; i++) {
+        for (int i = 0; i < tableColumns.length - 1; i++) {
             secondPartOfQuery[i] = "?";
         }
         saveEntitySql.append(String.join(",", secondPartOfQuery));
         saveEntitySql.append(")");
 
         return String.format(String.valueOf(saveEntitySql), tableName);
-
-//        switch (tableColumns.length) {
-//            case 2:
-//                return String.format("insert into %s (%s) values (?)", tableName, tableColumns[1]);
-//            case 3:
-//                return String.format("insert into %s (%s, %s) values (?, ?)",
-//                        tableName, tableColumns[1], tableColumns[2]);
-//            case 4:
-//                return String.format("insert into %s (%s, %s, %s) values (?, ?, ?)",
-//                        tableName, tableColumns[1], tableColumns[2], tableColumns[3]);
-//            case 5:
-//                return String.format("insert into %s (%s, %s, %s, %s) values (?, ?, ?, ?)",
-//                        tableName, tableColumns[1], tableColumns[2], tableColumns[3], tableColumns[4]);
-//            case 6:
-//                return String.format("insert into %s (%s, %s, %s, %s, %s) values (?, ?, ?, ?, ?)",
-//                        tableName, tableColumns[1],
-//                        tableColumns[2], tableColumns[3], tableColumns[4], tableColumns[5]);
-//            case 7:
-//                return String.format("insert into %s (%s, %s, %s, %s, %s, %s) values (?, ?, ?, ?, ?, ?)",
-//                        tableName, tableColumns[1],
-//                        tableColumns[2], tableColumns[3],
-//                        tableColumns[4], tableColumns[5], tableColumns[6]);
-//            case 8:
-//                return String.format("insert into %s (%s, %s, %s, %s, %s, %s, %s) values (?, ?, ?, ?, ?, ?, ?)",
-//                        tableName, tableColumns[1],
-//                        tableColumns[2], tableColumns[3],
-//                        tableColumns[4], tableColumns[5],
-//                        tableColumns[6], tableColumns[7]);
-//            case 9:
-//                return String.format("insert into %s (%s, %s, %s, %s, %s, %s, %s, %s)" +
-//                                " values (?, ?, ?, ?, ?, ?, ?, ?)",
-//                        tableName, tableColumns[1],
-//                        tableColumns[2], tableColumns[3],
-//                        tableColumns[4], tableColumns[5],
-//                        tableColumns[6], tableColumns[7], tableColumns[8]);
-//            case 10:
-//                return String.format("insert into %s (%s, %s, %s, %s, %s, %s, %s, %s, %s)" +
-//                                " values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-//                        tableName, tableColumns[1],
-//                        tableColumns[2], tableColumns[3],
-//                        tableColumns[4], tableColumns[5],
-//                        tableColumns[6], tableColumns[7],
-//                        tableColumns[8], tableColumns[9]);
-//            case 11:
-//                return String.format("insert into %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" +
-//                                " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-//                        tableName, tableColumns[1],
-//                        tableColumns[2], tableColumns[3],
-//                        tableColumns[4], tableColumns[5],
-//                        tableColumns[6], tableColumns[7],
-//                        tableColumns[8], tableColumns[9], tableColumns[10]);
-//            default:
-//                return null;
-//        }
     }
 
     /**
@@ -298,7 +244,7 @@ public abstract class CommonDAO<T extends DatabaseEntity<Long>> implements DAO<T
                 return entities;
             }
         } catch (SQLException e) {
-            logger.error("user name read unsuccessfully. The SQL state is " + e.getSQLState()) ;
+            logger.error("user name read unsuccessfully. The SQL state is " + e.getSQLState());
         } catch (InterruptedException exception) {
             logger.error("The thread "
                     + Thread.currentThread().getName()

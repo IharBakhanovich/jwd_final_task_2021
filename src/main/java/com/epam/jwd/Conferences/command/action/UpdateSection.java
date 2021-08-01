@@ -6,6 +6,7 @@ import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.dto.Section;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.service.UserService;
+import com.epam.jwd.Conferences.validator.Validator;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -39,10 +40,12 @@ public class UpdateSection implements Command {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/sections.jsp");
 
     private final UserService service;
+    private final Validator validator;
 
     // the private default constructor, to not create the instance of the class with 'new' outside the class
-    UpdateSection() {
+    private UpdateSection() {
         service = UserService.retrieve();
+        validator = Validator.retrieve();
     }
 
     private static class UpdateSectionHolder {
@@ -83,10 +86,10 @@ public class UpdateSection implements Command {
         } else if (sectionName == null || sectionName.trim().equals("")) {
             return prepareErrorPage(request,
                     "Section name should not be empty or contains only spaces. Please try again");
-        } else if (!isStringValid(sectionName)) {
+        } else if (!validator.isStringValid(sectionName)) {
             return prepareErrorPage(request,
                     "The entered section name is not valid. It should contain only latin letters. Please try again");
-        } else if (sectionName.length() > MAX_LENGTH_OF_SECTION_NAME_IN_DB) {
+        } else if (!validator.isLengthValid(sectionName, MAX_LENGTH_OF_SECTION_NAME_IN_DB)) {
             return prepareErrorPage(request,
                     "The entered section name is too long. It should be not more as "
                             + MAX_LENGTH_OF_SECTION_NAME_IN_DB
@@ -147,16 +150,5 @@ public class UpdateSection implements Command {
 //        request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
 //        request.setAttribute(CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
         return SECTION_UPDATE_ERROR_RESPONSE;
-    }
-
-    private boolean isStringValid(String toValidate) {
-        byte[] byteArray = toValidate.getBytes();
-        return isUTF8(byteArray);
-    }
-
-    private static boolean isUTF8(final byte[] inputBytes) {
-        final String converted = new String(inputBytes, StandardCharsets.UTF_8);
-        final byte[] outputBytes = converted.getBytes(StandardCharsets.UTF_8);
-        return Arrays.equals(inputBytes, outputBytes);
     }
 }

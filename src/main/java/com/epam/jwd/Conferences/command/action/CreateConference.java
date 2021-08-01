@@ -38,7 +38,7 @@ public class CreateConference implements Command {
     private final UserService service;
 
     // the private default constructor, to not create the instance of the class with 'new' outside the class
-    CreateConference() {
+    private CreateConference() {
         service = UserService.retrieve();
     }
 

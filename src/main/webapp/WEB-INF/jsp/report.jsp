@@ -22,7 +22,7 @@
     </c:choose>
     <c:choose>
         <c:when test="${not empty requestScope.error}">
-            <p>${requestScope.error}</p>
+            <p class="error_message">${requestScope.error}</p>
             <a href="${pageContext.request.contextPath}/controller?command=show_report&id=${requestScope.report.get().id}">Try
                 again</a>
         </c:when>

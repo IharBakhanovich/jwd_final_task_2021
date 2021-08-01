@@ -141,8 +141,8 @@ public class CreateReport implements Command {
     }
 
     private boolean isStringValid(String toValidate) {
-        byte[] byteArrray = toValidate.getBytes();
-        return isUTF8(byteArrray);
+        byte[] byteArray = toValidate.getBytes();
+        return isUTF8(byteArray);
     }
 
     private static boolean isUTF8(final byte[] inputBytes) {

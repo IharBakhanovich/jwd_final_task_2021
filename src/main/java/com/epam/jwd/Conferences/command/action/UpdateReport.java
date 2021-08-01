@@ -5,6 +5,7 @@ import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.dto.*;
 import com.epam.jwd.Conferences.service.UserService;
+import com.epam.jwd.Conferences.validator.Validator;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -39,6 +40,7 @@ public class UpdateReport implements Command {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/report.jsp");
 
     private final UserService service;
+    private final Validator validator;
 
     private static class UpdateReportHolder {
         private final static UpdateReport instance
@@ -57,6 +59,7 @@ public class UpdateReport implements Command {
     // the private default constructor, to not create the instance of the class with 'new' outside the class
     private UpdateReport() {
         this.service = UserService.retrieve();
+        validator = Validator.retrieve();
     }
 
     /**
@@ -121,18 +124,9 @@ public class UpdateReport implements Command {
 
         // validation of string
         if (!reportText.trim().equals("")) {
-            if (!isStringValid(reportText)) {
-                final Optional<Report> report = service.findReportByID(id);
-
-                request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
-
-                request.setAttribute(USERS_ATTRIBUTE_NAME, users);
-
-                request.setAttribute(SECTIONS_ATTRIBUTE_NAME, sections);
-                request.setAttribute(REPORT_ATTRIBUTE_NAME, report);
-
+            if (!validator.isStringValid(reportText)) {
                 return prepareErrorPage(request,
-                        "Report text is not valid. Please try again"
+                        "Report text is not valid. It should contain only latin letters. Please try again"
                 );
             }
         }
@@ -152,19 +146,17 @@ public class UpdateReport implements Command {
 
     private CommandResponse prepareErrorPage(CommandRequest request,
                                              String errorMessage) {
+        final Long id = Long.valueOf(request.getParameter(ID_PARAMETER_NAME));
+        final List<Conference> conferences = service.findAllConferences();
+        final List<Section> sections = service.findAllSections();
+        final List<User> users = service.findAllUsers();
+        final Optional<Report> report = service.findReportByID(id);
+        request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
+        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
+        request.setAttribute(SECTIONS_ATTRIBUTE_NAME, sections);
+        request.setAttribute(REPORT_ATTRIBUTE_NAME, report);
         request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
 
         return UPDATE_REPORT_ERROR_RESPONSE;
-    }
-
-    private boolean isStringValid(String toValidate) {
-        byte[] byteArrray = toValidate.getBytes();
-        return isUTF8(byteArrray);
-    }
-
-    private static boolean isUTF8(final byte[] inputBytes) {
-        final String converted = new String(inputBytes, StandardCharsets.UTF_8);
-        final byte[] outputBytes = converted.getBytes(StandardCharsets.UTF_8);
-        return Arrays.equals(inputBytes, outputBytes);
     }
 }

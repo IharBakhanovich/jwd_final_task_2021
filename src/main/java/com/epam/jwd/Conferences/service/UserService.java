@@ -11,6 +11,10 @@ import java.util.Optional;
 
 public interface UserService {
 
+    static UserService retrieve() {
+        return AppUserService.getInstance();
+    }
+
     void createUser(User user) throws DuplicateException;
 
     boolean canLogIn(User user);
@@ -20,10 +24,6 @@ public interface UserService {
     List<User> findAllUsers();
 
     void clean();
-
-    static UserService retrieve() {
-        return AppUserService.getInstance();
-    }
 
     List<Conference> findAllConferences();
 
