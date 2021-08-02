@@ -23,27 +23,28 @@ public enum AppCommand {
     MAIN_PAGE(ShowMainPage.getInstance()),
     SHOW_USERS(ShowUsersPage.getInstance(), ADMIN), //посмотреть юзеров может только админ
     SHOW_LOGIN(ShowLoginPage.getInstance(), UNAUTHORIZED), // открывать логин страницу может только UNAUTHORIZED
-    LOGOUT(LogoutCommand.getInstance(), USER, ADMIN), //USER и ADMIN могут logout
+    LOGOUT(LogoutCommand.getInstance(), USER, ADMIN, MANAGER), //USER и ADMIN могут logout
     LOGIN(LoginCommand.getInstance(), UNAUTHORIZED), //логиниться может только UNAUTHORIZED
     ERROR(ShowErrorPage.getInstance()),//для всех пользователей, поэтому не выделяем,
-    SHOW_SECTIONS(ShowConferenceSectionsPage.getInstance(), USER, ADMIN, UNAUTHORIZED),
-    SHOW_REPORTS(ShowSectionReportsPage.getInstance(), USER, ADMIN, UNAUTHORIZED),
-    SHOW_USER(ShowUserPage.getInstance(), USER, ADMIN), //shows a user
-    SHOW_REPORT(ShowReportPage.getInstance(), USER, ADMIN, UNAUTHORIZED), // shows a report.jsp page
+    SHOW_SECTIONS(ShowConferenceSectionsPage.getInstance(), USER, ADMIN, UNAUTHORIZED, MANAGER),
+    SHOW_REPORTS(ShowSectionReportsPage.getInstance(), USER, ADMIN, UNAUTHORIZED, MANAGER),
+    SHOW_USER(ShowUserPage.getInstance(), USER, ADMIN, MANAGER), //shows a user
+    SHOW_REPORT(ShowReportPage.getInstance(), USER, ADMIN, UNAUTHORIZED, MANAGER), // shows a report.jsp page
     SHOW_CREATE_NEW_USER(ShowCreateNewUserPage.getInstance(), ADMIN, UNAUTHORIZED), // shows createNewUser.jsp page
     SHOW_CREATE_CONFERENCE(ShowCreateConferencePage.getInstance(), ADMIN), // shows createConference.jsp page
-    SHOW_CREATE_SECTION(ShowCreateSectionPage.getInstance(), ADMIN, USER), // shows createSection.jsp page
+    SHOW_CREATE_SECTION(ShowCreateSectionPage.getInstance(), ADMIN, USER, MANAGER), // shows createSection.jsp page
     SHOW_CREATE_REPORT(ShowCreateReportPage.getInstance(), ADMIN, USER, MANAGER), // shows createReport.jsp page
     SHOW_UPDATE_CONFERENCE(ShowUpdateConferencePage.getInstance(), ADMIN), // shows updateConference.jsp page
-    SHOW_UPDATE_SECTION(ShowUpdateSectionPage.getInstance(), ADMIN, USER), // shows updateConference.jsp page
+    SHOW_UPDATE_SECTION(ShowUpdateSectionPage.getInstance(), ADMIN, USER, MANAGER), // shows updateConference.jsp page
+    SHOW_QUESTIONS(ShowQuestionPage.getInstance(), ADMIN, MANAGER), // shows question.jsp page
     CREATE_NEW_USER(CreateNewUser.getInstance(), ADMIN, UNAUTHORIZED), // creates new user and users.jsp/login.jsp page
     CREATE_NEW_CONFERENCE(CreateConference.getInstance(), ADMIN), // creates new conference and shows main.jsp page
-    CREATE_NEW_SECTION(CreateSection.getInstance(), ADMIN, USER), // creates new section and shows sections.jsp page
-    CREATE_NEW_REPORT(CreateReport.getInstance(), ADMIN, USER), // creates new report and shows reports.jsp page
-    UPDATE_USER(UpdateUser.getInstance(), ADMIN, USER), // updates user data
-    UPDATE_REPORT(UpdateReport.getInstance(), ADMIN, USER), // updates report data
+    CREATE_NEW_SECTION(CreateSection.getInstance(), ADMIN, USER, MANAGER), // creates new section and shows sections.jsp page
+    CREATE_NEW_REPORT(CreateReport.getInstance(), ADMIN, USER, MANAGER), // creates new report and shows reports.jsp page
+    UPDATE_USER(UpdateUser.getInstance(), ADMIN, USER, MANAGER), // updates user data
+    UPDATE_REPORT(UpdateReport.getInstance(), ADMIN, USER, MANAGER), // updates report data
     UPDATE_CONFERENCE(UpdateConference.getInstance(), ADMIN), // updates report data
-    UPDATE_SECTION(UpdateSection.getInstance(), ADMIN, USER), // updates report data
+    UPDATE_SECTION(UpdateSection.getInstance(), ADMIN, USER, MANAGER), // updates report data
     DEFAULT(ShowMainPage.getInstance()); // по дефолту показываем главную страницу
 
     // поле, которое будет заполняться из конструктора

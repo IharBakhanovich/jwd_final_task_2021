@@ -181,4 +181,9 @@ public class AppUserService implements UserService {
     public void updateSection(Section sectionToUpdate) {
         sectionDAO.update(sectionToUpdate);
     }
+
+    @Override
+    public List<Report> findAllQuestions(Long managerId) {
+        return reportDAO.findAllQuestionsByManagerId(managerId);
+    }
 }

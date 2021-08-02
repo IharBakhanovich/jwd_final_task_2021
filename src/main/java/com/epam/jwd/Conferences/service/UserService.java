@@ -50,4 +50,6 @@ public interface UserService {
     void updateConference(Conference conferenceToUpdate);
 
     void updateSection(Section sectionToUpdate);
+
+    List<Report> findAllQuestions(Long managerId);
 }

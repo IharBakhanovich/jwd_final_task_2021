@@ -80,7 +80,7 @@
 
 </c:if>
 
-<h2>Authentication section</h2>
+<h2>Personal section</h2>
 <!-- не хотим показывать незарегистрированным userам-->
 <c:choose>
     <c:when test="${empty sessionScope.userName}">
@@ -96,14 +96,24 @@
         <c:if test="${sessionScope.userRole eq Role.ADMIN}">
             <p>Click below to see all users</p>
             <a href="${pageContext.request.contextPath}/controller?command=show_users">UsersPage</a>
-            <br>
 
+            <br>
+            <br>
             <p>Click below to add a new conference</p>
             <a href="${pageContext.request.contextPath}/controller?command=show_create_conference&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}">Create
                 conference</a>
-            <br>
         </c:if>
+
         <br>
+        <br>
+        <c:if test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userRole eq Role.MANAGER}">
+            <p>Click below to see questions from users</p>
+            <a href="${pageContext.request.contextPath}/controller?command=show_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}">Show questions</a>
+        </c:if>
+
+        <br>
+        <br>
+        <p>Click below to log out from the system</p>
         <a href="${pageContext.request.contextPath}/controller?command=logout">Logout</a>
     </c:otherwise>
 </c:choose>

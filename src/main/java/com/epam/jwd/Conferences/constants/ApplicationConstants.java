@@ -253,9 +253,12 @@ public class ApplicationConstants {
     private static final String[] REPORT_TABLE_COLUMN_NAMES
             = {ID_COLUMN, SECTION_ID_COLUMN, CONFERENCE_ID_COLUMN,
             REPORT_TEXT_COLUMN, REPORT_TYPE_COLUMN, APPLICANT_COLUMN};
-    public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_REPORT_DAO = "select * from %s where %s = ?";
-    public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_ONE_AND_COLUMN_TWO_FOR_DB_REPORT_DAO = "select * from %s where %s = ? and %s = ?";
-
+    public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_REPORT_DAO_SQL
+            = "select * from %s where %s = ?";
+    public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_ONE_AND_COLUMN_TWO_FOR_DB_REPORT_DAO_SQL
+            = "select * from %s where %s = ? and %s = ?";
+    public static final String SELECT_ALL_QUESTION_BY_MANAGER_ID_SQL =
+            "select %s.* from %s, %s where %s.%s = 1 and %s.%s = %s.%s and %s.%s = ?";
     // from class DBSectionDAO
     private static final Logger LOGGER_FOR_DB_SECTION_DAO = LogManager.getLogger(DBSectionDAO.class);
     private static final String SECTION_NAME_COLUMN = "sectionName";
@@ -312,5 +315,11 @@ public class ApplicationConstants {
             = "C:\\Studium\\EPAM\\FinalTask_WebProject\\src\\main\\resources\\application.properties";
 
     // from class AppValidator
+
+    // from class ShowQuestionPage
+    private static final CommandResponse SHOW_QUESTIONS_PAGE_RESPONSE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/questions.jsp");
+    public static final String QUESTIONS_ATTRIBUTE_NAME = "questions";
+    public static final String MANAGER_ID_ATTRIBUTE_NAME = "managerId";
 
 }
