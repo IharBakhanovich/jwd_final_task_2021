@@ -3,6 +3,7 @@ package com.epam.jwd.Conferences.command.page;
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 
 public class ShowLoginPage implements Command {
 
@@ -35,6 +36,6 @@ public class ShowLoginPage implements Command {
      */
     @Override
     public CommandResponse execute(CommandRequest request) {
-        return LOGIN_PAGE_RESPONSE;
+        return ApplicationConstants.LOGIN_PAGE_RESPONSE;
     }
 }

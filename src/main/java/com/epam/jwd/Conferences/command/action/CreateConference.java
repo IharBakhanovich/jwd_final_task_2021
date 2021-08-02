@@ -18,7 +18,7 @@ import java.util.List;
  * Implements 'create_new_conference' action. The singleton.
  */
 public class CreateConference implements Command {
-    private static final Logger logger = LogManager.getLogger(CreateNewUser.class);
+    private static final Logger logger = LogManager.getLogger(CreateConference.class);
 
     private static final String CREATOR_ID_PARAMETER_NAME = "creatorId";
     private static final String CREATOR_ROLE_PARAMETER_NAME = "creatorRole";
@@ -33,7 +33,7 @@ public class CreateConference implements Command {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     private static final String DUPLICATE_CONFERENCE_MESSAGE
             = "The conference with such a conference title already exist in the system. Please choose an other conference title.";
-    public static final int MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB = 30;
+    private static final int MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB = 30;
 
     private final UserService service;
 

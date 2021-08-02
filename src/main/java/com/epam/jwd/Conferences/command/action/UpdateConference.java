@@ -16,7 +16,7 @@ import java.util.List;
 
 public class UpdateConference implements Command {
 
-    private static final Logger logger = LogManager.getLogger(CreateNewUser.class);
+    private static final Logger logger = LogManager.getLogger(UpdateConference.class);
 
     private static final String CREATOR_ID_PARAMETER_NAME = "creatorId";
     private static final String CREATOR_ROLE_PARAMETER_NAME = "creatorRole";
@@ -29,7 +29,7 @@ public class UpdateConference implements Command {
     private static final String MANAGER_CONFERENCE_ATTRIBUTE_NAME = "managerConf";
     private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
 
-    public static final int MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB = 30;
+    private static final int MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB = 30;
 
     private static final CommandResponse CONFERENCE_UPDATE_SUCCESS_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
@@ -39,7 +39,7 @@ public class UpdateConference implements Command {
     private final UserService service;
 
     // the private default constructor, to not create the instance of the class with 'new' outside the class
-    UpdateConference() {
+    private UpdateConference() {
         service = UserService.retrieve();
     }
 

@@ -20,24 +20,25 @@ public class DBSectionDAO extends CommonDAO<Section> implements SectionDAO {
     private static final String ID_COLUMN = "id";
     private static final String CONFERENCE_ID_COLUMN = "conferenceId";
     private static final String SECTION_NAME_COLUMN = "sectionName";
-    private static final String MANAGER_COLUMN = "managerSect";
-    private static final String TABLE_NAME = "sections";
-    private static final String[] columnNames
-            = {ID_COLUMN, CONFERENCE_ID_COLUMN, SECTION_NAME_COLUMN, MANAGER_COLUMN};
+    private static final String MANAGER_SECT_COLUMN = "managerSect";
+    private static final String TABLE_NAME_SECTIONS = "sections";
+    private static final String[] SECTION_TABLE_COLUMN_NAMES
+            = {ID_COLUMN, CONFERENCE_ID_COLUMN, SECTION_NAME_COLUMN, MANAGER_SECT_COLUMN};
+    public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_SECTION_DAO = "select * from %s where %s = ?";
 
     private final String findByTitleSql;
     private final String findAllSectionsByConferenceIdSql;
 
 
     protected DBSectionDAO(String tableName) {
-        super(tableName, columnNames);
-        findByTitleSql = String.format("select * from %s where %s = ?", TABLE_NAME, SECTION_NAME_COLUMN);
-        findAllSectionsByConferenceIdSql = String.format("select * from %s where %s = ?", TABLE_NAME, CONFERENCE_ID_COLUMN);
+        super(tableName, SECTION_TABLE_COLUMN_NAMES);
+        findByTitleSql = String.format(SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_SECTION_DAO, TABLE_NAME_SECTIONS, SECTION_NAME_COLUMN);
+        findAllSectionsByConferenceIdSql = String.format(SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_SECTION_DAO, TABLE_NAME_SECTIONS, CONFERENCE_ID_COLUMN);
     }
 
     private static class DBSectionDAOHolder {
         private final static DBSectionDAO instance
-                = new DBSectionDAO(TABLE_NAME);
+                = new DBSectionDAO(TABLE_NAME_SECTIONS);
     }
 
     /**
@@ -54,7 +55,7 @@ public class DBSectionDAO extends CommonDAO<Section> implements SectionDAO {
         return new Section(resultSet.getLong(ID_COLUMN),
                 resultSet.getLong(CONFERENCE_ID_COLUMN),
                 resultSet.getString(SECTION_NAME_COLUMN),
-                resultSet.getLong(MANAGER_COLUMN));
+                resultSet.getLong(MANAGER_SECT_COLUMN));
     }
 
     @Override
@@ -77,7 +78,7 @@ public class DBSectionDAO extends CommonDAO<Section> implements SectionDAO {
                 + " = ?, "
                 + SECTION_NAME_COLUMN
                 + " = ?, "
-                + MANAGER_COLUMN
+                + MANAGER_SECT_COLUMN
                 + " = ?"
                 + " where "
                 + ID_COLUMN

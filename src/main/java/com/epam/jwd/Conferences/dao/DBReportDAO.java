@@ -24,25 +24,28 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
     private static final String REPORT_TEXT_COLUMN = "reportText";
     private static final String REPORT_TYPE_COLUMN = "reportType";
     private static final String APPLICANT_COLUMN = "applicant";
-    private static final String TABLE_NAME = "reports";
-    private static final String[] columnNames
+    private static final String TABLE_NAME_REPORTS = "reports";
+    private static final String[] REPORT_TABLE_COLUMN_NAMES
             = {ID_COLUMN, SECTION_ID_COLUMN, CONFERENCE_ID_COLUMN,
             REPORT_TEXT_COLUMN, REPORT_TYPE_COLUMN, APPLICANT_COLUMN};
+    public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_REPORT_DAO = "select * from %s where %s = ?";
+    public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_ONE_AND_COLUMN_TWO_FOR_DB_REPORT_DAO = "select * from %s where %s = ? and %s = ?";
 
     private final String findReportByApplicantIdSql;
     private final String findAllReportsByConferenceIdAndSectionIdSql;
 
     protected DBReportDAO(String tableName) {
-        super(tableName, columnNames);
-        findReportByApplicantIdSql = String.format("select * from %s where %s = ?",
-                TABLE_NAME, APPLICANT_COLUMN);
-        findAllReportsByConferenceIdAndSectionIdSql = String.format("select * from %s where %s = ? and %s = ?",
-                TABLE_NAME, SECTION_ID_COLUMN, CONFERENCE_ID_COLUMN);
+        super(tableName, REPORT_TABLE_COLUMN_NAMES);
+        findReportByApplicantIdSql = String.format(SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_REPORT_DAO,
+                TABLE_NAME_REPORTS, APPLICANT_COLUMN);
+        findAllReportsByConferenceIdAndSectionIdSql = String.format(
+                SELECT_ALL_FROM_TABLE_BY_COLUMN_ONE_AND_COLUMN_TWO_FOR_DB_REPORT_DAO,
+                TABLE_NAME_REPORTS, SECTION_ID_COLUMN, CONFERENCE_ID_COLUMN);
     }
 
     private static class DBReportDAOHolder {
         private final static DBReportDAO instance
-                = new DBReportDAO(TABLE_NAME);
+                = new DBReportDAO(TABLE_NAME_REPORTS);
     }
 
     /**

@@ -8,15 +8,13 @@ import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.service.UserService;
 import com.epam.jwd.Conferences.validator.Validator;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
 
 public class UpdateSection implements Command {
 
     private static final String MANAGER_SECTION_NICKNAME_PARAMETER_NAME = "managerSectNickname";
-    public static final String SECTION_NAME_PARAMETER_NAME = "sectionName";
-    public static final String CONFERENCE_ID_PARAMETER_NAME = "conferenceId";
+    private static final String SECTION_NAME_PARAMETER_NAME = "sectionName";
+    private static final String CONFERENCE_ID_PARAMETER_NAME = "conferenceId";
     private static final String CONFERENCE_TITLE_PARAMETER_NAME = "conferenceTitle";
     private static final String SECTION_ID_PARAMETER_NAME = "sectionId";
     private static final String CONFERENCE_MANAGER_ID_PARAMETER_NAME = "conferenceManagerId";
@@ -34,7 +32,7 @@ public class UpdateSection implements Command {
 
     private static final CommandResponse SECTION_UPDATE_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/updateSection.jsp");
-    public static final int MAX_LENGTH_OF_SECTION_NAME_IN_DB = 90;
+    private static final int MAX_LENGTH_OF_SECTION_NAME_IN_DB = 90;
 
     private static final CommandResponse SECTION_UPDATE_SUCCESS_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/sections.jsp");
@@ -44,8 +42,8 @@ public class UpdateSection implements Command {
 
     // the private default constructor, to not create the instance of the class with 'new' outside the class
     private UpdateSection() {
-        service = UserService.retrieve();
-        validator = Validator.retrieve();
+        this.service = UserService.retrieve();
+        this.validator = Validator.retrieve();
     }
 
     private static class UpdateSectionHolder {

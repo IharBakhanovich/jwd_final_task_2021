@@ -27,6 +27,7 @@ public class ShowSectionReportsPage implements Command {
     private static final String SECTION_ID_ATTRIBUTE_NAME = "sectionId";
     private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
     private static final String USERS_ATTRIBUTE_NAME = "users";
+
     private final UserService service;
 
     private static class ShowSectionReportsPagePageHolder {

@@ -7,8 +7,6 @@ import com.epam.jwd.Conferences.dto.*;
 import com.epam.jwd.Conferences.service.UserService;
 import com.epam.jwd.Conferences.validator.Validator;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,7 +57,7 @@ public class UpdateReport implements Command {
     // the private default constructor, to not create the instance of the class with 'new' outside the class
     private UpdateReport() {
         this.service = UserService.retrieve();
-        validator = Validator.retrieve();
+        this.validator = Validator.retrieve();
     }
 
     /**

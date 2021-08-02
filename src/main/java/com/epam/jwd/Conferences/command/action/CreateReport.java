@@ -34,9 +34,9 @@ public class CreateReport implements Command {
     private static final String REPORTS_ATTRIBUTE_NAME = "reports";
     private static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
     private static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
-    public static final String SECTION_ID_ATTRIBUTE_NAME = "sectionId";
-    public static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
-    public static final String USERS_ATTRIBUTE_NAME = "users";
+    private static final String SECTION_ID_ATTRIBUTE_NAME = "sectionId";
+    private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
+    private static final String USERS_ATTRIBUTE_NAME = "users";
     private static final String CREATOR_ID_ATTRIBUTE_NAME = "creatorId";
     private static final String CREATOR_ROLE_ATTRIBUTE_NAME = "creatorRole";
 
@@ -52,7 +52,7 @@ public class CreateReport implements Command {
     private final UserService service;
 
     // the private default constructor, to not create the instance of the class with 'new' outside the class
-    CreateReport() {
+    private CreateReport() {
         service = UserService.retrieve();
     }
 

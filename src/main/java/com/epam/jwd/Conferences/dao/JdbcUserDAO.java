@@ -30,17 +30,18 @@ public class JdbcUserDAO extends CommonDAO<User> implements UserDAO {
     private static final String ROLE_COLUMN = "role";
 
     private static final String TABLE_NAME = "users";
-    private static final String[] columnNames
+    private static final String[] USER_TABLE_COLUMN_NAMES
             = {ID_COLUMN, EMAIL_COLUMN, PASSWORD_COLUMN,
             SALT_COLUMN, NUMBER_LOGIN_ATTEMPTS_COLUMN, VERIFICATION_TOKEN_COLUMN,
             EMAIL_VERIFIED_COLUMN, NICK_NAME_COLUMN, FIRST_NAME_COLUMN,
             SURNAME_COLUMN, ROLE_COLUMN};
+    public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_USER_DAO = "select * from %s where %s = ?";
 
     private final String findByNicknameSql;
 
     protected JdbcUserDAO() {
-        super(TABLE_NAME, columnNames);
-        this.findByNicknameSql = String.format("select * from %s where %s = ?", TABLE_NAME, NICK_NAME_COLUMN);
+        super(TABLE_NAME, USER_TABLE_COLUMN_NAMES);
+        this.findByNicknameSql = String.format(SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_USER_DAO, TABLE_NAME, NICK_NAME_COLUMN);
     }
 
     private static class JdbcUserDAOHolder {

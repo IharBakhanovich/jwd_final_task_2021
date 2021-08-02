@@ -21,6 +21,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class AppUserService implements UserService {
 
     private static final String NOT_FOUND_MESSAGE = "User with such a login does no exist. Login: %s";
+
     private final UserDAO userDAO;
     private final ConferenceDAO conferenceDAO;
     private final ReportDAO reportDAO;

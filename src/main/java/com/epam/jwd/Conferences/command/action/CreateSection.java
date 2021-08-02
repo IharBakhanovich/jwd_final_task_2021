@@ -37,12 +37,12 @@ public class CreateSection implements Command {
             = "The section with such an section name title already exist in the system. Please choose an other section name.";
     private static final String CONFERENCE_MANAGER_ATTRIBUTE_NAME = "conferenceManager";
     private static final String CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME = "conferenceManagerId";
-    public static final int MAX_LENGTH_OF_SECTION_NAME_IN_DB = 90;
+    private static final int MAX_LENGTH_OF_SECTION_NAME_IN_DB = 90;
 
     private final UserService service;
 
     // the private default constructor, to not create the instance of the class with 'new' outside the class
-    CreateSection() {
+    private CreateSection() {
         service = UserService.retrieve();
     }
 

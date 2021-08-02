@@ -18,20 +18,21 @@ public class DBConferenceDAO extends CommonDAO<Conference> implements Conference
 
     private static final String ID_COLUMN = "id";
     private static final String CONFERENCE_TITLE_COLUMN = "conferenceTitle";
-    private static final String MANAGER_COLUMN = "managerConf";
-    private static final String TABLE_NAME = "conferences";
-    private static final String[] columnNames = {ID_COLUMN, CONFERENCE_TITLE_COLUMN, MANAGER_COLUMN};
+    private static final String MANAGER_CONF_COLUMN = "managerConf";
+    private static final String TABLE_NAME_CONFERENCES = "conferences";
+    private static final String[] COLUMN_NAMES_FOR_DB_CONFERENCE_DAO = {ID_COLUMN, CONFERENCE_TITLE_COLUMN, MANAGER_CONF_COLUMN};
+    public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_CONFERENCE_DAO = "select * from %s where %s = ?";
 
     private final String findByTitleSql;
 
     protected DBConferenceDAO(String tableName) {
-        super(tableName, columnNames);
-        findByTitleSql = String.format("select * from %s where %s = ?", TABLE_NAME, CONFERENCE_TITLE_COLUMN);
+        super(tableName, COLUMN_NAMES_FOR_DB_CONFERENCE_DAO);
+        findByTitleSql = String.format(SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_CONFERENCE_DAO, TABLE_NAME_CONFERENCES, CONFERENCE_TITLE_COLUMN);
     }
 
     private static class DBConferenceDAOHolder {
         private final static DBConferenceDAO instance
-                = new DBConferenceDAO(TABLE_NAME);
+                = new DBConferenceDAO(TABLE_NAME_CONFERENCES);
     }
 
     /**
@@ -47,7 +48,7 @@ public class DBConferenceDAO extends CommonDAO<Conference> implements Conference
     protected Conference mapResultSet(ResultSet resultSet) throws SQLException {
         return new Conference(resultSet.getLong(ID_COLUMN),
                 resultSet.getString(CONFERENCE_TITLE_COLUMN),
-                resultSet.getLong(MANAGER_COLUMN));
+                resultSet.getLong(MANAGER_CONF_COLUMN));
     }
 
     @Override
@@ -67,7 +68,7 @@ public class DBConferenceDAO extends CommonDAO<Conference> implements Conference
                 + " set "
                 + CONFERENCE_TITLE_COLUMN
                 + " = ?, "
-                + MANAGER_COLUMN
+                + MANAGER_CONF_COLUMN
                 + " = ?"
                 + " where "
                 + ID_COLUMN

@@ -3,6 +3,7 @@ package com.epam.jwd.Conferences.controller;
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 
 import java.io.*;
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class ApplicationController extends HttpServlet {
 
     private void process(HttpServletRequest request, HttpServletResponse response) {
         //  в сервлете ожидаем что к нам пришла команда из request.getParameter
-        final String commandName = request.getParameter(COMMAND_PARAM_NAME);
+        final String commandName = request.getParameter(ApplicationConstants.COMMAND_PARAM_NAME);
 
         //теперь пользуемся тем, что создали AppCommand, который возвращает название команды
         final Command command = Command.withName(commandName);

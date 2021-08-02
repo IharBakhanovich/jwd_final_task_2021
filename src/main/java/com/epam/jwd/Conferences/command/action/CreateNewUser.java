@@ -38,12 +38,12 @@ public class CreateNewUser implements Command {
     private static final String USERS_ATTRIBUTE_NAME = "users";
     private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}$";
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
-    public static final int MAX_LENGTH_OF_NICKNAME_IN_DB = 30;
+    private static final int MAX_LENGTH_OF_NICKNAME_IN_DB = 30;
 
     private final UserService service;
 
     // the private default constructor, to not create the instance of the class with 'new' outside the class
-    CreateNewUser() {
+    private CreateNewUser() {
         service = UserService.retrieve();
     }
 

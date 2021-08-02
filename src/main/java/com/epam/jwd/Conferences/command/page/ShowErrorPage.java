@@ -3,6 +3,7 @@ package com.epam.jwd.Conferences.command.page;
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 
 public class ShowErrorPage implements Command {
 
@@ -36,6 +37,6 @@ public class ShowErrorPage implements Command {
      */
     @Override
     public CommandResponse execute(CommandRequest request) {
-        return ERROR_PAGE_RESPONSE;
+        return ApplicationConstants.ERROR_PAGE_RESPONSE;
     }
 }

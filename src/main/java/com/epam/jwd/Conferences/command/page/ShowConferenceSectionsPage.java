@@ -20,7 +20,8 @@ public class ShowConferenceSectionsPage implements Command {
     private static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
     private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
     private static final String USERS_ATTRIBUTE_NAME = "users";
-    private static final String CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME = "conferenceManager";
+    private static final String CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME_F_SCSP = "conferenceManager";
+
     // the AppService, that communicates with the repo
     private final UserService service;
 
@@ -60,7 +61,7 @@ public class ShowConferenceSectionsPage implements Command {
                 conferenceManagerId = conference.getManagerConf();
             }
         }
-        request.setAttribute(CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME, conferenceManagerId);
+        request.setAttribute(CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME_F_SCSP, conferenceManagerId);
         final String conferenceTitle = request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME);
         final List<Section> sections = service.findAllSectionsByConferenceID(id);
         request.setAttribute(SECTIONS_ATTRIBUTE_NAME, sections);

@@ -21,6 +21,7 @@ public class ShowReportPage implements Command {
     private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
     private static final String SECTIONS_ATTRIBUTE_NAME = "sections";
     private static final String USERS_ATTRIBUTE_NAME = "users";
+
     private final UserService service;
 
     private static class ShowReportPageHolder {

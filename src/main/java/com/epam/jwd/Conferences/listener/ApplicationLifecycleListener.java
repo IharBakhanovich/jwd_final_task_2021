@@ -26,13 +26,12 @@ public class ApplicationLifecycleListener implements ServletContextListener {
 
     private final UserService userService;
 
+    private static final Logger logger = LogManager.getLogger(ApplicationLifecycleListener.class);
+    private static final String CONFIGPATH = "/config/logger.properties";
+
     public ApplicationLifecycleListener() {
         userService = UserService.retrieve();
     }
-
-    private static final Logger logger = LogManager.getLogger(ApplicationLifecycleListener.class);
-
-    private static final String CONFIGPATH = "/config/logger.properties";
 
     /**
      * Starts the system whenever the servlet context get initialized.

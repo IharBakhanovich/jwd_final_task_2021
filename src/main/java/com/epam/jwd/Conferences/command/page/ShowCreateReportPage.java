@@ -16,11 +16,11 @@ public class ShowCreateReportPage implements Command {
     private static final String SECTION_ID_PARAMETER_NAME = "sectionId";
     private static final String SECTION_NAME_PARAMETER_NAME = "sectionName";
 
-    public static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
-    public static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
+    private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
+    private static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
     private static final String SECTION_ID_ATTRIBUTE_NAME = "sectionId";
     private static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
-    public static final String USERS_ATTRIBUTE_NAME = "users";
+    private static final String USERS_ATTRIBUTE_NAME = "users";
     private static final String CREATOR_ID_ATTRIBUTE_NAME = "creatorId";
     private static final String CREATOR_ROLE_ATTRIBUTE_NAME = "creatorRole";
 

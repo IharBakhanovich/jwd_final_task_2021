@@ -22,6 +22,7 @@ public class Configuration {
     private static final Logger logger = LogManager.getLogger(Configuration.class);
     private static final String FILEPATH
             = "C:\\Studium\\EPAM\\FinalTask_WebProject\\src\\main\\resources\\application.properties";
+
     private Properties config = new Properties();
 
     Configuration() {

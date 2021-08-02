@@ -1,6 +1,7 @@
 package com.epam.jwd.Conferences.filter;
 
 import com.epam.jwd.Conferences.command.AppCommand;
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.dto.Role;
 
 import javax.servlet.*;
@@ -11,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 
-import static com.epam.jwd.Conferences.command.authentication.LoginCommand.USER_ROLE_SESSION_ATTRIBUTE;
 import static com.epam.jwd.Conferences.controller.ApplicationController.COMMAND_PARAM_NAME;
 import static com.epam.jwd.Conferences.dto.Role.UNAUTHORIZED;
 
@@ -19,6 +19,7 @@ import static com.epam.jwd.Conferences.dto.Role.UNAUTHORIZED;
 // внутри которого задавать имя и т.д. Начиная с сервлетов 3-й версии, можно делать это с помощью аннотаций
 @WebFilter(urlPatterns = "/*")
 public class PermissionFilter implements Filter {
+    private static final String USER_ROLE_SESSION_ATTRIBUTE = "userRole";
     private static final String ERROR_REDIRECT_LOCATION = "/controller?command=main_page";
     //будем хранить мапу енам, где ключи это енамы (Role), а в качестве значения команда, которую можно выполнить
     private final Map<Role, Set<AppCommand>> commandsByRoles;
@@ -68,7 +69,7 @@ public class PermissionFilter implements Filter {
 
         // первым делом request нужно преобразовать в httpServletRequest
         final HttpServletRequest req = (HttpServletRequest) servletRequest;
-        final AppCommand command = AppCommand.of(req.getParameter(COMMAND_PARAM_NAME));
+        final AppCommand command = AppCommand.of(req.getParameter(ApplicationConstants.COMMAND_PARAM_NAME));
         //затем достаем из request сессию, причем так, чтобы она не создалась, если ее нет
         final HttpSession session = req.getSession(false);
         //далее логика фильтра

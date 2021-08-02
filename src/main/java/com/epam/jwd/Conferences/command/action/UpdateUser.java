@@ -32,9 +32,9 @@ public class UpdateUser implements Command {
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
     private static final String USERS_ATTRIBUTE_NAME = "users";
     private static final String USER_ATTRIBUTE_NAME = "user";
-    public static final int MAX_LENGTH_OF_EMAIL_IN_DB = 320;
-    public static final int MAX_LENGTH_OF_FIRST_NAME_IN_DB = 30;
-    public static final int MAX_LENGTH_OF_SURNAME_IN_DB = 30;
+    private static final int MAX_LENGTH_OF_EMAIL_IN_DB = 320;
+    private static final int MAX_LENGTH_OF_FIRST_NAME_IN_DB = 30;
+    private static final int MAX_LENGTH_OF_SURNAME_IN_DB = 30;
 
     private static final CommandResponse UPDATE_USER_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/user.jsp");

@@ -28,9 +28,9 @@ public class AppConnectionPool implements ConnectionPool {
     private final String UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE = "DB read unsuccessfully. ConnectionPool was NOT initialized";
 
     private static final int INIT_CONNECTIONS_AMOUNT = 8;
-    private final int MAX_CONNECTIONS_AMOUNT;
     private static final int CONNECTIONS_GROW_FACTOR = 4;
 
+    private final int MAX_CONNECTIONS_AMOUNT;
     private final String DB_SERVER;
     private final String DB_PORT;
     private final String DB_NAME;

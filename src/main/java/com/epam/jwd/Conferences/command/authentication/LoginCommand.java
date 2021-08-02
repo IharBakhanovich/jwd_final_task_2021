@@ -16,20 +16,20 @@ public class LoginCommand implements Command {
     private static final String PASSWORD_PARAM_NAME = "password";
     private static final String ERROR_ATTRIBUTE_NAME = "error";
     private static final String INVALID_CREDENTIALS_MSG = "Wrong login or password";
-    public static final CommandResponse LOGIN_ERROR_RESPONSE
+    private static final CommandResponse LOGIN_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/login.jsp");
     // редиректаемся на index.jsp, после чего должен произойти get
-    public static final CommandResponse LOGIN_SUCCESS_RESPONSE
+    private static final CommandResponse LOGIN_SUCCESS_RESPONSE
             = CommandResponse.getCommandResponse(true, "index.jsp");
 
     private static final String USER_NAME_SESSION_ATTRIBUTE = "userName";
-    public static final String USER_ROLE_SESSION_ATTRIBUTE = "userRole";
-    public static final String USER_ID_SESSION_ATTRIBUTE = "userId";
+    private static final String USER_ROLE_SESSION_ATTRIBUTE = "userRole";
+    private static final String USER_ID_SESSION_ATTRIBUTE = "userId";
 
     private final UserService service;
 
     // the private default constructor, to not create the instance of the class with 'new' outside the class
-    LoginCommand() {
+    private LoginCommand() {
         service = UserService.retrieve();
     }
 
