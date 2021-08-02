@@ -36,6 +36,7 @@ public class UpdateReport implements Command {
 
     private static final CommandResponse UPDATE_REPORT_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/report.jsp");
+    private static final String QUESTION_REPORT_ID_PARAMETER_NAME = "questionReportId";
 
     private final UserService service;
     private final Validator validator;
@@ -74,6 +75,7 @@ public class UpdateReport implements Command {
         final String reportText = String.valueOf(request.getParameter(REPORT_TEXT_PARAMETER_NAME));
         final String reportType = String.valueOf(request.getParameter(REPORT_TYPE_PARAMETER_NAME));
         final String applicantNickname = String.valueOf(request.getParameter(APPLICANT_PARAMETER_NAME));
+        final Long questionReportId = Long.valueOf(request.getParameter(QUESTION_REPORT_ID_PARAMETER_NAME));
         final String updaterId = String.valueOf(request.getParameter(UPDATER_ID_PARAMETER_NAME));
         final String updaterRole = String.valueOf(request.getParameter(UPDATER_ROLE_PARAMETER_NAME));
         final List<Conference> conferences = service.findAllConferences();
@@ -130,7 +132,7 @@ public class UpdateReport implements Command {
         }
 
 
-        Report reportToUpdate = new Report(id, sectionId, conferenceId, reportText, reportTypeToUpdate, applicantId);
+        Report reportToUpdate = new Report(id, sectionId, conferenceId, reportText, reportTypeToUpdate, applicantId, questionReportId);
 
         service.updateReport(reportToUpdate);
 

@@ -20,4 +20,6 @@ public interface ReportService {
 
     void createReport(Report reportToCreate) throws DuplicateException;
 
+    List<Report> findAllQuestions(Long managerId);
+
 }

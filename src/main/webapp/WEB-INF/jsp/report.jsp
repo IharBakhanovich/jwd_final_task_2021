@@ -29,9 +29,11 @@
         <c:otherwise>
             <form action="${pageContext.request.contextPath}/controller?command=update_report&updaterId=${sessionScope.userId}&updaterRole=${sessionScope.userRole}"
                   method="post">
+                <br>
                 <label for="idField"> Id:</label>
                 <input type="text" id="idField" name="id" value="${requestScope.report.get().id}" readonly>
                 <!-- name запихнет в пост запрос значения -->
+
                 <br>
                 <label for="sectionField"> Section:</label>
                 <c:choose>
@@ -79,6 +81,7 @@
                     <%--                    </c:otherwise>--%>
                     <%--                </c:choose>--%>
                     <%--                <!-- name запихнет в пост запрос значения -->--%>
+
                 <br>
                 <label for="conferenceField"> Conference: </label>
                 <c:choose>
@@ -119,12 +122,14 @@
 
                     <%--                <input type="text" id="nicknameField" name="nickname" value="${requestScope.user.get().nickname}"--%>
                     <%--                       readonly>--%>
+
                 <br>
                 <label for="reportTextField"> ReportText: </label>
                 <textarea name="reportText" id="reportTextField" rows="1" cols="75"
                           wrap="soft">${requestScope.report.get().reportText}</textarea>
                     <%--                <input type="text" id="reportTextField" name="reportText"--%>
                     <%--                       value="${requestScope.report.get().reportText}">--%>
+
                 <br>
                 <label for="reportTypeField"> ReportType: </label>
                 <c:choose>
@@ -148,6 +153,7 @@
                                value="${requestScope.report.get().reportType}" readonly>
                     </c:otherwise>
                 </c:choose>
+
                 <br>
                 <label for="applicantField"> Applicant: </label>
                 <c:forEach var="user" items="${requestScope.users}">
@@ -164,7 +170,11 @@
                         </c:choose>
                     </c:if>
                 </c:forEach>
-                    <%--                <input type="text" id="surNameField" name="surname" value="${requestScope.user.get().surname}">--%>
+
+                <br>
+                <label for="questionIdField"> Question Id:</label>
+                <input type="text" id="questionIdField" name="questionReportId" value="${requestScope.report.get().questionReportId}" readonly>
+
                 <br>
                 <br>
                 <c:if test="${sessionScope.userRole eq Role.ADMIN or requestScope.report.get().applicant == sessionScope.userId}">

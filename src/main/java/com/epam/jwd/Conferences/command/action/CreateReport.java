@@ -105,7 +105,9 @@ public class CreateReport implements Command {
 
         ReportType reportTypeToAdd = ReportType.valueOf(reportType);
 
-        Report reportToCreate = new Report(1L, sectionId, conferenceId, reportText, reportTypeToAdd, applicantId);
+        Report reportToCreate
+                = new Report(1L, sectionId, conferenceId, reportText,
+                reportTypeToAdd, applicantId, 0L);
 
         try {
             service.createReport(reportToCreate);

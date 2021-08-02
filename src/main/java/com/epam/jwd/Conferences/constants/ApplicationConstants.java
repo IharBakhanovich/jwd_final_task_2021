@@ -128,6 +128,7 @@ public class ApplicationConstants {
 
     // from class UpdateReport
     private static final String APPLICANT_PARAMETER_NAME = "applicant";
+    private static final String QUESTION_REPORT_ID_PARAMETER_NAME = "questionReportId";
     private static final CommandResponse UPDATE_REPORT_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/report.jsp");
 
@@ -250,9 +251,10 @@ public class ApplicationConstants {
     private static final String REPORT_TYPE_COLUMN = "reportType";
     private static final String APPLICANT_COLUMN = "applicant";
     private static final String TABLE_NAME_REPORTS = "reports";
+    private static final String QUESTION_REPORT_ID_COLUMN = "questionReportId";
     private static final String[] REPORT_TABLE_COLUMN_NAMES
             = {ID_COLUMN, SECTION_ID_COLUMN, CONFERENCE_ID_COLUMN,
-            REPORT_TEXT_COLUMN, REPORT_TYPE_COLUMN, APPLICANT_COLUMN};
+            REPORT_TEXT_COLUMN, REPORT_TYPE_COLUMN, APPLICANT_COLUMN, QUESTION_REPORT_ID_COLUMN};
     public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_REPORT_DAO_SQL
             = "select * from %s where %s = ?";
     public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_ONE_AND_COLUMN_TWO_FOR_DB_REPORT_DAO_SQL

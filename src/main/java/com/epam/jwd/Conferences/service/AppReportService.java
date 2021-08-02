@@ -54,4 +54,9 @@ public class AppReportService implements ReportService {
     public void createReport(Report reportToCreate) throws DuplicateException {
         reportDAO.save(reportToCreate);
     }
+
+    @Override
+    public List<Report> findAllQuestions(Long managerId) {
+        return reportDAO.findAllQuestionsByManagerId(managerId);
+    }
 }

@@ -25,9 +25,10 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
     private static final String REPORT_TYPE_COLUMN = "reportType";
     private static final String APPLICANT_COLUMN = "applicant";
     private static final String TABLE_NAME_REPORTS = "reports";
+    private static final String QUESTION_REPORT_ID_COLUMN = "questionReportId";
     private static final String[] REPORT_TABLE_COLUMN_NAMES
             = {ID_COLUMN, SECTION_ID_COLUMN, CONFERENCE_ID_COLUMN,
-            REPORT_TEXT_COLUMN, REPORT_TYPE_COLUMN, APPLICANT_COLUMN};
+            REPORT_TEXT_COLUMN, REPORT_TYPE_COLUMN, APPLICANT_COLUMN, QUESTION_REPORT_ID_COLUMN};
     public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_REPORT_DAO_SQL = "select * from %s where %s = ?";
     public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_ONE_AND_COLUMN_TWO_FOR_DB_REPORT_DAO_SQL = "select * from %s where %s = ? and %s = ?";
     public static final String SELECT_ALL_QUESTION_BY_MANAGER_ID_SQL = "select %s.* from %s, %s where %s.%s = 1" +
@@ -73,7 +74,8 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
                 resultSet.getLong(CONFERENCE_ID_COLUMN),
                 resultSet.getString(REPORT_TEXT_COLUMN),
                 ReportType.resolveReportTypeById(resultSet.getLong(REPORT_TYPE_COLUMN)),
-                resultSet.getLong(APPLICANT_COLUMN));
+                resultSet.getLong(APPLICANT_COLUMN),
+                resultSet.getLong(QUESTION_REPORT_ID_COLUMN));
     }
 
     @Override
@@ -84,6 +86,7 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
             statement.setString(3, entity.getReportText());
             statement.setLong(4, entity.getReportType().getId());
             statement.setLong(5, entity.getApplicant());
+            statement.setLong(6, entity.getQuestionReportId());
         } catch (SQLException e) {
             logger.error("Error by updating the statement. The SQLState is " + e.getSQLState());
         }
@@ -104,6 +107,8 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
                 + REPORT_TYPE_COLUMN
                 + " = ?, "
                 + APPLICANT_COLUMN
+                + " = ?, "
+                + QUESTION_REPORT_ID_COLUMN
                 + " = ?"
                 + " where "
                 + ID_COLUMN
@@ -118,7 +123,8 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
             statement.setString(3, entity.getReportText());
             statement.setLong(4, entity.getReportType().getId());
             statement.setLong(5, entity.getApplicant());
-            statement.setLong(6, entity.getId());
+            statement.setLong(6, entity.getQuestionReportId());
+            statement.setLong(7, entity.getId());
         } catch (SQLException e) {
             logger.error("Error by updating the statement. The SQLState is " + e.getSQLState());
         }
