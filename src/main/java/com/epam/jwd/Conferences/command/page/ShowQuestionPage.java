@@ -20,6 +20,7 @@ public class ShowQuestionPage implements Command {
     private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
     public static final String QUESTIONS_ATTRIBUTE_NAME = "questions";
     private static final String USERS_ATTRIBUTE_NAME = "users";
+    public static final String MANAGER_ID_PARAMETER_NAME = "managerId";
     public static final String MANAGER_ID_ATTRIBUTE_NAME = "managerId";
 
     private final UserService service;
@@ -45,7 +46,8 @@ public class ShowQuestionPage implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
-        final Long managerId = Long.valueOf(request.getParameter(MANAGER_ID_ATTRIBUTE_NAME));
+        final Long managerId = Long.valueOf(request.getParameter(MANAGER_ID_PARAMETER_NAME));
+        request.setAttribute(MANAGER_ID_ATTRIBUTE_NAME, managerId);
         final List<User> users = service.findAllUsers();
         request.setAttribute(USERS_ATTRIBUTE_NAME, users);
         final List<Report> questions = service.findAllQuestions(managerId);

@@ -31,6 +31,9 @@ public class CreateReport implements Command {
     private static final String REPORT_TEXT_PARAMETER_NAME = "reportText";
     private static final String APPLICANT_NICKNAME_PARAMETER_NAME = "applicantNickname";
     private static final String REPORT_TYPE_PARAMETER_NAME = "reportType";
+    private static final String QUESTION_REPORT_ID_PARAMETER_NAME = "questionReportId";
+    private static final String QUESTION_TEXT_PARAMETER_NAME = "questionText";
+    private static final String QUESTION_REPORT_ID_ATTRIBUTE_NAME = "questionId";
     private static final String REPORTS_ATTRIBUTE_NAME = "reports";
     private static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
     private static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
@@ -39,12 +42,15 @@ public class CreateReport implements Command {
     private static final String USERS_ATTRIBUTE_NAME = "users";
     private static final String CREATOR_ID_ATTRIBUTE_NAME = "creatorId";
     private static final String CREATOR_ROLE_ATTRIBUTE_NAME = "creatorRole";
+    private static final String QUESTION_TEXT_ATTRIBUTE_NAME = "questionText";
 
     private static final String ERROR_ATTRIBUTE_NAME = "error";
-    private static final CommandResponse CREATE_NEW_REPORT_ERROR_RESPONSE
+    private static final CommandResponse CREATE_NEW_REPORT_ERROR_RESPONSE_TO_CREATE_REPORT_PAGE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createReport.jsp");
     private static final CommandResponse REPORT_CREATION_SUCCESS_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/reports.jsp");
+    private static final CommandResponse CREATE_NEW_REPORT_ERROR_RESPONSE_TO_CREATE_ANSWER_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createAnswer.jsp");
     private static final String DUPLICATE_SECTION_MESSAGE
             = "The section with such an section name title already exist in the system."
             + " Please choose an other section name.";
@@ -78,6 +84,7 @@ public class CreateReport implements Command {
      */
     @Override
     public CommandResponse execute(CommandRequest request) {
+        final Long questionReportId = Long.valueOf(request.getParameter(QUESTION_REPORT_ID_PARAMETER_NAME));
         final Long conferenceId = Long.valueOf(request.getParameter(CONFERENCE_ID_PARAMETER_NAME));
         final String sectionName = request.getParameter(SECTION_NAME_PARAMETER_NAME);
         final String conferenceTitle = String.valueOf(request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME));
@@ -107,7 +114,7 @@ public class CreateReport implements Command {
 
         Report reportToCreate
                 = new Report(1L, sectionId, conferenceId, reportText,
-                reportTypeToAdd, applicantId, 0L);
+                reportTypeToAdd, applicantId, questionReportId);
 
         try {
             service.createReport(reportToCreate);
@@ -126,20 +133,38 @@ public class CreateReport implements Command {
     }
 
     private CommandResponse prepareErrorPage(CommandRequest request, String errorMessage) {
-        final Long creatorId = Long.valueOf(request.getParameter(CREATOR_ID_PARAMETER_NAME));
-        final String creatorRole = String.valueOf(request.getParameter(CREATOR_ROLE_PARAMETER_NAME));
-        final Long conferenceId = Long.valueOf(request.getParameter(CONFERENCE_ID_PARAMETER_NAME));
-        final String sectionName = request.getParameter(SECTION_NAME_PARAMETER_NAME);
-        final String conferenceTitle = String.valueOf(request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME));
-        final Long sectionId = Long.valueOf(request.getParameter(SECTION_ID_PARAMETER_NAME));
-        request.setAttribute(CONFERENCE_TITLE_ATTRIBUTE_NAME, conferenceTitle);
-        request.setAttribute(CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
-        request.setAttribute(CREATOR_ID_ATTRIBUTE_NAME, creatorId);
-        request.setAttribute(CREATOR_ROLE_ATTRIBUTE_NAME, creatorRole);
-        request.setAttribute(SECTION_ID_ATTRIBUTE_NAME, sectionId);
-        request.setAttribute(SECTION_NAME_ATTRIBUTE_NAME, sectionName);
-        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
-        return CREATE_NEW_REPORT_ERROR_RESPONSE;
+        final Long questionReportId = Long.valueOf(request.getParameter(QUESTION_REPORT_ID_PARAMETER_NAME));
+        final String questionText = String.valueOf(request.getParameter(QUESTION_TEXT_PARAMETER_NAME));
+
+        if (questionReportId == 0) {
+            final Long creatorId = Long.valueOf(request.getParameter(CREATOR_ID_PARAMETER_NAME));
+            final String creatorRole = String.valueOf(request.getParameter(CREATOR_ROLE_PARAMETER_NAME));
+            final Long conferenceId = Long.valueOf(request.getParameter(CONFERENCE_ID_PARAMETER_NAME));
+            final String sectionName = request.getParameter(SECTION_NAME_PARAMETER_NAME);
+            final String conferenceTitle = String.valueOf(request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME));
+            final Long sectionId = Long.valueOf(request.getParameter(SECTION_ID_PARAMETER_NAME));
+            request.setAttribute(CONFERENCE_TITLE_ATTRIBUTE_NAME, conferenceTitle);
+            request.setAttribute(CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
+            request.setAttribute(CREATOR_ID_ATTRIBUTE_NAME, creatorId);
+            request.setAttribute(CREATOR_ROLE_ATTRIBUTE_NAME, creatorRole);
+            request.setAttribute(SECTION_ID_ATTRIBUTE_NAME, sectionId);
+            request.setAttribute(SECTION_NAME_ATTRIBUTE_NAME, sectionName);
+            request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
+            return CREATE_NEW_REPORT_ERROR_RESPONSE_TO_CREATE_REPORT_PAGE;
+        } else {
+            final Long creatorId = Long.valueOf(request.getParameter(CREATOR_ID_PARAMETER_NAME));
+            final String creatorRole = String.valueOf(request.getParameter(CREATOR_ROLE_PARAMETER_NAME));
+            final Long conferenceId = Long.valueOf(request.getParameter(CONFERENCE_ID_PARAMETER_NAME));
+            final Long sectionId = Long.valueOf(request.getParameter(SECTION_ID_PARAMETER_NAME));
+            request.setAttribute(CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
+            request.setAttribute(CREATOR_ID_ATTRIBUTE_NAME, creatorId);
+            request.setAttribute(CREATOR_ROLE_ATTRIBUTE_NAME, creatorRole);
+            request.setAttribute(SECTION_ID_ATTRIBUTE_NAME, sectionId);
+            request.setAttribute(QUESTION_REPORT_ID_ATTRIBUTE_NAME, questionReportId);
+            request.setAttribute(QUESTION_TEXT_ATTRIBUTE_NAME, questionText);
+            request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
+            return CREATE_NEW_REPORT_ERROR_RESPONSE_TO_CREATE_ANSWER_PAGE;
+        }
     }
 
     private boolean isStringValid(String toValidate) {

@@ -19,6 +19,10 @@
             <th>ReportText</th>
             <th>ReportType</th>
             <th>Applicant</th>
+            <th>QuestionID</th>
+            <th>WriteAnswerLink</th>
+            <th>ShowQuestionContextLink</th>
+
         </tr>
         <br>
         <c:forEach var="question" items="${requestScope.questions}">
@@ -46,6 +50,22 @@
                     </c:if>
                 </c:forEach>
             </tr>
+            <td>
+                ${question.questionReportId}
+            </td>
+            <td>
+                <c:choose>
+                    <c:when test="${question.questionReportId == 0}">
+                        <a href="${pageContext.request.contextPath}/controller?command=show_create_answer&questionId=${question.id}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${question.conferenceId}&sectionId=${question.sectionId}&questionText=${question.reportText}">Write an answer</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="${pageContext.request.contextPath}/controller?command=show_create_answer&questionId=${question.questionReportId}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${question.conferenceId}&sectionId=${question.sectionId}&questionText=${question.reportText}">Write an answer</a>
+                    </c:otherwise>
+                </c:choose>
+            </td>
+            <td>
+                <a href="${pageContext.request.contextPath}/controller?command=show_question_context&question=${question}&managerId=${requestScope.managerId}">Show question history</a>
+            </td>
             <br>
         </c:forEach>
     </c:when>

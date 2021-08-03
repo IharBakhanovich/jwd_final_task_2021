@@ -28,7 +28,7 @@
             again</a>
     </c:when>
     <c:otherwise>
-        <form action="${pageContext.request.contextPath}/controller?command=create_new_report&conferenceId=${requestScope.conferenceId}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}&sectionId=${requestScope.sectionId}"
+        <form action="${pageContext.request.contextPath}/controller?command=create_new_report&conferenceId=${requestScope.conferenceId}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}&sectionId=${requestScope.sectionId}&questionReportId=0"
             method="post">
             <label for="sectionNameField"> Section name:</label>
             <input type="text" id="sectionNameField" name="sectionName" value="${requestScope.sectionName}" readonly>

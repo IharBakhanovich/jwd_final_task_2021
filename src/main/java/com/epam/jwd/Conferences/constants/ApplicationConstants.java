@@ -78,6 +78,11 @@ public class ApplicationConstants {
     private static final String EMAIL_REGEX = "^(.+)@(.+)$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
     private static final String MANAGER_CONF_PARAMETER_NAME = "managerConf";
+    private static final String QUESTION_REPORT_ID_PARAMETER_NAME = "questionReportId";
+
+    private static final String QUESTION_TEXT_PARAMETER_NAME = "questionText";
+    private static final String QUESTION_REPORT_ID_ATTRIBUTE_NAME = "questionId";
+    private static final String QUESTION_TEXT_ATTRIBUTE_NAME = "questionText";
 
     // from class CreateConference
     private static final Logger LOGGER_FOR_CREATE_CONFERENCE = LogManager.getLogger(CreateConference.class);
@@ -104,10 +109,13 @@ public class ApplicationConstants {
     // from class CreateReport
     private static final Logger LOGGER_FOR_CREATE_REPORT = LogManager.getLogger(CreateReport.class);
     private static final String APPLICANT_NICKNAME_PARAMETER_NAME = "applicantNickname";
-    private static final CommandResponse CREATE_NEW_REPORT_ERROR_RESPONSE
+    private static final CommandResponse CREATE_NEW_REPORT_ERROR_RESPONSE_TO_CREATE_REPORT_PAGE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createReport.jsp");
+    private static final CommandResponse CREATE_NEW_REPORT_ERROR_RESPONSE_TO_CREATE_ANSWER_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createAnswer.jsp");
     private static final CommandResponse REPORT_CREATION_SUCCESS_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/reports.jsp");
+
 
     //from class CreateSection
     private static final Logger LOGGER_FOR_CREATE_SECTION = LogManager.getLogger(CreateSection.class);
@@ -128,7 +136,6 @@ public class ApplicationConstants {
 
     // from class UpdateReport
     private static final String APPLICANT_PARAMETER_NAME = "applicant";
-    private static final String QUESTION_REPORT_ID_PARAMETER_NAME = "questionReportId";
     private static final CommandResponse UPDATE_REPORT_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/report.jsp");
 
@@ -323,5 +330,13 @@ public class ApplicationConstants {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/questions.jsp");
     public static final String QUESTIONS_ATTRIBUTE_NAME = "questions";
     public static final String MANAGER_ID_ATTRIBUTE_NAME = "managerId";
+    public static final String MANAGER_ID_PARAMETER_NAME = "managerId";
+
+    // from class ShowCreateAnswerPage
+    private static final CommandResponse CREATE_ANSWER_PAGE_RESPONSE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createAnswer.jsp");
+    private static final String CREATOR_ID_PARAMETER_NAME_FOR_ANSWER = "managerId";
+    private static final String CREATOR_ROLE_PARAMETER_NAME_FOR_ANSWER = "managerRole";
+    private static final String QUESTION_REPORT_ID_PARAMETER_NAME_FOR_ANSWER = "questionId";
 
 }
