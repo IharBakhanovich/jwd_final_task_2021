@@ -57,13 +57,35 @@
 <br>
 <c:choose>
     <c:when test="${requestScope.conferenceTitle eq 'question'}">
-        <c:if test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userRole eq Role.MANAGER}">
-            <p>Great. Click below if you want back to questions</p>
-            <a href="${pageContext.request.contextPath}/controller?command=show_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}">Back to questions</a>
-        </c:if>
+        <c:choose>
+            <c:when test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userRole eq Role.MANAGER}">
+                <c:choose>
+                    <c:when test="${requestScope.sectionName eq 'applicantQuestions'}">
+                        <p>Great. Click below if you want back to questions</p>
+                        <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}">Back
+                            to questions</a>
+                    </c:when>
+                    <c:otherwise>
+                        <p>Great. Click below if you want back to questions</p>
+                        <a href="${pageContext.request.contextPath}/controller?command=show_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}">Back
+                            to questions</a>
+                    </c:otherwise>
+                </c:choose>
+            </c:when>
+            <c:otherwise>
+                <p>Great. Click below if you want back to questions</p>
+                <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}">Back
+                    to questions</a>
+            </c:otherwise>
+        </c:choose>
+<%--        <c:if test="${}">--%>
+<%--            <p>Great. Click below if you want back to questions</p>--%>
+<%--            <a href="${pageContext.request.contextPath}/controller?command=show_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}">Back--%>
+<%--                to questions</a>--%>
+<%--        </c:if>--%>
     </c:when>
     <c:otherwise>
-        <c:if test="${not empty sessionScope.userName}" >
+        <c:if test="${not empty sessionScope.userName}">
             <a href="${pageContext.request.contextPath}/controller?command=show_create_report&conferenceId=${requestScope.conferenceId}&conferenceTitle=${requestScope.conferenceTitle}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}&sectionId=${requestScope.sectionId}&sectionName=${requestScope.sectionName}">Create
                 New Report in '${requestScope.conferenceTitle}'/'${requestScope.sectionName}' section</a>
         </c:if>

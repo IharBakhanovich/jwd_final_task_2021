@@ -54,4 +54,6 @@ public interface UserService {
     List<Report> findAllQuestions(Long managerId);
 
     List<Report> findAllReportsByQuestionId(Long questionReportId);
+
+    List<Report> findApplicantQuestions(Long managerId);
 }

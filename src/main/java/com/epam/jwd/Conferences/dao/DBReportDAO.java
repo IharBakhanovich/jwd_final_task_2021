@@ -35,11 +35,14 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
             = "select * from %s where %s = ? and %s = ?";
     public static final String SELECT_ALL_QUESTION_BY_MANAGER_ID_SQL
             = "select %s.* from %s, %s where %s.%s = 1 and %s.%s = %s.%s and %s.%s = ?";
+    public static final String SELECT_ALL_QUESTION_BY_APPLICANT_ID_SQL
+            = "select * from %s where %s = 1 and %s = ?";
 
     private final String findReportByApplicantIdSql;
     private final String findAllReportsByConferenceIdAndSectionIdSql;
     private final String findAllQuestionsByManagerIdSql;
     private final String findAllReportsByQuestionReportIdSql;
+    private final String findAllQuestionsByApplicantIdSql;
 
     private static final String MANAGER_SECT_COLUMN = "managerSect";
     private static final String TABLE_NAME_SECTIONS = "sections";
@@ -56,6 +59,8 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
                 SECTION_ID_COLUMN, TABLE_NAME_SECTIONS, ID_COLUMN, TABLE_NAME_SECTIONS, MANAGER_SECT_COLUMN);
         findAllReportsByQuestionReportIdSql = String.format(SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_REPORT_DAO_SQL,
                 TABLE_NAME_REPORTS, QUESTION_REPORT_ID_COLUMN);
+        findAllQuestionsByApplicantIdSql = String.format(SELECT_ALL_QUESTION_BY_APPLICANT_ID_SQL,
+                TABLE_NAME_REPORTS, REPORT_TYPE_COLUMN, APPLICANT_COLUMN);
     }
 
     private static class DBReportDAOHolder {
@@ -163,6 +168,13 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
         return findPreparedEntities(
                 statement -> statement.setLong(1, managerId),
                 findAllQuestionsByManagerIdSql);
+    }
+
+    @Override
+    public List<Report> findAllQuestionsByApplicantId(Long managerId) {
+        return findPreparedEntities(
+                statement -> statement.setLong(1, managerId),
+                findAllQuestionsByApplicantIdSql);
     }
 
     @Override

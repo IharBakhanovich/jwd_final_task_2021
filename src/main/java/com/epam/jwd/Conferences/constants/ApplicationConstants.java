@@ -84,6 +84,15 @@ public class ApplicationConstants {
     private static final String QUESTION_REPORT_ID_ATTRIBUTE_NAME = "questionId";
     private static final String QUESTION_TEXT_ATTRIBUTE_NAME = "questionText";
 
+    public static final String QUESTIONS_ATTRIBUTE_NAME = "questions";
+    public static final String MANAGER_ID_PARAMETER_NAME = "managerId";
+    public static final String MANAGER_ID_ATTRIBUTE_NAME = "managerId";
+    private static final CommandResponse SHOW_QUESTIONS_PAGE_RESPONSE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/questions.jsp");
+
+    private static final String MANAGER_SECT_COLUMN = "managerSect";
+    private static final String TABLE_NAME_SECTIONS = "sections";
+
     // from class CreateConference
     private static final Logger LOGGER_FOR_CREATE_CONFERENCE = LogManager.getLogger(CreateConference.class);
     private static final CommandResponse CREATE_NEW_CONFERENCE_ERROR_RESPONSE
@@ -268,11 +277,12 @@ public class ApplicationConstants {
             = "select * from %s where %s = ? and %s = ?";
     public static final String SELECT_ALL_QUESTION_BY_MANAGER_ID_SQL =
             "select %s.* from %s, %s where %s.%s = 1 and %s.%s = %s.%s and %s.%s = ?";
+    public static final String SELECT_ALL_QUESTION_BY_APPLICANT_ID_SQL
+            = "select * from %s where %s = 1 and %s = ?";
+
     // from class DBSectionDAO
     private static final Logger LOGGER_FOR_DB_SECTION_DAO = LogManager.getLogger(DBSectionDAO.class);
     private static final String SECTION_NAME_COLUMN = "sectionName";
-    private static final String MANAGER_SECT_COLUMN = "managerSect";
-    private static final String TABLE_NAME_SECTIONS = "sections";
     private static final String[] SECTION_TABLE_COLUMN_NAMES
             = {ID_COLUMN, CONFERENCE_ID_COLUMN, SECTION_NAME_COLUMN, MANAGER_SECT_COLUMN};
     public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_SECTION_DAO = "select * from %s where %s = ?";
@@ -297,7 +307,7 @@ public class ApplicationConstants {
             SALT_COLUMN, NUMBER_LOGIN_ATTEMPTS_COLUMN, VERIFICATION_TOKEN_COLUMN,
             EMAIL_VERIFIED_COLUMN, NICK_NAME_COLUMN, FIRST_NAME_COLUMN,
             SURNAME_COLUMN, ROLE_COLUMN};
-    public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_USER_DAO = "select * from %s where %s = ?";
+    private static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_USER_DAO = "select * from %s where %s = ?";
 
     // from class PermissionFilter
     private static final String ERROR_REDIRECT_LOCATION = "/controller?command=main_page";
@@ -326,11 +336,6 @@ public class ApplicationConstants {
     // from class AppValidator
 
     // from class ShowQuestionPage
-    private static final CommandResponse SHOW_QUESTIONS_PAGE_RESPONSE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/questions.jsp");
-    public static final String QUESTIONS_ATTRIBUTE_NAME = "questions";
-    public static final String MANAGER_ID_ATTRIBUTE_NAME = "managerId";
-    public static final String MANAGER_ID_PARAMETER_NAME = "managerId";
 
     // from class ShowCreateAnswerPage
     private static final CommandResponse CREATE_ANSWER_PAGE_RESPONSE
@@ -338,5 +343,13 @@ public class ApplicationConstants {
     private static final String CREATOR_ID_PARAMETER_NAME_FOR_ANSWER = "managerId";
     private static final String CREATOR_ROLE_PARAMETER_NAME_FOR_ANSWER = "managerRole";
     private static final String QUESTION_REPORT_ID_PARAMETER_NAME_FOR_ANSWER = "questionId";
+
+    // from class ShowQuestionContextPage
+    private static final String QUESTION_ID_PARAMETER_NAME_FOR_CONTEXT = "questionIdForContext";
+    private static final String QUESTION_REPORT_ID_PARAMETER_NAME_FOR_CONTEXT = "questionReportIdForContext";
+    private static final String QUESTION_TOKEN_NAME = "question";
+    private static final String APPLICANT_QUESTIONS_TOKEN_NAME = "applicantQuestions";
+
+    // from class ShowOwnQuestionPage
 
 }

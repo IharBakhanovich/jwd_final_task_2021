@@ -20,8 +20,8 @@
             <th>ReportType</th>
             <th>Applicant</th>
             <th>QuestionID</th>
-            <th>WriteAnswerLink</th>
             <th>ShowQuestionContextLink</th>
+            <th>WriteAnswerLink</th>
 
         </tr>
         <br>
@@ -53,19 +53,20 @@
             <td>
                 ${question.questionReportId}
             </td>
+
             <td>
-                <c:choose>
-                    <c:when test="${question.questionReportId == 0}">
-                        <a href="${pageContext.request.contextPath}/controller?command=show_create_answer&questionId=${question.id}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${question.conferenceId}&sectionId=${question.sectionId}&questionText=${question.reportText}">Write an answer</a>
-                    </c:when>
-                    <c:otherwise>
-                        <a href="${pageContext.request.contextPath}/controller?command=show_create_answer&questionId=${question.questionReportId}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${question.conferenceId}&sectionId=${question.sectionId}&questionText=${question.reportText}">Write an answer</a>
-                    </c:otherwise>
-                </c:choose>
+                <a href="${pageContext.request.contextPath}/controller?command=show_question_context&questionIdForContext=${question.id}&managerId=${requestScope.managerId}&questionReportIdForContext=${question.questionReportId}&sectionName=${requestScope.sectionName}">Show question's history</a>
             </td>
             <td>
-                <a href="${pageContext.request.contextPath}/controller?command=show_question_context&questionIdForContext=${question.id}&managerId=${requestScope.managerId}&questionReportIdForContext=${question.questionReportId}">Show question's history</a>
-            </td>
+            <c:choose>
+                <c:when test="${question.questionReportId == 0}">
+                    <a href="${pageContext.request.contextPath}/controller?command=show_create_answer&questionId=${question.id}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${question.conferenceId}&sectionId=${question.sectionId}&questionText=${question.reportText}">Write an answer</a>
+                </c:when>
+                <c:otherwise>
+                    <a href="${pageContext.request.contextPath}/controller?command=show_create_answer&questionId=${question.questionReportId}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${question.conferenceId}&sectionId=${question.sectionId}&questionText=${question.reportText}">Write an answer</a>
+                </c:otherwise>
+            </c:choose>
+        </td>
             <br>
         </c:forEach>
     </c:when>

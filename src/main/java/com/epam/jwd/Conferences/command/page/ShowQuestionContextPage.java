@@ -19,7 +19,10 @@ public class ShowQuestionContextPage implements Command {
     private static final String USERS_ATTRIBUTE_NAME = "users";
     // to choose which variant of the reports.jsp page to show
     private static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
+    private static final String SECTION_NAME_PARAMETER_NAME = "sectionName";
+    private static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
     private static final String QUESTION_TOKEN_NAME = "question";
+    private static final String APPLICANT_QUESTIONS_TOKEN_NAME = "applicantQuestions";
 
 
     private final UserService service;
@@ -45,6 +48,8 @@ public class ShowQuestionContextPage implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
+        final String sectionName = request.getParameter(SECTION_NAME_PARAMETER_NAME);
+        request.setAttribute(SECTION_NAME_ATTRIBUTE_NAME, sectionName);
         final Long questionId = Long.valueOf(request.getParameter(QUESTION_ID_PARAMETER_NAME_FOR_CONTEXT));
         final Long questionReportId = Long.valueOf(request.getParameter(QUESTION_REPORT_ID_PARAMETER_NAME_FOR_CONTEXT));
         List<Report> questionContextReports = null;
@@ -55,6 +60,7 @@ public class ShowQuestionContextPage implements Command {
         }
         request.setAttribute(REPORTS_ATTRIBUTE_NAME, questionContextReports);
         request.setAttribute(CONFERENCE_TITLE_ATTRIBUTE_NAME, QUESTION_TOKEN_NAME);
+        //request.setAttribute(SECTION_NAME_ATTRIBUTE_NAME, APPLICANT_QUESTIONS_TOKEN_NAME);
         final List<User> users = service.findAllUsers();
         request.setAttribute(USERS_ATTRIBUTE_NAME, users);
         return SHOW_REPORTS_PAGE_RESPONSE;
