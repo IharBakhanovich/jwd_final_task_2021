@@ -64,7 +64,7 @@
                 </c:choose>
             </td>
             <td>
-                <a href="${pageContext.request.contextPath}/controller?command=show_question_context&question=${question}&managerId=${requestScope.managerId}">Show question history</a>
+                <a href="${pageContext.request.contextPath}/controller?command=show_question_context&questionIdForContext=${question.id}&managerId=${requestScope.managerId}&questionReportIdForContext=${question.questionReportId}">Show question's history</a>
             </td>
             <br>
         </c:forEach>

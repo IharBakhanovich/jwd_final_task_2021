@@ -39,6 +39,7 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
     private final String findReportByApplicantIdSql;
     private final String findAllReportsByConferenceIdAndSectionIdSql;
     private final String findAllQuestionsByManagerIdSql;
+    private final String findAllReportsByQuestionReportIdSql;
 
     private static final String MANAGER_SECT_COLUMN = "managerSect";
     private static final String TABLE_NAME_SECTIONS = "sections";
@@ -53,6 +54,8 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
         findAllQuestionsByManagerIdSql = String.format(SELECT_ALL_QUESTION_BY_MANAGER_ID_SQL, TABLE_NAME_REPORTS,
                 TABLE_NAME_REPORTS, TABLE_NAME_SECTIONS, TABLE_NAME_REPORTS, REPORT_TYPE_COLUMN, TABLE_NAME_REPORTS,
                 SECTION_ID_COLUMN, TABLE_NAME_SECTIONS, ID_COLUMN, TABLE_NAME_SECTIONS, MANAGER_SECT_COLUMN);
+        findAllReportsByQuestionReportIdSql = String.format(SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_REPORT_DAO_SQL,
+                TABLE_NAME_REPORTS, QUESTION_REPORT_ID_COLUMN);
     }
 
     private static class DBReportDAOHolder {
@@ -160,6 +163,13 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
         return findPreparedEntities(
                 statement -> statement.setLong(1, managerId),
                 findAllQuestionsByManagerIdSql);
+    }
+
+    @Override
+    public List<Report> findAllReportsByQuestionReportId(Long questionReportId) {
+        return findPreparedEntities(
+                statement -> statement.setLong(1, questionReportId),
+                findAllReportsByQuestionReportIdSql);
     }
 
     private void setParameters(

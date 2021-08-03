@@ -52,4 +52,6 @@ public interface UserService {
     void updateSection(Section sectionToUpdate);
 
     List<Report> findAllQuestions(Long managerId);
+
+    List<Report> findAllReportsByQuestionId(Long questionReportId);
 }

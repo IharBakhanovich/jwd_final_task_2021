@@ -9,6 +9,8 @@ import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.exception.DuplicateException;
 import com.epam.jwd.Conferences.exception.EntityNotFoundException;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -185,5 +187,20 @@ public class AppUserService implements UserService {
     @Override
     public List<Report> findAllQuestions(Long managerId) {
         return reportDAO.findAllQuestionsByManagerId(managerId);
+    }
+
+    @Override
+    public List<Report> findAllReportsByQuestionId(Long questionReportId) {
+        Optional<Report> question = reportDAO.findById(questionReportId);
+        List<Report> answers = reportDAO.findAllReportsByQuestionReportId(questionReportId);
+
+        if(question.isPresent()) {
+            final Report questionToAdd = new Report(question.get().getId(), question.get().getSectionId(),
+                    question.get().getConferenceId(), question.get().getReportText(), question.get().getReportType(),
+                    question.get().getApplicant(), question.get().getQuestionReportId());
+            answers.add(questionToAdd);
+            Collections.sort(answers);
+        }
+        return answers;
     }
 }

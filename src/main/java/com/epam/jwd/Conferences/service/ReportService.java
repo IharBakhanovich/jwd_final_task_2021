@@ -22,4 +22,6 @@ public interface ReportService {
 
     List<Report> findAllQuestions(Long managerId);
 
+    List<Report> findAllReportsByQuestionId(Long questionReportId);
+
 }
