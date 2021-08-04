@@ -8,7 +8,15 @@
     <title>Questions</title>
 </head>
 <body>
-<h2>Questions from applicants:</h2>
+<c:choose>
+    <c:when test="${requestScope.sectionName eq 'applicantQuestions'}">
+        <h2>Your questions:</h2>
+    </c:when>
+    <c:otherwise>
+        <h2>Questions from applicants:</h2>
+    </c:otherwise>
+</c:choose>
+
 <c:choose>
     <c:when test="${not empty requestScope.questions}">
         <h3>There are some questions from applicants</h3>

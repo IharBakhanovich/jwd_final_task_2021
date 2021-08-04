@@ -3,12 +3,15 @@ package com.epam.jwd.Conferences.command.action;
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
+import com.epam.jwd.Conferences.dto.Conference;
+import com.epam.jwd.Conferences.dto.Role;
 import com.epam.jwd.Conferences.dto.Section;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.service.UserService;
 import com.epam.jwd.Conferences.validator.Validator;
 
 import java.util.List;
+import java.util.Optional;
 
 public class UpdateSection implements Command {
 
@@ -94,7 +97,30 @@ public class UpdateSection implements Command {
                             + " signs. Please try again");
         }
         Section sectionToUpdate = new Section(sectionId, conferenceId, sectionName, sectionManagerId);
+        // to have sections and the status of the former section manager before the section update
+        List<Section> sectionsBeforeUpdate = service.findAllSections();
+        boolean isTheManagerOfThisSectionRemainsManager = isTheManagerOfThisSectionRemainsManager(sectionId);
+        Long formerManagerOrThisSectionId = null;
+        for (Section section : sectionsBeforeUpdate
+        ) {
+            if (section.getId().equals(sectionId)) {
+                formerManagerOrThisSectionId = section.getManagerSect();
+            }
+        }
+        Optional<User> oldSectionManager = service.findUserByID(formerManagerOrThisSectionId);
+        Role currentRoleOfFormerSectionManager = oldSectionManager.get().getRole();
+        // to update the section
         service.updateSection(sectionToUpdate);
+        // to update role of the newSectionManager
+        Optional<User> newSectionManager = service.findUserByID(sectionManagerId);
+        Role currentRoleOfNewSectionManager = newSectionManager.get().getRole();
+        if (currentRoleOfNewSectionManager != Role.ADMIN && currentRoleOfNewSectionManager != Role.MANAGER) {
+            service.updateUserRole(sectionManagerId, Role.MANAGER.getId());
+        }
+        // to check if it needed and update the role of the formerSectionManager
+        if (!isTheManagerOfThisSectionRemainsManager && currentRoleOfFormerSectionManager != Role.USER) {
+            service.updateUserRole(formerManagerOrThisSectionId, Role.USER.getId());
+        }
         request.setAttribute(CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME_TO_SECTIONS, conferenceManagerId);
         final List<Section> sections = service.findAllSectionsByConferenceID(conferenceId);
         request.setAttribute(SECTIONS_ATTRIBUTE_NAME, sections);
@@ -104,6 +130,41 @@ public class UpdateSection implements Command {
         request.setAttribute(USERS_ATTRIBUTE_NAME, users);
 
         return SECTION_UPDATE_SUCCESS_RESPONSE;
+    }
+
+    private boolean isTheManagerOfThisSectionRemainsManager(Long sectionId) {
+        // to prove whether the former Manager of this section is still the Manager of another sections or conferences
+        boolean isThisManagerTheManagerOfAnotherConferenceOrSection = false;
+        List<Section> sectionsBeforeUpdate = service.findAllSections();
+        List<Conference> conferences = service.findAllConferences();
+
+        // to find former section manager
+        User formerSectionManager = null;
+        Long formerManagerOrThisSectionId = null;
+        for (Section section : sectionsBeforeUpdate
+        ) {
+            if (section.getId().equals(sectionId)) {
+                formerManagerOrThisSectionId = section.getManagerSect();
+            }
+        }
+        // to prove whether this Manager is the manager of the another section
+        for (Section section : sectionsBeforeUpdate
+        ) {
+            if (section.getManagerSect().equals(formerManagerOrThisSectionId) && !section.getId().equals(sectionId)) {
+                isThisManagerTheManagerOfAnotherConferenceOrSection = true;
+                break;
+            }
+        }
+
+        // to prove whether this Manager is the manager of the another conference
+        for (Conference conference : conferences
+        ) {
+            if (conference.getManagerConf().equals(formerManagerOrThisSectionId)) {
+                isThisManagerTheManagerOfAnotherConferenceOrSection = true;
+                break;
+            }
+        }
+        return isThisManagerTheManagerOfAnotherConferenceOrSection;
     }
 
     private Long fetchSectionManagerId(String sectionManagerNickname) {
