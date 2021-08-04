@@ -2,9 +2,11 @@ package com.epam.jwd.Conferences.dao;
 
 import com.epam.jwd.Conferences.dto.Role;
 import com.epam.jwd.Conferences.dto.User;
+import com.epam.jwd.Conferences.pool.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -131,5 +133,30 @@ public class JdbcUserDAO extends CommonDAO<User> implements UserDAO {
         return takeFirstNotNull(findPreparedEntities(
                 statement -> statement.setString(1, nickname), findByNicknameSql)
         );
+    }
+
+    @Override
+    public void updateUserRoleByUserId(Long userId, Long newRole) {
+        String updateUserRoleByUserIdSql = "update "
+                + TABLE_NAME
+                + " set "
+                + ROLE_COLUMN
+                + " = " + newRole
+                + " where "
+                + ID_COLUMN
+                + " = " + userId;
+        try (final Connection conn = ConnectionPool.retrieve().takeConnection();
+             PreparedStatement statement = conn.prepareStatement(updateUserRoleByUserIdSql)) {
+            statement.executeUpdate();
+            logger.info("entity data was updated");
+        } catch (SQLException e) {
+            logger.error(String.format("Update was unsuccessfully. The SQLState is '%s'", e.getSQLState()));
+        } catch (InterruptedException exception) {
+            logger.error("The thread "
+                    + Thread.currentThread().getName()
+                    + " was interrupted. "
+                    + exception.getMessage());
+            Thread.currentThread().interrupt();
+        }
     }
 }

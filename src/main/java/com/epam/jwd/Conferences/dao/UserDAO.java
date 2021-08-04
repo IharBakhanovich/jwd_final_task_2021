@@ -1,5 +1,6 @@
 package com.epam.jwd.Conferences.dao;
 
+import com.epam.jwd.Conferences.dto.Role;
 import com.epam.jwd.Conferences.dto.User;
 
 import java.util.Optional;
@@ -20,4 +21,5 @@ public interface UserDAO extends DAO<User, Long> {
         return JdbcUserDAO.getInstance();
     }
 
+    void updateUserRoleByUserId(Long userId, Long newRole);
 }

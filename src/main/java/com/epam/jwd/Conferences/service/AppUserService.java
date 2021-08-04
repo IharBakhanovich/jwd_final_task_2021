@@ -2,14 +2,10 @@ package com.epam.jwd.Conferences.service;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.epam.jwd.Conferences.dao.*;
-import com.epam.jwd.Conferences.dto.Conference;
-import com.epam.jwd.Conferences.dto.Report;
-import com.epam.jwd.Conferences.dto.Section;
-import com.epam.jwd.Conferences.dto.User;
+import com.epam.jwd.Conferences.dto.*;
 import com.epam.jwd.Conferences.exception.DuplicateException;
 import com.epam.jwd.Conferences.exception.EntityNotFoundException;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -202,6 +198,11 @@ public class AppUserService implements UserService {
             Collections.sort(answers);
         }
         return answers;
+    }
+
+    @Override
+    public void updateUserRole(Long userId, Long newRole) {
+        userDAO.updateUserRoleByUserId(userId, newRole);
     }
 
     @Override

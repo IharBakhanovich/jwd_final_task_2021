@@ -4,6 +4,7 @@ import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.dto.Conference;
+import com.epam.jwd.Conferences.dto.Role;
 import com.epam.jwd.Conferences.dto.Section;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.exception.DuplicateException;
@@ -101,10 +102,12 @@ public class CreateSection implements Command {
         }
 
         Long managerId = null;
+        Role sectionManagerRole = null;
         for (User user : users
         ) {
             if (user.getNickname().equals(managerSect)) {
                 managerId = user.getId();
+                sectionManagerRole = user.getRole();
             }
         }
         Section sectionToCreate = new Section(1L, conferenceId, sectionName, managerId);
@@ -117,8 +120,11 @@ public class CreateSection implements Command {
             request.setAttribute(CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
             final List<User> users1 = service.findAllUsers();
             request.setAttribute(USERS_ATTRIBUTE_NAME, users1);
-
             request.setAttribute(CONFERENCE_MANAGER_ATTRIBUTE_NAME, conferenceManagerId);
+            // sets a role 'MANAGER' to the manager of a new section if is not the Role.Manager
+            if (sectionManagerRole != Role.ADMIN && sectionManagerRole != Role.MANAGER) {
+                service.updateUserRole(managerId, Role.MANAGER.getId());
+            }
             return SECTION_CREATION_SUCCESS_RESPONSE;
         } catch (DuplicateException e) {
             logger.info(DUPLICATE_SECTION_MESSAGE);

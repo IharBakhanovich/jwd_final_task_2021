@@ -1,9 +1,6 @@
 package com.epam.jwd.Conferences.service;
 
-import com.epam.jwd.Conferences.dto.Conference;
-import com.epam.jwd.Conferences.dto.Report;
-import com.epam.jwd.Conferences.dto.Section;
-import com.epam.jwd.Conferences.dto.User;
+import com.epam.jwd.Conferences.dto.*;
 import com.epam.jwd.Conferences.exception.DuplicateException;
 
 import java.util.List;
@@ -56,4 +53,6 @@ public interface UserService {
     List<Report> findAllReportsByQuestionId(Long questionReportId);
 
     List<Report> findApplicantQuestions(Long managerId);
+
+    void updateUserRole(Long userId, Long newRole);
 }

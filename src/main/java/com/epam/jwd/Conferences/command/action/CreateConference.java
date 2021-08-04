@@ -4,6 +4,7 @@ import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.dto.Conference;
+import com.epam.jwd.Conferences.dto.Role;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.exception.DuplicateException;
 import com.epam.jwd.Conferences.service.UserService;
@@ -87,10 +88,12 @@ public class CreateConference implements Command {
         }
 
         Long managerId = null;
+        Role managerRole = null;
         for (User user : users
         ) {
             if (user.getNickname().equals(managerConf)) {
                 managerId = user.getId();
+                managerRole = user.getRole();
             }
         }
 
@@ -101,6 +104,10 @@ public class CreateConference implements Command {
             request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, updatedConferences);
             final List<User> users1 = service.findAllUsers();
             request.setAttribute(USERS_ATTRIBUTE_NAME, users1);
+            // sets a role 'MANAGER' to the manager of a new conference if is not the Role.Manager
+            if (managerRole != Role.ADMIN && managerRole != Role.MANAGER) {
+                service.updateUserRole(managerId, Role.MANAGER.getId());
+            }
 
             return CONFERENCE_CREATION_SUCCESS_RESPONSE;
         } catch (DuplicateException e) {
