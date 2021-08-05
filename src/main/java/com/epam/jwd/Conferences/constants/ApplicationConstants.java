@@ -101,6 +101,10 @@ public class ApplicationConstants {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     private static final String DUPLICATE_CONFERENCE_MESSAGE
             = "The conference with such a conference title already exist in the system. Please choose an other conference title.";
+    private static final String NO_PERMISSION_TO_CREATE_REPORT_MSG = "YouHaveNoPermissionToCreateAConferenceMSG";
+    private static final String INVALID_CONFERENCE_TITLE_TEXT_MSG = "ConferenceTitleShouldNotBeEmptyOrContainOnlySpacesMSG";
+    private static final String INVALID_CONFERENCE_TITLE_TEXT_NOT_UTF8_MSG = "ConferenceTitleShouldContainOnlyLatinLetters";
+    private static final String INVALID_CONFERENCE_TITLE_TEXT_TOO_LONG_MSG = "ConferenceTitleIsTooLong";
 
     // from class CreateNewUser
     private static final Logger LOGGER_FOR_CREATE_NEW_USER = LogManager.getLogger(CreateNewUser.class);
@@ -112,8 +116,16 @@ public class ApplicationConstants {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/users.jsp");
     private static final CommandResponse USER_CREATION_SUCCESS_RESPONSE_UNAUTHORISED
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/login.jsp");
-    private static final String DUPLICATE_USER_MESSAGE = "The user with such a nickname already exist in the system. Please choose an other nick.";
+    private static final String DUPLICATE_USER_MESSAGE = "The user with such a nickname already exists in the system.";
     private static final int MAX_LENGTH_OF_NICKNAME_IN_DB = 30;
+    private static final String INVALID_NICKNAME_IS_EMPTY_MSG = "NicknameShouldNotBeEmptyMSG";
+    private static final String INVALID_NICKNAME_NOT_UTF8_MSG = "NicknameShouldContainOnlyLatinSignsMSG";
+    private static final String INVALID_PASSWORD_IS_EMPTY_MSG = "PasswordShouldNotBeEmptyMSG";
+    private static final String INVALID_PASSWORD_NOT_UTF8_MSG = "PasswordShouldContainOnlyLatinSignsMSG";
+    private static final String INVALID_FIRST_NAME_IS_TOO_LONG_MSG = "FirstNameIsTooLongMSG";
+    private static final String INVALID_NICKNAME_IS_ALREADY_EXIST_IN_SYSTEM_AND_PASSWORD_REPEATED_WRONG_MSG = "NicknameIsAlreadyExistInSystemAndPasswordRepeatedWrongMSG";
+    private static final String INVALID_NICKNAME_SUCH_USER_EXISTS_IN_SYSTEM_MSG = "NicknameIsAlreadyExistInSystemMSG";
+    private static final String INVALID_PASSWORD_REPEATED_WRONG_MSG = "PasswordRepeatedWrongMSG";
 
     // from class CreateReport
     private static final Logger LOGGER_FOR_CREATE_REPORT = LogManager.getLogger(CreateReport.class);

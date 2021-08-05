@@ -34,11 +34,19 @@ public class CreateNewUser implements Command {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/users.jsp");
     private static final CommandResponse USER_CREATION_SUCCESS_RESPONSE_UNAUTHORISED
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/login.jsp");
-    private static final String DUPLICATE_USER_MESSAGE = "The user with such a nickname already exist in the system. Please choose an other nick.";
+    private static final String DUPLICATE_USER_MESSAGE = "The user with such a nickname already exists in the system.";
     private static final String USERS_ATTRIBUTE_NAME = "users";
     private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}$";
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
     private static final int MAX_LENGTH_OF_NICKNAME_IN_DB = 30;
+    private static final String INVALID_NICKNAME_IS_EMPTY_MSG = "NicknameShouldNotBeEmptyMSG";
+    private static final String INVALID_NICKNAME_NOT_UTF8_MSG = "NicknameShouldContainOnlyLatinSignsMSG";
+    private static final String INVALID_PASSWORD_IS_EMPTY_MSG = "PasswordShouldNotBeEmptyMSG";
+    private static final String INVALID_PASSWORD_NOT_UTF8_MSG = "PasswordShouldContainOnlyLatinSignsMSG";
+    private static final String INVALID_FIRST_NAME_IS_TOO_LONG_MSG = "FirstNameIsTooLongMSG";
+    private static final String INVALID_NICKNAME_IS_ALREADY_EXIST_IN_SYSTEM_AND_PASSWORD_REPEATED_WRONG_MSG = "NicknameIsAlreadyExistInSystemAndPasswordRepeatedWrongMSG";
+    private static final String INVALID_NICKNAME_SUCH_USER_EXISTS_IN_SYSTEM_MSG = "NicknameIsAlreadyExistInSystemMSG";
+    private static final String INVALID_PASSWORD_REPEATED_WRONG_MSG = "PasswordRepeatedWrongMSG";
 
     private final UserService service;
 
@@ -77,31 +85,27 @@ public class CreateNewUser implements Command {
         final List<User> users = service.findAllUsers();
 
         if (nickname == null || nickname.trim().equals("")) {
-            return prepareErrorPage(request, "Nickname should be not empty or contains only spaces. Please try again");
+            return prepareErrorPage(request, INVALID_NICKNAME_IS_EMPTY_MSG);
         } else if (password == null || password.trim().equals("")) {
-            return prepareErrorPage(request, "Password should be not empty or contains only spaces. Please try again");
+            return prepareErrorPage(request, INVALID_PASSWORD_IS_EMPTY_MSG);
         } else if (!isStringValid(nickname)) {
-            return prepareErrorPage(request, "The entered nickname is not valid. It should contain only latin letters. Please try again");
+            return prepareErrorPage(request, INVALID_NICKNAME_NOT_UTF8_MSG);
         } else if (!isStringValid(password)) {
-            return prepareErrorPage(request, "The entered password is not valid. It should contain only latin letters. Please try again");
+            return prepareErrorPage(request, INVALID_PASSWORD_NOT_UTF8_MSG);
         }
 
         if (nickname.length() > MAX_LENGTH_OF_NICKNAME_IN_DB) {
-            return prepareErrorPage(request,
-                    "The entered first name is too long. It should be not more as "
-                            + MAX_LENGTH_OF_NICKNAME_IN_DB
-                            + " signs. Please try again"
-            );
+            return prepareErrorPage(request, INVALID_FIRST_NAME_IS_TOO_LONG_MSG);
         }
 
         for (User user : users
         ) {
             if (user.getNickname().equals(nickname) && !password.equals(passwordRepeat)) {
-                return prepareErrorPage(request, "The user with such a nickname already exist in the system and password was repeated wrong.");
+                return prepareErrorPage(request, INVALID_NICKNAME_IS_ALREADY_EXIST_IN_SYSTEM_AND_PASSWORD_REPEATED_WRONG_MSG);
             } else if (user.getNickname().equals(nickname)) {
-                return prepareErrorPage(request, DUPLICATE_USER_MESSAGE);
+                return prepareErrorPage(request, INVALID_NICKNAME_SUCH_USER_EXISTS_IN_SYSTEM_MSG);
             } else if (!password.equals(passwordRepeat)) {
-                return prepareErrorPage(request, "The password was repeated wrong. Please try again.");
+                return prepareErrorPage(request, INVALID_PASSWORD_REPEATED_WRONG_MSG);
             }
         }
         User userToCreate = new User(nickname, password);

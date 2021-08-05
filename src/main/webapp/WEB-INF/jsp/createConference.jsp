@@ -1,21 +1,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="com.epam.jwd.Conferences.dto.Role" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="messages"/>
 <html>
 <head>
     <style>
         <%@include file="/resources/appStyle.css"%>
     </style>
-    <title>New Conference Creation</title>
+    <title><fmt:message key="label.newConferenceCreation"/></title>
 </head>
 <body>
 <c:choose>
     <c:when test="${not empty requestScope.error}">
-        <h3>Error</h3>
+        <h3><fmt:message key="label.error"/></h3>
     </c:when>
     <c:otherwise>
-        <h3>To create new conference enter a title of conference, choose an appointed conference manager and press
-            'Submit new Conference Creation' button</h3>
+        <h3><fmt:message key="label.toCreateNewConferenceEnterTitleChooseManagerAndPressButton"/></h3>
     </c:otherwise>
 </c:choose>
 
@@ -25,12 +27,12 @@
     <c:when test="${not empty requestScope.error}">
         <c:choose>
             <c:when test="${sessionScope.userRole eq Role.ADMIN}">
-                <p class="error_message">${requestScope.error}</p>
-                <a href="${pageContext.request.contextPath}/controller?command=show_create_conference">Try again</a>
+                <p class="error_message"><fmt:message key="label.${requestScope.error}" /></p>
+                <a href="${pageContext.request.contextPath}/controller?command=show_create_conference"><fmt:message key="label.try_again"/></a>
             </c:when>
             <c:otherwise>
-                <p class="error_message">${requestScope.error}</p>
-                <a href="${pageContext.request.contextPath}/controller?command=show_main_page">Do Not Try again :)))</a>
+                <p class="error_message"><fmt:message key="label.${requestScope.error}" /></p>
+                <a href="${pageContext.request.contextPath}/controller?command=show_main_page"><fmt:message key="label.doNotTryAgain"/></a>
             </c:otherwise>
         </c:choose>
 
@@ -38,12 +40,12 @@
     <c:otherwise>
         <form action="${pageContext.request.contextPath}/controller?command=create_new_conference&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}"
               method="post">
-            <label for="conferenceTitleField"> Conference title:</label>
+            <label for="conferenceTitleField"><fmt:message key="label.conferenceTitle"/> </label>
             <input type="text" id="conferenceTitleField" name="conferenceTitle">
             <!-- name запихнет в пост запрос значения -->
 
             <br>
-            <label for="managerField"> Conference manager: </label>
+            <label for="managerField"><fmt:message key="label.conferenceManager"/></label>
             <select name="managerConf" id="managerField">
                 <c:forEach var="user" items="${requestScope.users}">
                     <c:choose>
@@ -60,7 +62,7 @@
             <br>
 
             <br>
-            <input type="submit" value="Submit new Conference Creation" class="button">
+            <input type="submit" value=<fmt:message key="label.submitConferenceCreation"/> class="button">
 <%--                            <c:choose>--%>
 <%--                                <c:when test="${sessionScope.userRole eq Role.ADMIN}">--%>
 
