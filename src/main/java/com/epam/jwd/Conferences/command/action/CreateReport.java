@@ -43,6 +43,8 @@ public class CreateReport implements Command {
     private static final String CREATOR_ID_ATTRIBUTE_NAME = "creatorId";
     private static final String CREATOR_ROLE_ATTRIBUTE_NAME = "creatorRole";
     private static final String QUESTION_TEXT_ATTRIBUTE_NAME = "questionText";
+    private static final String INVALID_REPORT_TEXT_MSG = "ReportTextShouldNotBeEmptyMSG";
+    private static final String INVALID_REPORT_TEXT_NOT_UTF8_MSG = "ReportTextShouldContainOnlyLatinSignsMSG";
 
     private static final String ERROR_ATTRIBUTE_NAME = "error";
     private static final CommandResponse CREATE_NEW_REPORT_ERROR_RESPONSE_TO_CREATE_REPORT_PAGE
@@ -95,11 +97,9 @@ public class CreateReport implements Command {
         final List<User> users = service.findAllUsers();
 
         if (reportText == null || reportText.trim().equals("")) {
-            return prepareErrorPage(request,
-                    "Report text should be not empty or contains only spaces. Please try again");
+            return prepareErrorPage(request, INVALID_REPORT_TEXT_MSG);
         } else if (!isStringValid(reportText)) {
-            return prepareErrorPage(request,
-                    "The entered report text is not valid. It should contain only latin letters. Please try again");
+            return prepareErrorPage(request, INVALID_REPORT_TEXT_NOT_UTF8_MSG);
         }
 
         Long applicantId = null;

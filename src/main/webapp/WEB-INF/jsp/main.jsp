@@ -121,22 +121,6 @@
             <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}&sectionName=applicantQuestions"><fmt:message key="label.showYourQuestionsReference" /></a>
         </c:if>
 
-<%--        <c:choose>--%>
-<%--            <c:when test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userRole eq Role.MANAGER}">--%>
-<%--                <p>Click below to see questions from users</p>--%>
-<%--                <a href="${pageContext.request.contextPath}/controller?command=show_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}">Show--%>
-<%--                    questions</a>--%>
-<%--            </c:when>--%>
-<%--            <c:otherwise>--%>
-<%--                <c:if test="${not empty sessionScope.userName}">--%>
-<%--                    <p>Click below to see your questions to admin</p>--%>
-<%--                    <a href="${pageContext.request.contextPath}/controller?command=show_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}">Show--%>
-<%--                        questions</a>--%>
-<%--                </c:if>--%>
-<%--            </c:otherwise>--%>
-<%--        </c:choose>--%>
-
-
         <br>
         <br>
         <p><fmt:message key="label.clickToLogOut" /></p>

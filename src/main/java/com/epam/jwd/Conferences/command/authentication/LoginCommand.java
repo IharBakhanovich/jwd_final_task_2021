@@ -15,7 +15,7 @@ public class LoginCommand implements Command {
     private static final String LOGIN_PARAM_NAME = "login";
     private static final String PASSWORD_PARAM_NAME = "password";
     private static final String ERROR_ATTRIBUTE_NAME = "error";
-    private static final String INVALID_CREDENTIALS_MSG = "Wrong login or password";
+    private static final String INVALID_CREDENTIALS_MSG = "InvalidCredentialsMSG";
     private static final CommandResponse LOGIN_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/login.jsp");
     // редиректаемся на index.jsp, после чего должен произойти get

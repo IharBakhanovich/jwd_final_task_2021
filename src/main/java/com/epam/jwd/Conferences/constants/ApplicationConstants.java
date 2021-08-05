@@ -172,7 +172,6 @@ public class ApplicationConstants {
     // from class LoginCommand
     private static final String LOGIN_PARAM_NAME = "login";
     private static final String PASSWORD_PARAM_NAME = "password";
-    private static final String INVALID_CREDENTIALS_MSG = "Wrong login or password";
     private static final CommandResponse LOGIN_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/login.jsp");
     // редиректаемся на index.jsp, после чего должен произойти get
@@ -351,5 +350,15 @@ public class ApplicationConstants {
     private static final String APPLICANT_QUESTIONS_TOKEN_NAME = "applicantQuestions";
 
     // from class ShowOwnQuestionPage
+
+
+    // Locale's constants
+    // class LoginCommand
+    private static final String INVALID_CREDENTIALS_MSG = "InvalidCredentialsMSG";
+
+    // class CreateReport
+    private static final String INVALID_REPORT_TEXT_MSG = "ReportTextShouldNotBeEmptyMSG";
+    private static final String INVALID_REPORT_TEXT_NOT_UTF8_MSG = "ReportTextShouldContainOnlyLatinSignsMSG";
+
 
 }
