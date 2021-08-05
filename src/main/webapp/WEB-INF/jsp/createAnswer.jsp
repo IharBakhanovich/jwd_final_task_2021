@@ -28,11 +28,11 @@
     <c:when test="${not empty requestScope.error}">
         <c:choose>
             <c:when test="${(sessionScope.userRole eq requestScope.creatorRole) and (sessionScope.userId == requestScope.creatorId)}">
-                <p class="error_message"><fmt:message key="label.${requestScope.error}" /></p>
+                <p class="error_message"><fmt:message key="label.${requestScope.error}"/></p>
                 <a href="${pageContext.request.contextPath}/controller?command=show_create_answer&&questionId=${requestScope.questionId}&managerId=${requestScope.creatorId}&managerRole=${requestScope.creatorRole}&conferenceId=${requestScope.conferenceId}&sectionId=${requestScope.sectionId}&questionText=${requestScope.questionText}"><fmt:message key="label.try_again"/></a>
             </c:when>
             <c:otherwise>
-                <p class="error_message">${requestScope.error}</p>
+                <p class="error_message"><fmt:message key="label.${requestScope.error}"/></p>
                 <a href="${pageContext.request.contextPath}/controller?command=show_main_page"><fmt:message key="label.doNotTryAgain"/></a>
             </c:otherwise>
         </c:choose>

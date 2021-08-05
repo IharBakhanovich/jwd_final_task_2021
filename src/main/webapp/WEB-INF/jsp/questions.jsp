@@ -1,36 +1,38 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="messages"/>
 <html>
 <head>
     <style>
         <%@include file="/resources/appStyle.css"%>
     </style>
-    <title>Questions</title>
+    <title><fmt:message key="label.questions"/></title>
 </head>
 <body>
 <c:choose>
     <c:when test="${requestScope.sectionName eq 'applicantQuestions'}">
-        <h2>Your questions:</h2>
+        <h2><fmt:message key="label.yourQuestions"/></h2>
     </c:when>
     <c:otherwise>
-        <h2>Questions from applicants:</h2>
+        <h2><fmt:message key="label.questionsFromApplicants"/></h2>
     </c:otherwise>
 </c:choose>
 
 <c:choose>
     <c:when test="${not empty requestScope.questions}">
-        <h3>There are some questions from applicants</h3>
+        <h3><fmt:message key="label.thereAreSomeQuestionsFromApplicants"/></h3>
         <tr>
-            <th>ReportID</th>
-            <th>Section</th>
-            <th>Conference</th>
-            <th>ReportText</th>
-            <th>ReportType</th>
-            <th>Applicant</th>
-            <th>QuestionID</th>
-            <th>ShowQuestionContextLink</th>
-            <th>WriteAnswerLink</th>
-
+            <th><fmt:message key="label.ReportIdColumnName"/></th>
+            <th><fmt:message key="label.SectionColumnName"/></th>
+            <th><fmt:message key="label.ConferenceColumnName"/></th>
+            <th><fmt:message key="label.ReportTextColumnName"/></th>
+            <th><fmt:message key="label.ReportTypeColumnName"/></th>
+            <th><fmt:message key="label.ApplicantColumnName"/></th>
+            <th><fmt:message key="label.QuestionIdColumnName"/></th>
+            <th><fmt:message key="label.ShowQuestionLinkColumnName"/></th>
+            <th><fmt:message key="label.WriteAnswerLinkColumnName"/></th>
         </tr>
         <br>
         <c:forEach var="question" items="${requestScope.questions}">
@@ -63,15 +65,15 @@
             </td>
 
             <td>
-                <a href="${pageContext.request.contextPath}/controller?command=show_question_context&questionIdForContext=${question.id}&managerId=${requestScope.managerId}&questionReportIdForContext=${question.questionReportId}&sectionName=${requestScope.sectionName}">Show question's history</a>
+                <a href="${pageContext.request.contextPath}/controller?command=show_question_context&questionIdForContext=${question.id}&managerId=${requestScope.managerId}&questionReportIdForContext=${question.questionReportId}&sectionName=${requestScope.sectionName}"><fmt:message key="label.showQuestionHistory"/></a>
             </td>
             <td>
             <c:choose>
                 <c:when test="${question.questionReportId == 0}">
-                    <a href="${pageContext.request.contextPath}/controller?command=show_create_answer&questionId=${question.id}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${question.conferenceId}&sectionId=${question.sectionId}&questionText=${question.reportText}">Write an answer</a>
+                    <a href="${pageContext.request.contextPath}/controller?command=show_create_answer&questionId=${question.id}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${question.conferenceId}&sectionId=${question.sectionId}&questionText=${question.reportText}"><fmt:message key="label.writeAnAnswer"/></a>
                 </c:when>
                 <c:otherwise>
-                    <a href="${pageContext.request.contextPath}/controller?command=show_create_answer&questionId=${question.questionReportId}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${question.conferenceId}&sectionId=${question.sectionId}&questionText=${question.reportText}">Write an answer</a>
+                    <a href="${pageContext.request.contextPath}/controller?command=show_create_answer&questionId=${question.questionReportId}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${question.conferenceId}&sectionId=${question.sectionId}&questionText=${question.reportText}"><fmt:message key="label.writeAnAnswer"/></a>
                 </c:otherwise>
             </c:choose>
         </td>
@@ -79,11 +81,11 @@
         </c:forEach>
     </c:when>
     <c:otherwise>
-        <p class="error_message">There are no questions for you, my lord</p>
+        <p class="error_message"><fmt:message key="label.thereAreNoQuestionsForYouMyLord"/></p>
     </c:otherwise>
 </c:choose>
 
 <br>
-<a href="${pageContext.request.contextPath}/controller">Back to the main page</a>
+<a href="${pageContext.request.contextPath}/controller"><fmt:message key="label.backToMainPage"/></a>
 </body>
 </html>

@@ -39,6 +39,10 @@ public class CreateSection implements Command {
     private static final String CONFERENCE_MANAGER_ATTRIBUTE_NAME = "conferenceManager";
     private static final String CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME = "conferenceManagerId";
     private static final int MAX_LENGTH_OF_SECTION_NAME_IN_DB = 90;
+    private static final String INVALID_SECTION_NAME_MSG = "SectionNameShouldNotBeEmptyMSG";
+    private static final String INVALID_SECTION_NAME_NOT_UTF8_MSG = "SectionNameShouldContainOnlyLatinSignsMSG";
+    private static final String NO_PERMISSION_TO_CREATE_SECTION_MSG = "YouHaveNoPermissionToCreateASectionMSG";
+    private static final String INVALID_SECTION_NAME_TOO_LONG_MSG = "SectionNameIsTooLong";
 
     private final UserService service;
 
@@ -81,24 +85,18 @@ public class CreateSection implements Command {
         Long conferenceManagerId = null;
         for (Conference conference : conferences
         ) {
-            if (conference.getId() == conferenceId) {
+            if (conference.getId().equals(conferenceId)) {
                 conferenceManagerId = conference.getManagerConf();
             }
         }
-        if (!creatorRole.equals("ADMIN") && !(creatorId == conferenceManagerId)) {
-            return prepareErrorPage(request,
-                    "You have no permission to create a new section. Please DO NOT try again");
+        if (!creatorRole.equals("ADMIN") && !(creatorId.equals(conferenceManagerId))) {
+            return prepareErrorPage(request, NO_PERMISSION_TO_CREATE_SECTION_MSG);
         } else if (sectionName == null || sectionName.trim().equals("")) {
-            return prepareErrorPage(request,
-                    "Section name should be not empty or contains only spaces. Please try again");
+            return prepareErrorPage(request, INVALID_SECTION_NAME_MSG);
         } else if (!isStringValid(sectionName)) {
-            return prepareErrorPage(request,
-                    "The entered section name is not valid. It should contain only latin letters. Please try again");
+            return prepareErrorPage(request, INVALID_SECTION_NAME_NOT_UTF8_MSG);
         } else if (sectionName.length() > MAX_LENGTH_OF_SECTION_NAME_IN_DB) {
-            return prepareErrorPage(request,
-                    "The entered section name is too long. It should be not more as "
-                            + MAX_LENGTH_OF_SECTION_NAME_IN_DB
-                            + " signs. Please try again");
+            return prepareErrorPage(request, INVALID_SECTION_NAME_TOO_LONG_MSG);
         }
 
         Long managerId = null;

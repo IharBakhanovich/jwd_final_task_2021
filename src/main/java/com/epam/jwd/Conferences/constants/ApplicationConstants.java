@@ -154,6 +154,10 @@ public class ApplicationConstants {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     private static final CommandResponse CONFERENCE_UPDATE_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/updateConference.jsp");
+    private static final String INVALID_SECTION_NAME_MSG = "SectionNameShouldNotBeEmptyMSG";
+    private static final String INVALID_SECTION_NAME_NOT_UTF8_MSG = "SectionNameShouldContainOnlyLatinSignsMSG";
+    private static final String NO_PERMISSION_TO_CREATE_SECTION_MSG = "YouHaveNoPermissionToCreateASectionMSG";
+    private static final String INVALID_SECTION_NAME_TOO_LONG_MSG = "SectionNameIsTooLong";
 
     // from class UpdateReport
     private static final String APPLICANT_PARAMETER_NAME = "applicant";
