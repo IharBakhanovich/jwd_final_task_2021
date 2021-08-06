@@ -71,14 +71,25 @@ public class LoginCommand implements Command {
     }
 
     private CommandResponse addUserInfoToSession(CommandRequest request, String login) {
-        // сразу создаем текущую сессию
+        // fetch a 'sessionLocale' parameter from currentSession
+        String valueOfSessionLocaleParameter = null;
+        if (request.getCurrentSession().isPresent()) {
+            valueOfSessionLocaleParameter = (String) request.getCurrentSession().get().getAttribute(("language"));
+        }
+        // invalidate current session and create a new one
         request.getCurrentSession().ifPresent(HttpSession::invalidate);
         final HttpSession session = request.createSession();
+
+        // set the the value of 'sessionLocale' parameter into the session
+        String finalValueOfSessionLocaleParameter = valueOfSessionLocaleParameter;
+        request.getCurrentSession()
+                .ifPresent(httpSession -> httpSession.setAttribute("language", finalValueOfSessionLocaleParameter));
 
         //можно было бы целиком положить user в сессию, однако для этого его пришлось бы сериализовывать,
         // во вторых в сессии не хочется хранить пароль
         //поэтому достанем текущего user из сервиса
         final User loggedInUser = service.findByLogin(login);
+
         //просетали ник текущего юзера в сессию
         session.setAttribute(USER_NAME_SESSION_ATTRIBUTE, loggedInUser.getNickname());
         //просетали роль текущего юзера в сессию
