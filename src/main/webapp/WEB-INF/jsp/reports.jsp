@@ -1,32 +1,35 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@page import="com.epam.jwd.Conferences.dto.Role" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="messages"/>
 <html>
 <head>
     <style>
         <%@include file="/resources/appStyle.css"%>
     </style>
-    <title>Reports</title>
+    <title><fmt:message key="label.reports"/></title>
 </head>
 <body>
-<h2>Reports:</h2>
+<h2><fmt:message key="label.reports"/></h2>
 <c:choose>
     <c:when test="${not empty requestScope.reports}">
         <c:choose>
             <c:when test="${requestScope.conferenceTitle eq 'question'}">
-                <h3>History of the question</h3>
+                <h3><fmt:message key="label.questionHistory"/></h3>
             </c:when>
             <c:otherwise>
-                <h3>Reports of '${requestScope.sectionName}' section</h3>
+                <h3><fmt:message key="label.reportsOfSectionPart1"/> '${requestScope.sectionName}' <fmt:message key="label.reportsOfSectionPart2"/></h3>
             </c:otherwise>
         </c:choose>
         <tr>
-            <th>ReportID</th>
-            <th>SectionId</th>
-            <th>ConferenceId</th>
-            <th>ReportText</th>
-            <th>ReportType</th>
-            <th>Applicant</th>
+            <th><fmt:message key="label.ReportIdColumnName"/></th>
+            <th><fmt:message key="label.sectionIdColumnName"/></th>
+            <th><fmt:message key="label.conferenceIdColumnName"/></th>
+            <th><fmt:message key="label.reportTextColumnName"/></th>
+            <th><fmt:message key="label.ReportTypeColumnName"/></th>
+            <th><fmt:message key="label.ApplicantColumnName"/></th>
         </tr>
         <br>
         <c:forEach var="report" items="${requestScope.reports}">
@@ -50,7 +53,7 @@
         </c:forEach>
     </c:when>
     <c:otherwise>
-        <p class="error_message">There are no reports in this section</p>
+        <p class="error_message"><fmt:message key="label.thereAreNoReportsInThisSection"/></p>
     </c:otherwise>
 </c:choose>
 
@@ -61,39 +64,31 @@
             <c:when test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userRole eq Role.MANAGER}">
                 <c:choose>
                     <c:when test="${requestScope.sectionName eq 'applicantQuestions'}">
-                        <p>Great. Click below if you want back to questions</p>
-                        <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}">Back
+                        <p><fmt:message key="label.clickBelowToBackToQuestions"/></p>
+                        <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message key="label.BackToQuestions"/>Back
                             to questions</a>
                     </c:when>
                     <c:otherwise>
-                        <p>Great. Click below if you want back to questions</p>
-                        <a href="${pageContext.request.contextPath}/controller?command=show_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}">Back
-                            to questions</a>
+                        <p><fmt:message key="label.clickBelowToBackToQuestions"/></p>
+                        <a href="${pageContext.request.contextPath}/controller?command=show_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message key="label.BackToQuestions"/></a>
                     </c:otherwise>
                 </c:choose>
             </c:when>
             <c:otherwise>
-                <p>Great. Click below if you want back to questions</p>
-                <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}">Back
-                    to questions</a>
+                <p><fmt:message key="label.clickBelowToBackToQuestions"/></p>
+                <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message key="label.BackToQuestions"/></a>
             </c:otherwise>
         </c:choose>
-<%--        <c:if test="${}">--%>
-<%--            <p>Great. Click below if you want back to questions</p>--%>
-<%--            <a href="${pageContext.request.contextPath}/controller?command=show_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}">Back--%>
-<%--                to questions</a>--%>
-<%--        </c:if>--%>
     </c:when>
     <c:otherwise>
         <c:if test="${not empty sessionScope.userName}">
-            <a href="${pageContext.request.contextPath}/controller?command=show_create_report&conferenceId=${requestScope.conferenceId}&conferenceTitle=${requestScope.conferenceTitle}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}&sectionId=${requestScope.sectionId}&sectionName=${requestScope.sectionName}">Create
-                New Report in '${requestScope.conferenceTitle}'/'${requestScope.sectionName}' section</a>
+            <a href="${pageContext.request.contextPath}/controller?command=show_create_report&conferenceId=${requestScope.conferenceId}&conferenceTitle=${requestScope.conferenceTitle}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}&sectionId=${requestScope.sectionId}&sectionName=${requestScope.sectionName}"><fmt:message key="label.createNewReportInSectionPart1"/> '${requestScope.conferenceTitle}'/'${requestScope.sectionName}' <fmt:message key="label.createNewReportInSectionPart2"/></a>
         </c:if>
     </c:otherwise>
 </c:choose>
 
 <br>
 <br>
-<a href="${pageContext.request.contextPath}/controller">Back to the main page</a>
+<a href="${pageContext.request.contextPath}/controller"><fmt:message key="label.backToMainPage"/></a>
 </body>
 </html>
