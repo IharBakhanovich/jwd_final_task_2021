@@ -93,6 +93,10 @@ public class ApplicationConstants {
     private static final String MANAGER_SECT_COLUMN = "managerSect";
     private static final String TABLE_NAME_SECTIONS = "sections";
 
+    private static final String INVALID_CONFERENCE_TITLE_TEXT_MSG = "ConferenceTitleShouldNotBeEmptyOrContainOnlySpacesMSG";
+    private static final String INVALID_CONFERENCE_TITLE_TEXT_NOT_UTF8_MSG = "ConferenceTitleShouldContainOnlyLatinLetters";
+    private static final String INVALID_CONFERENCE_TITLE_TEXT_TOO_LONG_MSG = "ConferenceTitleIsTooLong";
+
     // from class CreateConference
     private static final Logger LOGGER_FOR_CREATE_CONFERENCE = LogManager.getLogger(CreateConference.class);
     private static final CommandResponse CREATE_NEW_CONFERENCE_ERROR_RESPONSE
@@ -101,10 +105,7 @@ public class ApplicationConstants {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     private static final String DUPLICATE_CONFERENCE_MESSAGE
             = "The conference with such a conference title already exist in the system. Please choose an other conference title.";
-    private static final String NO_PERMISSION_TO_CREATE_REPORT_MSG = "YouHaveNoPermissionToCreateAConferenceMSG";
-    private static final String INVALID_CONFERENCE_TITLE_TEXT_MSG = "ConferenceTitleShouldNotBeEmptyOrContainOnlySpacesMSG";
-    private static final String INVALID_CONFERENCE_TITLE_TEXT_NOT_UTF8_MSG = "ConferenceTitleShouldContainOnlyLatinLetters";
-    private static final String INVALID_CONFERENCE_TITLE_TEXT_TOO_LONG_MSG = "ConferenceTitleIsTooLong";
+    private static final String NO_PERMISSION_TO_CREATE_CONFERENCE_MSG = "YouHaveNoPermissionToCreateAConferenceMSG";
 
     // from class CreateNewUser
     private static final Logger LOGGER_FOR_CREATE_NEW_USER = LogManager.getLogger(CreateNewUser.class);
@@ -158,6 +159,8 @@ public class ApplicationConstants {
     private static final String INVALID_SECTION_NAME_NOT_UTF8_MSG = "SectionNameShouldContainOnlyLatinSignsMSG";
     private static final String NO_PERMISSION_TO_CREATE_SECTION_MSG = "YouHaveNoPermissionToCreateASectionMSG";
     private static final String INVALID_SECTION_NAME_TOO_LONG_MSG = "SectionNameIsTooLong";
+    private static final String NO_PERMISSION_TO_UPDATE_CONFERENCE_MSG = "YouHaveNoPermissionToUpdateAConferenceMSG";
+
 
     // from class UpdateReport
     private static final String APPLICANT_PARAMETER_NAME = "applicant";

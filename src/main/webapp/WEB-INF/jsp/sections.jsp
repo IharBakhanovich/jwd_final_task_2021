@@ -1,23 +1,26 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="com.epam.jwd.Conferences.dto.Role" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="messages"/>
 <html>
 <head>
     <style>
         <%@include file="/resources/appStyle.css"%>
     </style>
-    <title>Sections</title>
+    <title><fmt:message key="label.sections"/></title>
 </head>
 <body>
-<h2>Sections</h2>
+<h2><fmt:message key="label.sections"/></h2>
 <c:choose>
     <c:when test="${not empty requestScope.sections}">
-        <h3>Available sections of '${requestScope.conferenceTitle}' conference</h3>
+        <h3><fmt:message key="label.avalibleSectionInConferencePart1"/> '${requestScope.conferenceTitle}' <fmt:message key="label.avalibleSectionInConferencePart2"/></h3>
         <tr>
-            <th>ID</th>
-            <th>SectionName</th>
-            <th>Manager</th>
-            <th>Update section reference</th>
+            <th><fmt:message key="label.sectionIdColumnName"/></th>
+            <th><fmt:message key="label.sectionNameColumnName"/></th>
+            <th><fmt:message key="label.sectionManagerColumnName"/></th>
+            <th><fmt:message key="label.updateSectionReferenceColumnName"/></th>
         </tr>
 
         <br>
@@ -36,7 +39,7 @@
                 </c:forEach>
                 <c:if test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userId == requestScope.conferenceManager or sessionScope.userId == section.managerSect}">
                     <td>
-                        <a href="${pageContext.request.contextPath}/controller?command=show_update_section&conferenceId=${requestScope.conferenceId}&conferenceTitle=${requestScope.conferenceTitle}&sectionId=${section.id}&conferenceManagerId=${requestScope.conferenceManager}">Update
+                        <a href="${pageContext.request.contextPath}/controller?command=show_update_section&conferenceId=${requestScope.conferenceId}&conferenceTitle=${requestScope.conferenceTitle}&sectionId=${section.id}&conferenceManagerId=${requestScope.conferenceManager}"><fmt:message key="label.update"/>
                             '${section.sectionName}'</a>
                     </td>
                 </c:if>
@@ -45,18 +48,17 @@
         </c:forEach>
     </c:when>
     <c:otherwise>
-        <p class="error_message">There are no sections in this conference</p>
+        <p class="error_message"><fmt:message key="label.noSectionsInThisConference"/></p>
     </c:otherwise>
 </c:choose>
 <br>
 <c:if test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userId == requestScope.conferenceManager}">
     <br>
-    <a href="${pageContext.request.contextPath}/controller?command=show_create_section&conferenceId=${requestScope.conferenceId}&conferenceTitle=${requestScope.conferenceTitle}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}">Create
-        New Section in '${requestScope.conferenceTitle}' conference</a>
+    <a href="${pageContext.request.contextPath}/controller?command=show_create_section&conferenceId=${requestScope.conferenceId}&conferenceTitle=${requestScope.conferenceTitle}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}"><fmt:message key="label.createSectionInConferencePart1"/> '${requestScope.conferenceTitle}' <fmt:message key="label.createSectionInConferencePart2"/></a>
 </c:if>
 
 <br>
 <br>
-<a href="${pageContext.request.contextPath}/controller">Back to the main page</a>
+<a href="${pageContext.request.contextPath}/controller"><fmt:message key="label.backToMainPage"/></a>
 </body>
 </html>

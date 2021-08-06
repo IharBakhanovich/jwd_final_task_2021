@@ -35,7 +35,7 @@ public class CreateConference implements Command {
     private static final String DUPLICATE_CONFERENCE_MESSAGE
             = "The conference with such a conference title already exist in the system. Please choose an other conference title.";
     private static final int MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB = 30;
-    private static final String NO_PERMISSION_TO_CREATE_REPORT_MSG = "YouHaveNoPermissionToCreateAConferenceMSG";
+    private static final String NO_PERMISSION_TO_CREATE_CONFERENCE_MSG = "YouHaveNoPermissionToCreateAConferenceMSG";
     private static final String INVALID_CONFERENCE_TITLE_TEXT_MSG = "ConferenceTitleShouldNotBeEmptyOrContainOnlySpacesMSG";
     private static final String INVALID_CONFERENCE_TITLE_TEXT_NOT_UTF8_MSG = "ConferenceTitleShouldContainOnlyLatinLetters";
     private static final String INVALID_CONFERENCE_TITLE_TEXT_TOO_LONG_MSG = "ConferenceTitleIsTooLong";
@@ -76,7 +76,7 @@ public class CreateConference implements Command {
         final List<User> users = service.findAllUsers();
 
         if (!creatorRole.equals("ADMIN")) {
-            return prepareErrorPage(request, NO_PERMISSION_TO_CREATE_REPORT_MSG);
+            return prepareErrorPage(request, NO_PERMISSION_TO_CREATE_CONFERENCE_MSG);
         } else if (confTitle == null || confTitle.trim().equals("")) {
             return prepareErrorPage(request, INVALID_CONFERENCE_TITLE_TEXT_MSG);
         } else if (!isStringValid(confTitle)) {

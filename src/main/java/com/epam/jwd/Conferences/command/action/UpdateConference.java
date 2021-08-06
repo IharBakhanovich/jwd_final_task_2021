@@ -31,6 +31,10 @@ public class UpdateConference implements Command {
     private static final String USERS_ATTRIBUTE_NAME = "users";
     private static final String MANAGER_CONFERENCE_ATTRIBUTE_NAME = "managerConf";
     private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
+    private static final String NO_PERMISSION_TO_UPDATE_CONFERENCE_MSG = "YouHaveNoPermissionToUpdateAConferenceMSG";
+    private static final String INVALID_CONFERENCE_TITLE_TEXT_MSG = "ConferenceTitleShouldNotBeEmptyOrContainOnlySpacesMSG";
+    private static final String INVALID_CONFERENCE_TITLE_TEXT_NOT_UTF8_MSG = "ConferenceTitleShouldContainOnlyLatinLetters";
+    private static final String INVALID_CONFERENCE_TITLE_TEXT_TOO_LONG_MSG = "ConferenceTitleIsTooLong";
 
     private static final int MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB = 30;
 
@@ -78,19 +82,13 @@ public class UpdateConference implements Command {
         final List<User> users = service.findAllUsers();
 
         if (!creatorRole.equals("ADMIN")) {
-            return prepareErrorPage(request,
-                    "You have no permission to update this conference. Please DO NOT try again");
+            return prepareErrorPage(request, NO_PERMISSION_TO_UPDATE_CONFERENCE_MSG);
         } else if (conferenceTitle == null || conferenceTitle.trim().equals("")) {
-            return prepareErrorPage(request,
-                    "Conference title should not be empty or contains only spaces. Please try again");
+            return prepareErrorPage(request, INVALID_CONFERENCE_TITLE_TEXT_MSG);
         } else if (!isStringValid(conferenceTitle)) {
-            return prepareErrorPage(request,
-                    "The entered conference title is not valid. It should contain only latin letters. Please try again");
+            return prepareErrorPage(request, INVALID_CONFERENCE_TITLE_TEXT_NOT_UTF8_MSG);
         } else if (conferenceTitle.length() > MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB) {
-            return prepareErrorPage(request,
-                    "The entered conference title is too long. It should be not more as "
-                            + MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB
-                            + " signs. Please try again");
+            return prepareErrorPage(request, INVALID_CONFERENCE_TITLE_TEXT_TOO_LONG_MSG);
         }
 
         Long managerId = null;

@@ -50,8 +50,7 @@
                         </c:if>
                     </c:forEach>
                     <td>
-                        <a href="${pageContext.request.contextPath}/controller?command=show_update_conference&conferenceId=${conference.id}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}">Update
-                            '${conference.conferenceTitle}'</a>
+                        <a href="${pageContext.request.contextPath}/controller?command=show_update_conference&conferenceId=${conference.id}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}"><fmt:message key="label.update" /> '${conference.conferenceTitle}'</a>
                     </td>
                 </tr>
                 <br>
