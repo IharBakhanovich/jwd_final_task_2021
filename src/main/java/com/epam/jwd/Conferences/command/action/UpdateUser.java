@@ -35,6 +35,16 @@ public class UpdateUser implements Command {
     private static final int MAX_LENGTH_OF_EMAIL_IN_DB = 320;
     private static final int MAX_LENGTH_OF_FIRST_NAME_IN_DB = 30;
     private static final int MAX_LENGTH_OF_SURNAME_IN_DB = 30;
+    private static final String NO_PERMISSION_TO_UPDATE_USER_MSG = "YouHaveNoPermissionToUpdateUserMSG";
+    private static final String USER_TO_UPDATE_DONT_MATCH_WITH_ITS_ID_MSG = "UserToUpdateDoNotMatchWithItsIdMSG";
+    private static final String EMAIL_NOT_VALID_MSG = "EmailIsNotValidMSG";
+    private static final String EMAIL_NOT_VALID_UTF8_MSG = "EmailShouldContainOnlyLatinSignsMSG";
+    private static final String EMAIL_NOT_VALID_TOO_LONG_MSG = "EmailIsTooLongMSG";
+    private static final String INVALID_SURNAME_NOT_UTF8_MSG = "SurnameShouldContainOnlyLatinSignsMSG";
+    private static final String INVALID_SURNAME_TOO_LONG_MSG = "SurnameIsTooLongMSG";
+
+    private static final String INVALID_FIRST_NAME_IS_TOO_LONG_MSG = "FirstNameIsTooLongMSG";
+    private static final String INVALID_FIRST_NAME_NOT_UTF8_MSG = "FirstNameShouldContainOnlyLatinSignsMSG";
 
     private static final CommandResponse UPDATE_USER_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/user.jsp");
@@ -42,7 +52,6 @@ public class UpdateUser implements Command {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/users.jsp");
     private static final CommandResponse UPDATE_USER_SUCCESS_RESPONSE_FOR_USER
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/user.jsp");
-
 
     private final UserService service;
 
@@ -85,70 +94,46 @@ public class UpdateUser implements Command {
 
         // validation of permission to update
         if (!updaterId.equals(String.valueOf(id)) && !updaterRole.equals("ADMIN")) {
-            return prepareErrorPage(request,
-                    "You has no permission to update this user. Please DO NOT try again"
-            );
+            return prepareErrorPage(request, NO_PERMISSION_TO_UPDATE_USER_MSG);
         }
         // validation of matching the id and login of user to update
         if (!userFromDB.getId().equals(id)) {
-            return prepareErrorPage(request,
-                    "User to update don't match with its id. Please try again"
-            );
+            return prepareErrorPage(request, USER_TO_UPDATE_DONT_MATCH_WITH_ITS_ID_MSG);
         }
         // email validation
         else if (!isEmailValid(eMail)) {
-            return prepareErrorPage(request,
-                    "Email is not valid. Please try again"
-            );
+            return prepareErrorPage(request, EMAIL_NOT_VALID_MSG);
         }
 
         // email string validation
         else if (!isStringValid(eMail)) {
-            return prepareErrorPage(request,
-                    "Email is not valid. It should contain only latin letters. Please try again"
-            );
+            return prepareErrorPage(request, EMAIL_NOT_VALID_UTF8_MSG);
         }
 
         // string validation (firstName)
         else if (!firstName.trim().equals("")) {
             if (!isStringValid(firstName)) {
-                return prepareErrorPage(request,
-                        "FirstName is not valid. It should contain only latin letters. Please try again"
-                );
+                return prepareErrorPage(request, INVALID_FIRST_NAME_NOT_UTF8_MSG);
             }
         }
 
         // string validation (surname)
         else if (!surname.trim().equals("")) {
             if (!isStringValid(surname)) {
-                return prepareErrorPage(request,
-                        "Surname is not valid. It should contain only latin letters. Please try again"
-                );
+                return prepareErrorPage(request, INVALID_SURNAME_NOT_UTF8_MSG);
             }
         }
 
         if (eMail.length() > MAX_LENGTH_OF_EMAIL_IN_DB) {
-            return prepareErrorPage(request,
-                    "The entered email is too long. It should be not more as "
-                            + MAX_LENGTH_OF_EMAIL_IN_DB
-                            + " signs. Please try again"
-            );
+            return prepareErrorPage(request, EMAIL_NOT_VALID_TOO_LONG_MSG);
         }
 
         if (firstName.length() > MAX_LENGTH_OF_FIRST_NAME_IN_DB) {
-            return prepareErrorPage(request,
-                    "The entered first name is too long. It should be not more as "
-                            + MAX_LENGTH_OF_FIRST_NAME_IN_DB
-                            + " signs. Please try again"
-            );
+            return prepareErrorPage(request, INVALID_FIRST_NAME_IS_TOO_LONG_MSG);
         }
 
         if (surname.length() > MAX_LENGTH_OF_SURNAME_IN_DB) {
-            return prepareErrorPage(request,
-                    "The entered surname is too long. It should be not more as "
-                            + MAX_LENGTH_OF_SURNAME_IN_DB
-                            + " signs. Please try again"
-            );
+            return prepareErrorPage(request,INVALID_SURNAME_TOO_LONG_MSG);
         }
         User userToUpdate
                 = new User(id, eMail, null,

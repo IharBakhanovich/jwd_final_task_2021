@@ -32,6 +32,10 @@ public class UpdateSection implements Command {
     private static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
     private static final String SECTION_MANAGER_ID_ATTRIBUTE_NAME = "sectionManagerId";
     private static final String SECTIONS_ATTRIBUTE_NAME = "sections";
+    private static final String INVALID_SECTION_NAME_MSG = "SectionNameShouldNotBeEmptyMSG";
+    private static final String INVALID_SECTION_NAME_NOT_UTF8_MSG = "SectionNameShouldContainOnlyLatinSignsMSG";
+    private static final String NO_PERMISSION_TO_UPDATE_SECTION_MSG = "YouHaveNoPermissionToUpdateASectionMSG";
+    private static final String INVALID_SECTION_NAME_TOO_LONG_MSG = "SectionNameIsTooLongMSG";
 
     private static final CommandResponse SECTION_UPDATE_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/updateSection.jsp");
@@ -82,19 +86,13 @@ public class UpdateSection implements Command {
         final Long conferenceManagerId = Long.valueOf(request.getParameter(CONFERENCE_MANAGER_ID_PARAMETER_NAME));
         Long sectionManagerId = fetchSectionManagerId(sectionManagerNickname);
         if (!creatorRole.equals("ADMIN") && !creatorId.equals(conferenceManagerId) && !creatorId.equals(sectionManagerId)) {
-            return prepareErrorPage(request,
-                    "You have no permission to update this section. Please DO NOT try again");
+            return prepareErrorPage(request, NO_PERMISSION_TO_UPDATE_SECTION_MSG);
         } else if (sectionName == null || sectionName.trim().equals("")) {
-            return prepareErrorPage(request,
-                    "Section name should not be empty or contains only spaces. Please try again");
+            return prepareErrorPage(request, INVALID_SECTION_NAME_MSG);
         } else if (!validator.isStringValid(sectionName)) {
-            return prepareErrorPage(request,
-                    "The entered section name is not valid. It should contain only latin letters. Please try again");
+            return prepareErrorPage(request, INVALID_SECTION_NAME_NOT_UTF8_MSG);
         } else if (!validator.isLengthValid(sectionName, MAX_LENGTH_OF_SECTION_NAME_IN_DB)) {
-            return prepareErrorPage(request,
-                    "The entered section name is too long. It should be not more as "
-                            + MAX_LENGTH_OF_SECTION_NAME_IN_DB
-                            + " signs. Please try again");
+            return prepareErrorPage(request, INVALID_SECTION_NAME_TOO_LONG_MSG);
         }
         Section sectionToUpdate = new Section(sectionId, conferenceId, sectionName, sectionManagerId);
         // to have sections and the status of the former section manager before the section update

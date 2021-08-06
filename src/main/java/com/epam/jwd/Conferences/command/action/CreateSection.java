@@ -42,7 +42,7 @@ public class CreateSection implements Command {
     private static final String INVALID_SECTION_NAME_MSG = "SectionNameShouldNotBeEmptyMSG";
     private static final String INVALID_SECTION_NAME_NOT_UTF8_MSG = "SectionNameShouldContainOnlyLatinSignsMSG";
     private static final String NO_PERMISSION_TO_CREATE_SECTION_MSG = "YouHaveNoPermissionToCreateASectionMSG";
-    private static final String INVALID_SECTION_NAME_TOO_LONG_MSG = "SectionNameIsTooLong";
+    private static final String INVALID_SECTION_NAME_TOO_LONG_MSG = "SectionNameIsTooLongMSG";
 
     private final UserService service;
 
