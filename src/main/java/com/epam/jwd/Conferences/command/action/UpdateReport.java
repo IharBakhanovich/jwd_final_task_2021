@@ -37,6 +37,9 @@ public class UpdateReport implements Command {
     private static final CommandResponse UPDATE_REPORT_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/report.jsp");
     private static final String QUESTION_REPORT_ID_PARAMETER_NAME = "questionReportId";
+    private static final String NO_PERMISSION_TO_UPDATE_REPORT_MSG = "YouHaveNoPermissionToUpdateThisReportMSG";
+    private static final String INVALID_REPORT_TEXT_NOT_UTF8_MSG = "ReportTextShouldContainOnlyLatinSignsMSG";
+    private static final String INVALID_REPORT_TEXT_MSG = "ReportTextShouldNotBeEmptyMSG";
 
     private final UserService service;
     private final Validator validator;
@@ -76,7 +79,7 @@ public class UpdateReport implements Command {
         final String reportType = String.valueOf(request.getParameter(REPORT_TYPE_PARAMETER_NAME));
         final String applicantNickname = String.valueOf(request.getParameter(APPLICANT_PARAMETER_NAME));
         final Long questionReportId = Long.valueOf(request.getParameter(QUESTION_REPORT_ID_PARAMETER_NAME));
-        final String updaterId = String.valueOf(request.getParameter(UPDATER_ID_PARAMETER_NAME));
+        final Long updaterId = Long.valueOf(request.getParameter(UPDATER_ID_PARAMETER_NAME));
         final String updaterRole = String.valueOf(request.getParameter(UPDATER_ROLE_PARAMETER_NAME));
         final List<Conference> conferences = service.findAllConferences();
         final List<Section> sections = service.findAllSections();
@@ -84,10 +87,18 @@ public class UpdateReport implements Command {
 
         // data preparation section
         Long sectionId = null;
+        Long sectionManagerId = null;
         for (Section section: sections
         ) {
             if (section.getSectionName().equals(sectionName)) {
                 sectionId = section.getId();
+            }
+        }
+
+        for (Section section: sections
+             ) {
+            if (section.getId().equals(sectionId)) {
+                sectionManagerId = section.getManagerSect();
             }
         }
 
@@ -116,21 +127,18 @@ public class UpdateReport implements Command {
         }
 
         // validation of permission to update
-        if (!updaterId.equals(String.valueOf(applicantId)) && !updaterRole.equals("ADMIN")) {
-            return prepareErrorPage(request,
-                    "You has no permission to update this report. Please DO NOT try again"
-            );
+        if (!updaterId.equals(applicantId) && !updaterRole.equals("ADMIN") && !updaterId.equals(sectionManagerId)) {
+            return prepareErrorPage(request, NO_PERMISSION_TO_UPDATE_REPORT_MSG);
         }
 
         // validation of string
-        if (!reportText.trim().equals("")) {
-            if (!validator.isStringValid(reportText)) {
-                return prepareErrorPage(request,
-                        "Report text is not valid. It should contain only latin letters. Please try again"
-                );
-            }
+        if (reportText.trim().equals("")) {
+            return prepareErrorPage(request, INVALID_REPORT_TEXT_MSG);
         }
 
+        if (!validator.isStringValid(reportText)) {
+            return prepareErrorPage(request, INVALID_REPORT_TEXT_NOT_UTF8_MSG);
+        }
 
         Report reportToUpdate = new Report(id, sectionId, conferenceId, reportText, reportTypeToUpdate, applicantId, questionReportId);
 

@@ -9,7 +9,6 @@ import com.epam.jwd.Conferences.dto.Section;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.service.UserService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +20,7 @@ public class ShowReportPage implements Command {
     private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
     private static final String SECTIONS_ATTRIBUTE_NAME = "sections";
     private static final String USERS_ATTRIBUTE_NAME = "users";
+    public static final String ID_OF_MANAGER_OF_REPORTS_SECTION_ATTRIBUTE_NAME = "idOfManagerOfReportsSection";
 
     private final UserService service;
 
@@ -60,6 +60,14 @@ public class ShowReportPage implements Command {
         final List<Section> sections = service.findAllSections();
         request.setAttribute(SECTIONS_ATTRIBUTE_NAME, sections);
         request.setAttribute(REPORT_ATTRIBUTE_NAME, report);
+        Long sectionManagerId = null;
+        for (Section section: sections
+             ) {
+            if(report.get().getSectionId().equals(section.getId())) {
+                sectionManagerId = section.getManagerSect();
+            }
+        }
+        request.setAttribute(ID_OF_MANAGER_OF_REPORTS_SECTION_ATTRIBUTE_NAME, sectionManagerId);
         return SHOW_REPORT_PAGE_RESPONSE;
     }
 }

@@ -26,7 +26,8 @@
     <c:choose>
         <c:when test="${not empty requestScope.error}">
             <p class="error_message"><fmt:message key="label.${requestScope.error}"/></p>
-            <a href="${pageContext.request.contextPath}/controller?command=show_report&id=${requestScope.report.get().id}"><fmt:message key="label.try_again"/></a>
+            <a href="${pageContext.request.contextPath}/controller?command=show_report&id=${requestScope.report.get().id}"><fmt:message
+                    key="label.try_again"/></a>
         </c:when>
         <c:otherwise>
             <form action="${pageContext.request.contextPath}/controller?command=update_report&updaterId=${sessionScope.userId}&updaterRole=${sessionScope.userRole}"
@@ -55,7 +56,7 @@
                         <c:forEach var="section" items="${requestScope.sections}">
                             <c:if test="${requestScope.report.get().sectionId==section.id}">
                                 <c:choose>
-                                    <c:when test="${requestScope.report.get().applicant==sessionScope.userId}">
+                                    <c:when test="${requestScope.report.get().applicant==sessionScope.userId or sessionScope.userId == requestScope.idOfManagerOfReportsSection}">
                                         <input type="text" id="sectionField" name="sectionName"
                                                value="${section.sectionName}" readonly>
                                     </c:when>
@@ -89,7 +90,7 @@
                         <c:forEach var="conference" items="${requestScope.conferences}">
                             <c:if test="${requestScope.report.get().conferenceId==conference.id}">
                                 <c:choose>
-                                    <c:when test="${requestScope.report.get().applicant==sessionScope.userId}">
+                                    <c:when test="${requestScope.report.get().applicant==sessionScope.userId or sessionScope.userId == requestScope.idOfManagerOfReportsSection}">
                                         <input type="text" id="conferenceField" name="conferenceTitle"
                                                value="${conference.conferenceTitle}" readonly>
                                     </c:when>
@@ -110,7 +111,7 @@
                 <br>
                 <label for="reportTypeField"><fmt:message key="label.reportType"/></label>
                 <c:choose>
-                    <c:when test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userId == requestScope.report.get().applicant}">
+                    <c:when test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userId == requestScope.report.get().applicant or sessionScope.userId == requestScope.idOfManagerOfReportsSection}">
                         <select name="reportType" id="reportTypeField">
                             <c:forEach var="reportType" items="${ReportType.valuesAsList()}">
                                 <c:choose>
@@ -135,7 +136,7 @@
                 <c:forEach var="user" items="${requestScope.users}">
                     <c:if test="${report.get().applicant==user.id}">
                         <c:choose>
-                            <c:when test="${requestScope.report.get().applicant==sessionScope.userId}">
+                            <c:when test="${requestScope.report.get().applicant==sessionScope.userId or sessionScope.userId == requestScope.idOfManagerOfReportsSection or sessionScope.userRole == Role.ADMIN}">
                                 <input type="text" id="applicantField" name="applicant"
                                        value="${user.nickname}" readonly>
                             </c:when>
@@ -149,12 +150,14 @@
 
                 <br>
                 <label for="questionIdField"><fmt:message key="label.questionId"/></label>
-                <input type="text" id="questionIdField" name="questionReportId" value="${requestScope.report.get().questionReportId}" readonly>
+                <input type="text" id="questionIdField" name="questionReportId"
+                       value="${requestScope.report.get().questionReportId}" readonly>
 
                 <br>
                 <br>
-                <c:if test="${sessionScope.userRole eq Role.ADMIN or requestScope.report.get().applicant == sessionScope.userId}">
-                    <input type="submit" value=<fmt:message key="label.updateReportDetailsButton"/> class="button">
+                <c:if test="${sessionScope.userRole eq Role.ADMIN or requestScope.report.get().applicant == sessionScope.userId or sessionScope.userId == requestScope.idOfManagerOfReportsSection}">
+                    <input type="submit" value=
+                        <fmt:message key="label.updateReportDetailsButton"/> class="button">
                 </c:if>
             </form>
         </c:otherwise>

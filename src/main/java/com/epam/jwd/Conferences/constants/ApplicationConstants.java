@@ -102,6 +102,8 @@ public class ApplicationConstants {
 
     private static final String INVALID_SECTION_NAME_TOO_LONG_MSG = "SectionNameIsTooLongMSG";
     private static final String INVALID_FIRST_NAME_IS_TOO_LONG_MSG = "FirstNameIsTooLongMSG";
+    private static final String INVALID_REPORT_TEXT_MSG = "ReportTextShouldNotBeEmptyMSG";
+    private static final String INVALID_REPORT_TEXT_NOT_UTF8_MSG = "ReportTextShouldContainOnlyLatinSignsMSG";
 
     // from class CreateConference
     private static final Logger LOGGER_FOR_CREATE_CONFERENCE = LogManager.getLogger(CreateConference.class);
@@ -168,6 +170,7 @@ public class ApplicationConstants {
     private static final String APPLICANT_PARAMETER_NAME = "applicant";
     private static final CommandResponse UPDATE_REPORT_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/report.jsp");
+    private static final String NO_PERMISSION_TO_UPDATE_REPORT_MSG = "YouHaveNoPermissionToUpdateThisReportMSG";
 
     // from class UpdateSection
     private static final String NO_PERMISSION_TO_UPDATE_SECTION_MSG = "YouHaveNoPermissionToUpdateASectionMSG";
@@ -248,6 +251,7 @@ public class ApplicationConstants {
     // from class ShowReportPage
     private static final CommandResponse SHOW_REPORT_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/report.jsp");
+    public static final String ID_OF_MANAGER_OF_REPORTS_SECTION_ATTRIBUTE_NAME = "idOfManagerOfReportsSection";
 
     // from class ShowSectionReportsPage
 
@@ -383,8 +387,7 @@ public class ApplicationConstants {
     private static final String INVALID_CREDENTIALS_MSG = "InvalidCredentialsMSG";
 
     // class CreateReport
-    private static final String INVALID_REPORT_TEXT_MSG = "ReportTextShouldNotBeEmptyMSG";
-    private static final String INVALID_REPORT_TEXT_NOT_UTF8_MSG = "ReportTextShouldContainOnlyLatinSignsMSG";
+
 
 
 }
