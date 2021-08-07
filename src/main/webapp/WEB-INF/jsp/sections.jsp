@@ -19,7 +19,7 @@
             <caption><h3><fmt:message key="label.avalibleSectionInConferencePart1"/> '${requestScope.conferenceTitle}'
                 <fmt:message key="label.avalibleSectionInConferencePart2"/></h3></caption>
             <tr>
-                <th><fmt:message key="label.sectionIdColumnName"/></th>
+                <th width="30"><fmt:message key="label.sectionIdColumnName"/></th>
                 <th><fmt:message key="label.sectionNameColumnName"/></th>
                 <th><fmt:message key="label.sectionManagerColumnName"/></th>
                 <th><fmt:message key="label.updateSectionReferenceColumnName"/></th>

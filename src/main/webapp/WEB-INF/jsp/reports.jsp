@@ -27,7 +27,7 @@
             </c:choose>
 
             <tr>
-                <th><fmt:message key="label.ReportIdColumnName"/></th>
+                <th width="30"><fmt:message key="label.ReportIdColumnName"/></th>
                 <th><fmt:message key="label.sectionIdColumnName"/></th>
                 <th><fmt:message key="label.conferenceIdColumnName"/></th>
                 <th><fmt:message key="label.reportTextColumnName"/></th>

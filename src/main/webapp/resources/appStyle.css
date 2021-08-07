@@ -1,6 +1,8 @@
 * {
     font-family: Arial;
-    color: #202020;
+    color: #8282ce;
+    box-sizing: border-box;
+    background-color: #efefef;
 }
 
 .button {
@@ -21,5 +23,83 @@
 table {
     margin: 2% 4%;
     width: 92%;
-    border-collapse: collapse;
+    /*border-collapse: collapse;*/
+}
+
+.footer {
+    position: fixed;
+    z-index: 2;
+    /*min-height: 5%;*/
+    height: auto;
+    color: #ece7e7;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 5px;
+    background: #8282ce;
+    text-align: center;
+}
+
+.header {
+    position: -ms-device-fixed;
+    /*min-height: 5%;*/
+    height: auto;
+    z-index: 2;
+    color: #ece7e7;
+    right: 0;
+    top: 0;
+    left: 0;
+    padding: 5px;
+    background: #8282ce;
+    text-align: right;
+}
+
+.navigation {
+    float: left;
+    z-index: 2;
+    list-style-type: none;
+    top: 75px;
+    margin: 0;
+    padding: 0;
+    width: 15%;
+    background-color: #f1f1f1;
+    height: 100%;
+    position: fixed;
+    overflow: auto;
+}
+
+.navigation a, .navigation input {
+    display: block;
+    text-align: left;
+    background-color: #F7931D;
+    color: white;
+    font-size: 15px;
+    outline: none;
+    padding: 10px;
+}
+
+.navigation input {
+    border: none;
+    min-width: 100%;
+}
+
+.navigation a:hover, .navigation input:hover {
+    background-color: #A0A0A0;
+}
+
+.help {
+    position: fixed;
+    background: rgb(192, 192, 192);
+    right: 0px;
+    top: 0px;
+    width: 80%;
+    height: 50%;
+    z-index: 3;
+}
+
+.outer {
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+    padding-left: 17%;
 }

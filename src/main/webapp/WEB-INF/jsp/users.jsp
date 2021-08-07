@@ -4,20 +4,23 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="messages"/>
+<style>
+    <%@include file="/resources/appStyle.css"%>
+</style>
 <html>
 <head>
-    <style>
-        <%@include file="/resources/appStyle.css"%>
-    </style>
     <title><fmt:message key="label.usersPage"/></title>
 </head>
 <body>
-<h2><fmt:message key="label.usersTable"/></h2>
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/templates/header.jsp"/>
+
 <c:if test="${not empty requestScope.users}">
+
     <table border="2" cellpadding="5">
+        <h2><fmt:message key="label.usersTable"/></h2>
         <caption><h3><fmt:message key="label.users"/></h3></caption>
         <tr>
-            <th><fmt:message key="label.userIdColumn"/></th>
+            <th width="30"><fmt:message key="label.userIdColumn"/></th>
             <th><fmt:message key="label.nicknameColumn"/></th>
             <th><fmt:message key="label.roleColumn"/></th>
         </tr>
@@ -44,4 +47,7 @@
 <br>
 <a href="${pageContext.request.contextPath}/controller"><fmt:message key="label.backToMainPage"/></a>
 </body>
+<footer class="footer">
+    <jsp:include page="${pageContext.request.contextPath}/WEB-INF/templates/footer.jsp"/>
+</footer>
 </html>

@@ -25,7 +25,7 @@
         <table border="2" cellpadding="5">
             <caption><h3><fmt:message key="label.thereAreSomeQuestionsFromApplicants"/></h3></caption>
             <tr>
-                <th><fmt:message key="label.ReportIdColumnName"/></th>
+                <th width="30"><fmt:message key="label.ReportIdColumnName"/></th>
                 <th><fmt:message key="label.SectionColumnName"/></th>
                 <th><fmt:message key="label.ConferenceColumnName"/></th>
                 <th><fmt:message key="label.ReportTextColumnName"/></th>
