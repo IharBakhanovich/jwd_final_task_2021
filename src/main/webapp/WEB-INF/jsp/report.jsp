@@ -132,7 +132,7 @@
                 </c:choose>
 
                 <br>
-                <label for="applicantField"> Applicant: </label>
+                <label for="applicantField"><fmt:message key="label.applicant"/></label>
                 <c:forEach var="user" items="${requestScope.users}">
                     <c:if test="${report.get().applicant==user.id}">
                         <c:choose>

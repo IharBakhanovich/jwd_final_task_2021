@@ -15,42 +15,44 @@
 <h2><fmt:message key="label.reports"/></h2>
 <c:choose>
     <c:when test="${not empty requestScope.reports}">
-        <c:choose>
-            <c:when test="${requestScope.conferenceTitle eq 'question'}">
-                <h3><fmt:message key="label.questionHistory"/></h3>
-            </c:when>
-            <c:otherwise>
-                <h3><fmt:message key="label.reportsOfSectionPart1"/> '${requestScope.sectionName}' <fmt:message key="label.reportsOfSectionPart2"/></h3>
-            </c:otherwise>
-        </c:choose>
-        <tr>
-            <th><fmt:message key="label.ReportIdColumnName"/></th>
-            <th><fmt:message key="label.sectionIdColumnName"/></th>
-            <th><fmt:message key="label.conferenceIdColumnName"/></th>
-            <th><fmt:message key="label.reportTextColumnName"/></th>
-            <th><fmt:message key="label.ReportTypeColumnName"/></th>
-            <th><fmt:message key="label.ApplicantColumnName"/></th>
-        </tr>
-        <br>
-        <c:forEach var="report" items="${requestScope.reports}">
+        <table border="2" cellpadding="5">
+            <c:choose>
+                <c:when test="${requestScope.conferenceTitle eq 'question'}">
+                    <caption><h3><fmt:message key="label.questionHistory"/></h3></caption>
+                </c:when>
+                <c:otherwise>
+                    <caption><h3><fmt:message key="label.reportsOfSectionPart1"/> '${requestScope.sectionName}'
+                        <fmt:message key="label.reportsOfSectionPart2"/></h3></caption>
+                </c:otherwise>
+            </c:choose>
+
             <tr>
-                <td>
-                    <a href="${pageContext.request.contextPath}/controller?command=show_report&id=${report.id}">${report.id}</a>
-                </td>
-                <td>${report.sectionId}</td>
-                <td>${report.conferenceId}</td>
-                <td>${report.reportText}</td>
-                <td>${report.reportType}</td>
-                <c:forEach var="user" items="${requestScope.users}">
-                    <c:if test="${report.applicant==user.id}">
-                        <td>
-                            <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}">${user.nickname}</a>
-                        </td>
-                    </c:if>
-                </c:forEach>
+                <th><fmt:message key="label.ReportIdColumnName"/></th>
+                <th><fmt:message key="label.sectionIdColumnName"/></th>
+                <th><fmt:message key="label.conferenceIdColumnName"/></th>
+                <th><fmt:message key="label.reportTextColumnName"/></th>
+                <th><fmt:message key="label.ReportTypeColumnName"/></th>
+                <th><fmt:message key="label.ApplicantColumnName"/></th>
             </tr>
-            <br>
-        </c:forEach>
+            <c:forEach var="report" items="${requestScope.reports}">
+                <tr>
+                    <td>
+                        <a href="${pageContext.request.contextPath}/controller?command=show_report&id=${report.id}">${report.id}</a>
+                    </td>
+                    <td>${report.sectionId}</td>
+                    <td>${report.conferenceId}</td>
+                    <td>${report.reportText}</td>
+                    <td>${report.reportType}</td>
+                    <c:forEach var="user" items="${requestScope.users}">
+                        <c:if test="${report.applicant==user.id}">
+                            <td>
+                                <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}">${user.nickname}</a>
+                            </td>
+                        </c:if>
+                    </c:forEach>
+                </tr>
+            </c:forEach>
+        </table>
     </c:when>
     <c:otherwise>
         <p class="error_message"><fmt:message key="label.thereAreNoReportsInThisSection"/></p>
@@ -65,24 +67,30 @@
                 <c:choose>
                     <c:when test="${requestScope.sectionName eq 'applicantQuestions'}">
                         <p><fmt:message key="label.clickBelowToBackToQuestions"/></p>
-                        <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message key="label.BackToQuestions"/>Back
+                        <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message
+                                key="label.BackToQuestions"/>Back
                             to questions</a>
                     </c:when>
                     <c:otherwise>
                         <p><fmt:message key="label.clickBelowToBackToQuestions"/></p>
-                        <a href="${pageContext.request.contextPath}/controller?command=show_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message key="label.BackToQuestions"/></a>
+                        <a href="${pageContext.request.contextPath}/controller?command=show_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message
+                                key="label.BackToQuestions"/></a>
                     </c:otherwise>
                 </c:choose>
             </c:when>
             <c:otherwise>
                 <p><fmt:message key="label.clickBelowToBackToQuestions"/></p>
-                <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message key="label.BackToQuestions"/></a>
+                <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message
+                        key="label.BackToQuestions"/></a>
             </c:otherwise>
         </c:choose>
     </c:when>
     <c:otherwise>
         <c:if test="${not empty sessionScope.userName}">
-            <a href="${pageContext.request.contextPath}/controller?command=show_create_report&conferenceId=${requestScope.conferenceId}&conferenceTitle=${requestScope.conferenceTitle}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}&sectionId=${requestScope.sectionId}&sectionName=${requestScope.sectionName}"><fmt:message key="label.createNewReportInSectionPart1"/> '${requestScope.conferenceTitle}'/'${requestScope.sectionName}' <fmt:message key="label.createNewReportInSectionPart2"/></a>
+            <a href="${pageContext.request.contextPath}/controller?command=show_create_report&conferenceId=${requestScope.conferenceId}&conferenceTitle=${requestScope.conferenceTitle}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}&sectionId=${requestScope.sectionId}&sectionName=${requestScope.sectionName}"><fmt:message
+                    key="label.createNewReportInSectionPart1"/>
+                '${requestScope.conferenceTitle}'/'${requestScope.sectionName}' <fmt:message
+                        key="label.createNewReportInSectionPart2"/></a>
         </c:if>
     </c:otherwise>
 </c:choose>

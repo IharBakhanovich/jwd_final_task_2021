@@ -149,6 +149,7 @@ public class UpdateReport implements Command {
         request.setAttribute(REPORTS_ATTRIBUTE_NAME, reports);
         request.setAttribute(SECTION_NAME_ATTRIBUTE_NAME, sectionName);
         request.setAttribute(USERS_ATTRIBUTE_NAME, users);
+        request.setAttribute(CONFERENCE_TITLE_PARAMETER_NAME, conferenceTitle);
         return SHOW_REPORTS_PAGE_RESPONSE;
     }
 

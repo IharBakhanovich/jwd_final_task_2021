@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="com.epam.jwd.Conferences.dto.Role" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${sessionScope.language}"/>
@@ -14,30 +14,33 @@
 <body>
 <h2><fmt:message key="label.usersTable"/></h2>
 <c:if test="${not empty requestScope.users}">
-    <h3><fmt:message key="label.users"/></h3>
-    <tr class="tableTab">
-        <th><fmt:message key="label.userIdColumn"/></th>
-        <th><fmt:message key="label.nicknameColumn"/></th>
-        <th><fmt:message key="label.roleColumn"/></th>
-    </tr>
-    <br>
-    <c:forEach var="user" items="${requestScope.users}">
-        <tr class="tableTab">
-            <td>
-                <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}">${user.id}</a>
-            </td>
-            <td>${user.nickname}</td>
-            <td>${user.role}</td>
+    <table border="2" cellpadding="5">
+        <caption><h3><fmt:message key="label.users"/></h3></caption>
+        <tr>
+            <th><fmt:message key="label.userIdColumn"/></th>
+            <th><fmt:message key="label.nicknameColumn"/></th>
+            <th><fmt:message key="label.roleColumn"/></th>
         </tr>
-        <br>
-    </c:forEach>
+        <c:forEach var="user" items="${requestScope.users}">
+            <tr>
+                <td>
+                    <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}">${user.id}</a>
+                </td>
+                <td>${user.nickname}</td>
+                <td>${user.role}</td>
+            </tr>
+        </c:forEach>
+    </table>
 </c:if>
+
 <br>
 <br>
 <c:if test="${not empty sessionScope.userName and sessionScope.userRole eq Role.ADMIN}">
-    <a href="${pageContext.request.contextPath}/controller?command=show_create_new_user"><fmt:message key="label.createNewUser"/></a>
+    <a href="${pageContext.request.contextPath}/controller?command=show_create_new_user"><fmt:message
+            key="label.createNewUser"/></a>
 </c:if>
 
+<br>
 <br>
 <a href="${pageContext.request.contextPath}/controller"><fmt:message key="label.backToMainPage"/></a>
 </body>
