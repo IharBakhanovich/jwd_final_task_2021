@@ -7,7 +7,7 @@
 
 .button {
     border: 1px solid #C0C0C0;
-    background-color: #eee;
+    background-color: #F7931D;
     border-radius: 10px;
     font-size: 16px;
     padding: 6px;
@@ -102,4 +102,31 @@ table {
     height: 100%;
     overflow: scroll;
     padding-left: 17%;
+}
+
+.link {
+    float: left;
+    z-index: 2;
+    list-style-type: none;
+    background-color: #f1f1f1;
+    overflow: auto;
+}
+
+.link a, .link input {
+    display: block;
+    text-align: left;
+    background-color: #F7931D;
+    color: white;
+    font-size: 15px;
+    outline: none;
+    padding: 10px;
+}
+
+.link input {
+    border: none;
+    min-width: 100%;
+}
+
+.link a:hover, .link input:hover {
+    background-color: #A0A0A0;
 }

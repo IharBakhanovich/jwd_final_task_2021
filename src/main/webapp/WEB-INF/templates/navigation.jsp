@@ -21,6 +21,7 @@
 
             <a href="${pageContext.request.contextPath}/controller?command=show_create_new_user"><fmt:message
                     key="label.registrationReference"/></a>
+            <a href="${pageContext.request.contextPath}/controller"><fmt:message key="label.backToMainPage"/></a>
         </c:when>
         <c:otherwise>
             <c:if test="${sessionScope.userRole eq Role.ADMIN}">
@@ -48,7 +49,7 @@
             <%--            <p><fmt:message key="label.clickToLogOut"/></p>--%>
             <a href="${pageContext.request.contextPath}/controller?command=logout"><fmt:message
                     key="label.logoutReference"/></a>
-
+            <a href="${pageContext.request.contextPath}/controller"><fmt:message key="label.backToMainPage"/></a>
         </c:otherwise>
     </c:choose>
 </div>

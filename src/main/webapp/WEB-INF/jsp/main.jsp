@@ -14,10 +14,10 @@
     <title><fmt:message key="label.main_page"/></title>
 </head>
 <body>
-
-    <jsp:include page="${pageContext.request.contextPath}/WEB-INF/templates/header.jsp"/>
-    <jsp:include page="${pageContext.request.contextPath}/WEB-INF/templates/navigation.jsp"/>
-        <div class="outer">
+<jsp:include page="${pageContext.request.contextPath}/WEB-INF/templates/composition.jsp"/>
+<%--    <jsp:include page="${pageContext.request.contextPath}/WEB-INF/templates/header.jsp"/>--%>
+<%--    <jsp:include page="${pageContext.request.contextPath}/WEB-INF/templates/navigation.jsp"/>--%>
+<div class="outer">
     <c:choose>
         <c:when test="${empty sessionScope.userName} ">
             <p><fmt:message key="label.hello"/></p>
@@ -86,49 +86,49 @@
         </table>
     </c:if>
 
-<%--    <h2><fmt:message key="label.personal.section"/></h2>--%>
-<%--    <c:choose>--%>
-<%--        <c:when test="${empty sessionScope.userName}">--%>
-<%--            <a href="${pageContext.request.contextPath}/controller?command=show_login"><fmt:message--%>
-<%--                    key="label.loginReference"/></a>--%>
+    <%--    <h2><fmt:message key="label.personal.section"/></h2>--%>
+    <%--    <c:choose>--%>
+    <%--        <c:when test="${empty sessionScope.userName}">--%>
+    <%--            <a href="${pageContext.request.contextPath}/controller?command=show_login"><fmt:message--%>
+    <%--                    key="label.loginReference"/></a>--%>
 
-<%--            <br>--%>
-<%--            <br>--%>
-<%--            <a href="${pageContext.request.contextPath}/controller?command=show_create_new_user"><fmt:message--%>
-<%--                    key="label.registrationReference"/></a>--%>
-<%--        </c:when>--%>
-<%--        <c:otherwise>--%>
-<%--            <c:if test="${sessionScope.userRole eq Role.ADMIN}">--%>
-<%--                <p><fmt:message key="label.clickToSeeAllUsers"/></p>--%>
-<%--                <a href="${pageContext.request.contextPath}/controller?command=show_users"><fmt:message--%>
-<%--                        key="label.userPageReference"/></a>--%>
+    <%--            <br>--%>
+    <%--            <br>--%>
+    <%--            <a href="${pageContext.request.contextPath}/controller?command=show_create_new_user"><fmt:message--%>
+    <%--                    key="label.registrationReference"/></a>--%>
+    <%--        </c:when>--%>
+    <%--        <c:otherwise>--%>
+    <%--            <c:if test="${sessionScope.userRole eq Role.ADMIN}">--%>
+    <%--                <p><fmt:message key="label.clickToSeeAllUsers"/></p>--%>
+    <%--                <a href="${pageContext.request.contextPath}/controller?command=show_users"><fmt:message--%>
+    <%--                        key="label.userPageReference"/></a>--%>
 
-<%--                <br>--%>
-<%--                <p><fmt:message key="label.clickToAddNewConference"/></p>--%>
-<%--                <a href="${pageContext.request.contextPath}/controller?command=show_create_conference&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}"><fmt:message--%>
-<%--                        key="label.createConferenceReference"/></a>--%>
-<%--            </c:if>--%>
+    <%--                <br>--%>
+    <%--                <p><fmt:message key="label.clickToAddNewConference"/></p>--%>
+    <%--                <a href="${pageContext.request.contextPath}/controller?command=show_create_conference&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}"><fmt:message--%>
+    <%--                        key="label.createConferenceReference"/></a>--%>
+    <%--            </c:if>--%>
 
-<%--            <br>--%>
-<%--            <c:if test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userRole eq Role.MANAGER}">--%>
-<%--                <p><fmt:message key="label.clickToSeeQuestionsFromUsers"/></p>--%>
-<%--                <a href="${pageContext.request.contextPath}/controller?command=show_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message--%>
-<%--                        key="label.ShowQuestionsFromUsersReference"/></a>--%>
-<%--            </c:if>--%>
+    <%--            <br>--%>
+    <%--            <c:if test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userRole eq Role.MANAGER}">--%>
+    <%--                <p><fmt:message key="label.clickToSeeQuestionsFromUsers"/></p>--%>
+    <%--                <a href="${pageContext.request.contextPath}/controller?command=show_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message--%>
+    <%--                        key="label.ShowQuestionsFromUsersReference"/></a>--%>
+    <%--            </c:if>--%>
 
-<%--            <br>--%>
-<%--            <c:if test="${not empty sessionScope.userName}">--%>
-<%--                <p><fmt:message key="label.clickToSeeYourQuestions"/></p>--%>
-<%--                <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}&sectionName=applicantQuestions"><fmt:message--%>
-<%--                        key="label.showYourQuestionsReference"/></a>--%>
-<%--            </c:if>--%>
+    <%--            <br>--%>
+    <%--            <c:if test="${not empty sessionScope.userName}">--%>
+    <%--                <p><fmt:message key="label.clickToSeeYourQuestions"/></p>--%>
+    <%--                <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}&sectionName=applicantQuestions"><fmt:message--%>
+    <%--                        key="label.showYourQuestionsReference"/></a>--%>
+    <%--            </c:if>--%>
 
-<%--            <br>--%>
-<%--            <p><fmt:message key="label.clickToLogOut"/></p>--%>
-<%--            <a href="${pageContext.request.contextPath}/controller?command=logout"><fmt:message--%>
-<%--                    key="label.logoutReference"/></a>--%>
-<%--        </c:otherwise>--%>
-<%--    </c:choose>--%>
+    <%--            <br>--%>
+    <%--            <p><fmt:message key="label.clickToLogOut"/></p>--%>
+    <%--            <a href="${pageContext.request.contextPath}/controller?command=logout"><fmt:message--%>
+    <%--                    key="label.logoutReference"/></a>--%>
+    <%--        </c:otherwise>--%>
+    <%--    </c:choose>--%>
 
     <%--<h3>--%>
     <%--    <fmt:message key="label.chooseSessionLocale"/>--%>
@@ -140,7 +140,7 @@
     <%--</ul>--%>
 </div>
 </body>
-<footer class="footer">
-    <jsp:include page="${pageContext.request.contextPath}/WEB-INF/templates/footer.jsp"/>
-</footer>
+<%--<footer >--%>
+<%--    <jsp:include page="${pageContext.request.contextPath}/WEB-INF/templates/footer.jsp"/>--%>
+<%--</footer>--%>
 </html>

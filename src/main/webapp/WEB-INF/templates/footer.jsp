@@ -8,6 +8,9 @@
 <html>
 
 <body>
-<p><fmt:message key="label.conferences"/></p>
+
 </body>
+<footer class="footer">
+    <p><fmt:message key="label.conferences"/></p>
+</footer>
 </html>

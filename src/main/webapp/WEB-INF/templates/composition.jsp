@@ -1,27 +1,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="messages"/>
 <html>
 <head>
-    <title>Conferences</title>
+<%--    <title>Conferences</title>--%>
 </head>
 <body>
 
-<div id="header">
-    <jsp:include page="/WEB-INF/templates/header.jsp"/>
-</div>
+    <jsp:include page="${pageContext.request.contextPath}/WEB-INF/templates/header.jsp"/>
 
-<div id="footer">
-    <jsp:include page="/WEB-INF/templates/footer.jsp"/>
-</div>
+    <jsp:include page="${pageContext.request.contextPath}/WEB-INF/templates/navigation.jsp"/>
 
-
-<iframe name="content" id="content"></iframe>
-
-<%--<div id="content">--%>
-<%--    <jsp:include page="/WEB-INF/jsp/templates/header.jsp"/>--%>
-<%--</div>--%>
+    <jsp:include page="${pageContext.request.contextPath}/WEB-INF/templates/footer.jsp"/>
 
 
 </body>
+<%--<footer class="footer">--%>
+<%--    --%>
+<%--</footer>--%>
 </html>
