@@ -114,6 +114,7 @@ public class ApplicationConstants {
     private static final String DUPLICATE_CONFERENCE_MESSAGE
             = "The conference with such a conference title already exist in the system. Please choose an other conference title.";
     private static final String NO_PERMISSION_TO_CREATE_CONFERENCE_MSG = "YouHaveNoPermissionToCreateAConferenceMSG";
+    private static final String INVALID_MANAGER_THERE_IS_NO_SUCH_MANAGER_IN_SYSTEM_MSG = "ThereIsNoSuchManagerInSystemMSG";
 
     // from class CreateNewUser
     private static final Logger LOGGER_FOR_CREATE_NEW_USER = LogManager.getLogger(CreateNewUser.class);
@@ -134,6 +135,8 @@ public class ApplicationConstants {
     private static final String INVALID_NICKNAME_IS_ALREADY_EXIST_IN_SYSTEM_AND_PASSWORD_REPEATED_WRONG_MSG = "NicknameIsAlreadyExistInSystemAndPasswordRepeatedWrongMSG";
     private static final String INVALID_NICKNAME_SUCH_USER_EXISTS_IN_SYSTEM_MSG = "NicknameIsAlreadyExistInSystemMSG";
     private static final String INVALID_PASSWORD_REPEATED_WRONG_MSG = "PasswordRepeatedWrongMSG";
+    private static final String INVALID_PASSWORD_TOO_LONG_MSG = "PasswordTooLongMSG";
+    private static final String NO_PERMISSION_TO_CREATE_USER_IN_SYSTEM_MSG = "YouHaveNoPermissionToCreateUserInSystemMSG";
 
     // from class CreateReport
     private static final Logger LOGGER_FOR_CREATE_REPORT = LogManager.getLogger(CreateReport.class);
@@ -197,6 +200,11 @@ public class ApplicationConstants {
     private static final String INVALID_SURNAME_NOT_UTF8_MSG = "SurnameShouldContainOnlyLatinSignsMSG";
     private static final String INVALID_SURNAME_TOO_LONG_MSG = "SurnameIsTooLongMSG";
     private static final String INVALID_FIRST_NAME_NOT_UTF8_MSG = "FirstNameShouldContainOnlyLatinSignsMSG";
+    private static final CommandResponse UPDATE_USER_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+    private static final String INVALID_ID_NO_SUCH_USER_IN_SYSTEM_MSG = "ThereIsNoSuchAUserInSystemMSG";
+    private static final String INVALID_PARAMETERS_MSG = "SomethingWentWrongWithParametersMSG";
+    private static final String INVALID_ROLE_PARAMETER_MSG = "SomethingWentWrongWithRoleParameterMSG";
 
     // from class LoginCommand
     private static final String LOGIN_PARAM_NAME = "login";

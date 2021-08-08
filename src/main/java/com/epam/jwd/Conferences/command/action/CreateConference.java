@@ -8,11 +8,9 @@ import com.epam.jwd.Conferences.dto.Role;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.exception.DuplicateException;
 import com.epam.jwd.Conferences.service.UserService;
+import com.epam.jwd.Conferences.validator.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,12 +37,15 @@ public class CreateConference implements Command {
     private static final String INVALID_CONFERENCE_TITLE_TEXT_MSG = "ConferenceTitleShouldNotBeEmptyOrContainOnlySpacesMSG";
     private static final String INVALID_CONFERENCE_TITLE_TEXT_NOT_UTF8_MSG = "ConferenceTitleShouldContainOnlyLatinLettersMSG";
     private static final String INVALID_CONFERENCE_TITLE_TEXT_TOO_LONG_MSG = "ConferenceTitleIsTooLongMSG";
+    private static final String INVALID_MANAGER_THERE_IS_NO_SUCH_MANAGER_IN_SYSTEM_MSG = "ThereIsNoSuchManagerInSystemMSG";
 
     private final UserService service;
+    private final Validator validator;
 
     // the private default constructor, to not create the instance of the class with 'new' outside the class
     private CreateConference() {
         service = UserService.retrieve();
+        validator = Validator.retrieve();
     }
 
     private static class CreateConferenceHolder {
@@ -75,13 +76,13 @@ public class CreateConference implements Command {
         final String creatorRole = String.valueOf(request.getParameter(CREATOR_ROLE_PARAMETER_NAME));
         final List<User> users = service.findAllUsers();
 
-        if (!creatorRole.equals("ADMIN")) {
+        if (creatorRole==null || !creatorRole.equals("ADMIN")) {
             return prepareErrorPage(request, NO_PERMISSION_TO_CREATE_CONFERENCE_MSG);
         } else if (confTitle == null || confTitle.trim().equals("")) {
             return prepareErrorPage(request, INVALID_CONFERENCE_TITLE_TEXT_MSG);
-        } else if (!isStringValid(confTitle)) {
+        } else if (!validator.isStringValid(confTitle)) {
             return prepareErrorPage(request, INVALID_CONFERENCE_TITLE_TEXT_NOT_UTF8_MSG);
-        } else if (confTitle.length() > MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB) {
+        } else if (!validator.isLengthValid(confTitle, MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB)) {
             return prepareErrorPage(request, INVALID_CONFERENCE_TITLE_TEXT_TOO_LONG_MSG);
         }
 
@@ -93,6 +94,10 @@ public class CreateConference implements Command {
                 managerId = user.getId();
                 managerRole = user.getRole();
             }
+        }
+        // proves whether such a user exists in the system
+        if (managerId == null) {
+            return prepareErrorPage(request, INVALID_MANAGER_THERE_IS_NO_SUCH_MANAGER_IN_SYSTEM_MSG);
         }
 
         Conference conferenceToCreate = new Conference(1L, confTitle, managerId);
@@ -117,16 +122,5 @@ public class CreateConference implements Command {
     private CommandResponse prepareErrorPage(CommandRequest request, String errorMessage) {
         request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
         return CREATE_NEW_CONFERENCE_ERROR_RESPONSE;
-    }
-
-    private boolean isStringValid(String toValidate) {
-        byte[] byteArray = toValidate.getBytes();
-        return isUTF8(byteArray);
-    }
-
-    private static boolean isUTF8(final byte[] inputBytes) {
-        final String converted = new String(inputBytes, StandardCharsets.UTF_8);
-        final byte[] outputBytes = converted.getBytes(StandardCharsets.UTF_8);
-        return Arrays.equals(inputBytes, outputBytes);
     }
 }

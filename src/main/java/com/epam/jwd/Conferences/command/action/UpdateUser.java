@@ -6,6 +6,7 @@ import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.dto.Role;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.service.UserService;
+import com.epam.jwd.Conferences.validator.Validator;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -45,15 +46,21 @@ public class UpdateUser implements Command {
 
     private static final String INVALID_FIRST_NAME_IS_TOO_LONG_MSG = "FirstNameIsTooLongMSG";
     private static final String INVALID_FIRST_NAME_NOT_UTF8_MSG = "FirstNameShouldContainOnlyLatinSignsMSG";
+    private static final String INVALID_ID_NO_SUCH_USER_IN_SYSTEM_MSG = "ThereIsNoSuchAUserInSystemMSG";
+    private static final String INVALID_PARAMETERS_MSG = "SomethingWentWrongWithParametersMSG";
+    private static final String INVALID_ROLE_PARAMETER_MSG = "SomethingWentWrongWithRoleParameterMSG";
 
     private static final CommandResponse UPDATE_USER_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/user.jsp");
+    private static final CommandResponse UPDATE_USER_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     private static final CommandResponse UPDATE_USER_SUCCESS_RESPONSE_FOR_ADMIN
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/users.jsp");
     private static final CommandResponse UPDATE_USER_SUCCESS_RESPONSE_FOR_USER
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/user.jsp");
 
     private final UserService service;
+    private final Validator validator;
 
     private static class UpdateUserHolder {
         private final static UpdateUser instance
@@ -72,6 +79,7 @@ public class UpdateUser implements Command {
     // the private default constructor, to not create the instance of the class with 'new' outside the class
     private UpdateUser() {
         this.service = UserService.retrieve();
+        this.validator = Validator.retrieve();
     }
 
     /**
@@ -91,50 +99,91 @@ public class UpdateUser implements Command {
         final String updaterId = String.valueOf(request.getParameter(UPDATER_ID_PARAMETER_NAME));
         final String updaterRole = String.valueOf(request.getParameter(UPDATER_ROLE_PARAMETER_NAME));
         User userFromDB = service.findByLogin(nickname);
+        final List<User> users = service.findAllUsers();
+
+        // validation whether the user with such id exists in system
+        Long userId = null;
+        String userNickName = null;
+        for (User user: users
+             ) {
+            if (user.getId().equals(id)) {
+                userId = user.getId();
+            }
+
+            if (user.getNickname().equals(nickname)) {
+                userNickName = user.getNickname();
+            }
+        }
+
+        if (userId == null || userNickName == null) {
+            return prepareErrorPageBackToMainPage(request, INVALID_ID_NO_SUCH_USER_IN_SYSTEM_MSG);
+        }
+
+        // validation of the existence of parameters
+        if (updaterId == null || updaterRole == null || role == null || eMail == null) {
+            return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_MSG);
+        }
 
         // validation of permission to update
         if (!updaterId.equals(String.valueOf(id)) && !updaterRole.equals("ADMIN")) {
             return prepareErrorPage(request, NO_PERMISSION_TO_UPDATE_USER_MSG);
         }
+
         // validation of matching the id and login of user to update
         if (!userFromDB.getId().equals(id)) {
             return prepareErrorPage(request, USER_TO_UPDATE_DONT_MATCH_WITH_ITS_ID_MSG);
         }
+
         // email validation
-        else if (!isEmailValid(eMail)) {
+        else if (!validator.isEmailValid(eMail)) {
             return prepareErrorPage(request, EMAIL_NOT_VALID_MSG);
         }
 
         // email string validation
-        else if (!isStringValid(eMail)) {
+        else if (!validator.isStringValid(eMail)) {
             return prepareErrorPage(request, EMAIL_NOT_VALID_UTF8_MSG);
         }
 
         // string validation (firstName)
         else if (!firstName.trim().equals("")) {
-            if (!isStringValid(firstName)) {
+            if (!validator.isStringValid(firstName)) {
                 return prepareErrorPage(request, INVALID_FIRST_NAME_NOT_UTF8_MSG);
             }
         }
 
         // string validation (surname)
         else if (!surname.trim().equals("")) {
-            if (!isStringValid(surname)) {
+            if (!validator.isStringValid(surname)) {
                 return prepareErrorPage(request, INVALID_SURNAME_NOT_UTF8_MSG);
             }
         }
 
-        if (eMail.length() > MAX_LENGTH_OF_EMAIL_IN_DB) {
+        if (!validator.isLengthValid(eMail, MAX_LENGTH_OF_EMAIL_IN_DB)) {
             return prepareErrorPage(request, EMAIL_NOT_VALID_TOO_LONG_MSG);
         }
 
-        if (firstName.length() > MAX_LENGTH_OF_FIRST_NAME_IN_DB) {
+        if (!validator.isLengthValid(firstName, MAX_LENGTH_OF_FIRST_NAME_IN_DB)) {
             return prepareErrorPage(request, INVALID_FIRST_NAME_IS_TOO_LONG_MSG);
         }
 
-        if (surname.length() > MAX_LENGTH_OF_SURNAME_IN_DB) {
+        if (!validator.isLengthValid(surname, MAX_LENGTH_OF_SURNAME_IN_DB)) {
             return prepareErrorPage(request,INVALID_SURNAME_TOO_LONG_MSG);
         }
+
+        // check parameter role
+        List<Role> roles = Role.valuesAsList();
+        String checkRole = null;
+        for (Role role1: roles
+             ) {
+            if (role.getName().equals(role1.getName())) {
+                checkRole = role1.getName();
+            }
+        }
+
+        if (checkRole == null) {
+            return prepareErrorPageBackToMainPage(request, INVALID_ROLE_PARAMETER_MSG);
+        }
+
         User userToUpdate
                 = new User(id, eMail, null,
                 null, 0, null, false,
@@ -162,21 +211,9 @@ public class UpdateUser implements Command {
         return UPDATE_USER_ERROR_RESPONSE;
     }
 
-    private boolean isStringValid(String toValidate) {
-        byte[] byteArray = toValidate.getBytes();
-        return isUTF8(byteArray);
-    }
-
-    private boolean isEmailValid(String toValidate) {
-
-        String eMail = toValidate.trim();
-        Matcher matcher = EMAIL_PATTERN.matcher(eMail);
-        return matcher.matches();
-    }
-
-    private static boolean isUTF8(final byte[] inputBytes) {
-        final String converted = new String(inputBytes, StandardCharsets.UTF_8);
-        final byte[] outputBytes = converted.getBytes(StandardCharsets.UTF_8);
-        return Arrays.equals(inputBytes, outputBytes);
+    private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
+                                             String errorMessage) {
+        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
+        return UPDATE_USER_ERROR_RESPONSE_TO_MAIN_PAGE;
     }
 }

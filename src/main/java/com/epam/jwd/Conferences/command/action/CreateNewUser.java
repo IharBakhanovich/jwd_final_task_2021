@@ -6,14 +6,11 @@ import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.exception.DuplicateException;
 import com.epam.jwd.Conferences.service.UserService;
+import com.epam.jwd.Conferences.validator.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Implements 'create_new_user' action. The singleton.
@@ -36,9 +33,8 @@ public class CreateNewUser implements Command {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/login.jsp");
     private static final String DUPLICATE_USER_MESSAGE = "The user with such a nickname already exists in the system.";
     private static final String USERS_ATTRIBUTE_NAME = "users";
-    private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}$";
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
     private static final int MAX_LENGTH_OF_NICKNAME_IN_DB = 30;
+    private static final int MAX_LENGTH_OF_PASSWORD = 32;
     private static final String INVALID_NICKNAME_IS_EMPTY_MSG = "NicknameShouldNotBeEmptyMSG";
     private static final String INVALID_NICKNAME_NOT_UTF8_MSG = "NicknameShouldContainOnlyLatinSignsMSG";
     private static final String INVALID_PASSWORD_IS_EMPTY_MSG = "PasswordShouldNotBeEmptyMSG";
@@ -47,12 +43,16 @@ public class CreateNewUser implements Command {
     private static final String INVALID_NICKNAME_IS_ALREADY_EXIST_IN_SYSTEM_AND_PASSWORD_REPEATED_WRONG_MSG = "NicknameIsAlreadyExistInSystemAndPasswordRepeatedWrongMSG";
     private static final String INVALID_NICKNAME_SUCH_USER_EXISTS_IN_SYSTEM_MSG = "NicknameIsAlreadyExistInSystemMSG";
     private static final String INVALID_PASSWORD_REPEATED_WRONG_MSG = "PasswordRepeatedWrongMSG";
+    private static final String INVALID_PASSWORD_TOO_LONG_MSG = "PasswordTooLongMSG";
+    private static final String NO_PERMISSION_TO_CREATE_USER_IN_SYSTEM_MSG = "YouHaveNoPermissionToCreateUserInSystemMSG";
 
     private final UserService service;
+    private final Validator validator;
 
     // the private default constructor, to not create the instance of the class with 'new' outside the class
     private CreateNewUser() {
         service = UserService.retrieve();
+        validator = Validator.retrieve();
     }
 
     private static class CreateNewUserHolder {
@@ -88,13 +88,19 @@ public class CreateNewUser implements Command {
             return prepareErrorPage(request, INVALID_NICKNAME_IS_EMPTY_MSG);
         } else if (password == null || password.trim().equals("")) {
             return prepareErrorPage(request, INVALID_PASSWORD_IS_EMPTY_MSG);
-        } else if (!isStringValid(nickname)) {
+        } else if (!validator.isLengthValid(password, MAX_LENGTH_OF_PASSWORD)) {
+            return prepareErrorPage(request, INVALID_PASSWORD_TOO_LONG_MSG);
+        } else if (!validator.isStringValid(nickname)) {
             return prepareErrorPage(request, INVALID_NICKNAME_NOT_UTF8_MSG);
-        } else if (!isStringValid(password)) {
+        } else if (!validator.isStringValid(password)) {
             return prepareErrorPage(request, INVALID_PASSWORD_NOT_UTF8_MSG);
         }
 
-        if (nickname.length() > MAX_LENGTH_OF_NICKNAME_IN_DB) {
+        if (creatorRole == null) {
+            return prepareErrorPage(request, NO_PERMISSION_TO_CREATE_USER_IN_SYSTEM_MSG);
+        }
+
+        if (!validator.isLengthValid(nickname, MAX_LENGTH_OF_NICKNAME_IN_DB)) {
             return prepareErrorPage(request, INVALID_FIRST_NAME_IS_TOO_LONG_MSG);
         }
 
@@ -113,7 +119,7 @@ public class CreateNewUser implements Command {
             service.createUser(userToCreate);
             final List<User> updatedUsersList = service.findAllUsers();
             request.setAttribute(USERS_ATTRIBUTE_NAME, updatedUsersList);
-            if(creatorRole.equals("ADMIN")){
+            if (creatorRole.equals("ADMIN")) {
                 return USER_CREATION_SUCCESS_RESPONSE_ADMIN;
             } else {
                 return USER_CREATION_SUCCESS_RESPONSE_UNAUTHORISED;
@@ -128,23 +134,5 @@ public class CreateNewUser implements Command {
     private CommandResponse prepareErrorPage(CommandRequest request, String errorMessage) {
         request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
         return CREATE_NEW_USER_ERROR_RESPONSE;
-    }
-
-    private boolean isStringValid(String toValidate) {
-        byte[] byteArrray = toValidate.getBytes();
-        return isUTF8(byteArrray);
-    }
-
-    private static boolean isUTF8(final byte[] inputBytes) {
-        final String converted = new String(inputBytes, StandardCharsets.UTF_8);
-        final byte[] outputBytes = converted.getBytes(StandardCharsets.UTF_8);
-        return Arrays.equals(inputBytes, outputBytes);
-    }
-
-    private boolean validatePasswordComplexity(String toValidate) {
-        String password = null;
-        password = toValidate.trim();
-        Matcher matcher = PASSWORD_PATTERN.matcher(password);
-        return matcher.matches();
     }
 }
