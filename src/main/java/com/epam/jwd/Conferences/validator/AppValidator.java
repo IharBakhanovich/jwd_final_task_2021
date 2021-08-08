@@ -1,10 +1,14 @@
 package com.epam.jwd.Conferences.validator;
 
 import com.epam.jwd.Conferences.dao.DAOFactory;
+import com.epam.jwd.Conferences.dto.*;
 import com.epam.jwd.Conferences.service.AppSectionService;
+import com.epam.jwd.Conferences.service.UserService;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,11 +22,13 @@ public class AppValidator implements Validator {
     private static final String EMAIL_REGEX = "^(.+)@(.+)$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
+    private final UserService service;
+
     /**
      * the private default constructor, to not create the instance of the class with 'new' outside the class.
      */
     private AppValidator() {
-
+        this.service = UserService.retrieve();
     }
 
     private static class AppValidatorHolder {
@@ -90,6 +96,133 @@ public class AppValidator implements Validator {
         String eMail = emailToValidate.trim();
         Matcher matcher = EMAIL_PATTERN.matcher(eMail);
         return matcher.matches();
+    }
+
+    /**
+     * Checks whether a Conference with the value of {@param conferenceId} exist in the system.
+     *
+     * @param conferenceId is a Long to check.
+     * @return {@code true} if there is the Conference with {@param conferenceId} exists in the system.
+     */
+    @Override
+    public boolean isConferenceExistInSystem(Long conferenceId) {
+        final List<Conference> conferences = service.findAllConferences();
+        Long conferenceIdFromDatabase = null;
+        for (Conference conference: conferences
+             ) {
+            if (conference.getId().equals(conferenceId)) {
+                conferenceIdFromDatabase = conference.getId();
+            }
+        }
+        return conferenceIdFromDatabase != null;
+    }
+
+    /**
+     * Checks whether a User with the value of {@param userId} exist in the system.
+     *
+     * @param userId is a Long to check.
+     * @return {@code true} if there is the User with {@param userId} exists in the system.
+     */
+    @Override
+    public boolean isUserWithIdExistInSystem(Long userId) {
+        final List<User> users = service.findAllUsers();
+        Long userIdFrom = null;
+        String userNickName = null;
+        for (User user: users
+        ) {
+            if (user.getId().equals(userId)) {
+                userIdFrom = user.getId();
+            }
+        }
+        return userIdFrom != null;
+    }
+
+    /**
+     * Checks whether a Role with the value of {@param role} exist in the system.
+     *
+     * @param role is a Role to check.
+     * @return {@code true} if there is the Role with {@param role} exists in the system.
+     */
+    @Override
+    public boolean isRoleExistInSystem(Role role) {
+        List<Role> roles = Role.valuesAsList();
+        String checkRole = null;
+        for (Role role1: roles
+        ) {
+            if (role.getName().equals(role1.getName())) {
+                checkRole = role1.getName();
+            }
+        }
+        return checkRole != null;
+    }
+
+    /**
+     * Checks whether a Section with the value of {@param sectionId} exist in the system.
+     *
+     * @param sectionId is a Long to check.
+     * @return {@code true} if there is the Section with {@param userId} exists in the system.
+     */
+    @Override
+    public boolean isSectionExistInSystem(Long sectionId) {
+        final List<Section> sections = service.findAllSections();
+        Long sectionIdFromDatabase = null;
+        for (Section section: sections
+        ) {
+            if (section.getId().equals(sectionId)) {
+                sectionIdFromDatabase = section.getId();
+            }
+        }
+        return sectionIdFromDatabase != null;
+    }
+
+    /**
+     * Checks whether a Report with the value of {@param reportId} exist in the system.
+     *
+     * @param reportId is a Long to check.
+     * @return {@code true} if there is the Report with {@param reportId} exists in the system.
+     */
+    @Override
+    public boolean isReportExistInSystem(Long reportId) {
+        Optional<Report> report = service.findReportByID(reportId);
+        return report.isPresent();
+    }
+
+    /**
+     * Checks whether a ReportType with the value of {@param reportTypeName} exist in the system.
+     *
+     * @param reportTypeName is a String to check.
+     * @return {@code true} if there is the ReportType with {@param reportTypeName} exists in the system.
+     */
+    @Override
+    public boolean isReportTypeExistInSystem(String reportTypeName) {
+        List<ReportType> reportTypes = ReportType.valuesAsList();
+        String checkReportType = null;
+        for (ReportType reportType: reportTypes
+        ) {
+            if (reportType.getName().equals(reportTypeName)) {
+                checkReportType = reportType.getName();
+            }
+        }
+        return checkReportType != null;
+    }
+
+    /**
+     * Checks whether a User with the value of {@param nickname} exist in the system.
+     *
+     * @param nickname is a String to check.
+     * @return {@code true} if there is the User with {@param nickname} exists in the system.
+     */
+    @Override
+    public boolean isUserWithNicknameExistInSystem(String nickname) {
+        final List<User> users = service.findAllUsers();
+        String userNickName = null;
+        for (User user: users
+        ) {
+            if (user.getNickname().equals(nickname)) {
+                userNickName = user.getNickname();
+            }
+        }
+        return userNickName != null;
     }
 
     private static boolean isUTF8(final byte[] inputBytes) {

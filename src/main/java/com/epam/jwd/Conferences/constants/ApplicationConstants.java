@@ -205,6 +205,7 @@ public class ApplicationConstants {
     private static final String INVALID_ID_NO_SUCH_USER_IN_SYSTEM_MSG = "ThereIsNoSuchAUserInSystemMSG";
     private static final String INVALID_PARAMETERS_MSG = "SomethingWentWrongWithParametersMSG";
     private static final String INVALID_ROLE_PARAMETER_MSG = "SomethingWentWrongWithRoleParameterMSG";
+    private static final String NO_PERMISSION_TO_CHANGE_ROLE_TO_ADMIN_MSG = "YouHaveNoPermissionToChaneRoleToAdministratorMSG";
 
     // from class LoginCommand
     private static final String LOGIN_PARAM_NAME = "login";

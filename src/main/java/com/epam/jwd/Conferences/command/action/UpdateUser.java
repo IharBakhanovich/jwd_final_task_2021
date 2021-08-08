@@ -8,11 +8,8 @@ import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.service.UserService;
 import com.epam.jwd.Conferences.validator.Validator;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -49,6 +46,7 @@ public class UpdateUser implements Command {
     private static final String INVALID_ID_NO_SUCH_USER_IN_SYSTEM_MSG = "ThereIsNoSuchAUserInSystemMSG";
     private static final String INVALID_PARAMETERS_MSG = "SomethingWentWrongWithParametersMSG";
     private static final String INVALID_ROLE_PARAMETER_MSG = "SomethingWentWrongWithRoleParameterMSG";
+    private static final String NO_PERMISSION_TO_CHANGE_ROLE_TO_ADMIN_MSG = "YouHaveNoPermissionToChaneRoleToAdministratorMSG";
 
     private static final CommandResponse UPDATE_USER_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/user.jsp");
@@ -102,20 +100,7 @@ public class UpdateUser implements Command {
         final List<User> users = service.findAllUsers();
 
         // validation whether the user with such id exists in system
-        Long userId = null;
-        String userNickName = null;
-        for (User user: users
-             ) {
-            if (user.getId().equals(id)) {
-                userId = user.getId();
-            }
-
-            if (user.getNickname().equals(nickname)) {
-                userNickName = user.getNickname();
-            }
-        }
-
-        if (userId == null || userNickName == null) {
+        if (!validator.isUserWithIdExistInSystem(id) || !validator.isUserWithNicknameExistInSystem(nickname)) {
             return prepareErrorPageBackToMainPage(request, INVALID_ID_NO_SUCH_USER_IN_SYSTEM_MSG);
         }
 
@@ -171,17 +156,15 @@ public class UpdateUser implements Command {
         }
 
         // check parameter role
-        List<Role> roles = Role.valuesAsList();
-        String checkRole = null;
-        for (Role role1: roles
-             ) {
-            if (role.getName().equals(role1.getName())) {
-                checkRole = role1.getName();
-            }
+        if (!validator.isRoleExistInSystem(role)) {
+            return prepareErrorPageBackToMainPage(request, INVALID_ROLE_PARAMETER_MSG);
         }
 
-        if (checkRole == null) {
-            return prepareErrorPageBackToMainPage(request, INVALID_ROLE_PARAMETER_MSG);
+        // check whether the Role 'ADMIN' is changed
+        Optional<User> userFromDatabase = service.findUserByID(id);
+        Role wasUserRole = userFromDatabase.get().getRole();
+        if (wasUserRole.getName().equals("ADMIN") && !role.getName().equals("ADMIN")) {
+            return prepareErrorPage(request, NO_PERMISSION_TO_CHANGE_ROLE_TO_ADMIN_MSG);
         }
 
         User userToUpdate
