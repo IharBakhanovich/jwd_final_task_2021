@@ -106,6 +106,9 @@ public class AppValidator implements Validator {
      */
     @Override
     public boolean isConferenceExistInSystem(Long conferenceId) {
+        if (conferenceId == null) {
+            return false;
+        }
         final List<Conference> conferences = service.findAllConferences();
         Long conferenceIdFromDatabase = null;
         for (Conference conference: conferences
@@ -125,6 +128,9 @@ public class AppValidator implements Validator {
      */
     @Override
     public boolean isUserWithIdExistInSystem(Long userId) {
+        if (userId == null) {
+            return false;
+        }
         final List<User> users = service.findAllUsers();
         Long userIdFrom = null;
         String userNickName = null;
@@ -145,6 +151,9 @@ public class AppValidator implements Validator {
      */
     @Override
     public boolean isRoleExistInSystem(Role role) {
+        if (role == null) {
+            return false;
+        }
         List<Role> roles = Role.valuesAsList();
         String checkRole = null;
         for (Role role1: roles
@@ -164,6 +173,9 @@ public class AppValidator implements Validator {
      */
     @Override
     public boolean isSectionExistInSystem(Long sectionId) {
+        if (sectionId == null) {
+            return false;
+        }
         final List<Section> sections = service.findAllSections();
         Long sectionIdFromDatabase = null;
         for (Section section: sections
@@ -183,6 +195,9 @@ public class AppValidator implements Validator {
      */
     @Override
     public boolean isReportExistInSystem(Long reportId) {
+        if (reportId == null) {
+            return false;
+        }
         Optional<Report> report = service.findReportByID(reportId);
         return report.isPresent();
     }
@@ -195,6 +210,9 @@ public class AppValidator implements Validator {
      */
     @Override
     public boolean isReportTypeExistInSystem(String reportTypeName) {
+        if (reportTypeName == null) {
+            return false;
+        }
         List<ReportType> reportTypes = ReportType.valuesAsList();
         String checkReportType = null;
         for (ReportType reportType: reportTypes
@@ -214,6 +232,9 @@ public class AppValidator implements Validator {
      */
     @Override
     public boolean isUserWithNicknameExistInSystem(String nickname) {
+        if (nickname == null) {
+            return false;
+        }
         final List<User> users = service.findAllUsers();
         String userNickName = null;
         for (User user: users
@@ -223,6 +244,96 @@ public class AppValidator implements Validator {
             }
         }
         return userNickName != null;
+    }
+
+    /**
+     * Checks whether a Section with the value of {@param sectionName} exist in the system.
+     *
+     * @param sectionName is a Long to check.
+     * @return {@code true} if there is the Section with {@param sectionName} exists in the system.
+     */
+    @Override
+    public boolean isSectionWithSuchNameExistInSystem(String sectionName) {
+        if (sectionName == null) {
+            return false;
+        }
+        final List<Section> sections = service.findAllSections();
+        for (Section section: sections
+             ) {
+            if (section.getSectionName().equals(sectionName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks whether a Conference with the value of {@param conferenceTitle} exist in the system.
+     *
+     * @param conferenceTitle is a Long to check.
+     * @return {@code true} if there is the Conference with {@param conferenceTitle} exists in the system.
+     */
+    @Override
+    public boolean isConferenceWithSuchTitleExistInSystem(String conferenceTitle) {
+        if (conferenceTitle == null) {
+            return false;
+        }
+        final List<Conference> conferences = service.findAllConferences();
+        for (Conference conference: conferences
+        ) {
+            if (conference.getConferenceTitle().equals(conferenceTitle)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks whether in the system exist Conference with the value of {@param conferenceTitle}
+     * and value of {@param conferenceId}.
+     *
+     * @param  conferenceId is a Long to check.
+     * @param conferenceTitle  is a String to check.
+     * @return {@code true} if there is in the system the Conference with {@param conferenceTitle}
+     *         and with the {@param conferenceId}.
+     */
+    @Override
+    public boolean isConferenceTitleAndIdFromTheSameConference(Long conferenceId, String conferenceTitle) {
+        if (conferenceTitle == null || conferenceId == null) {
+            return false;
+        }
+        final List<Conference> conferences = service.findAllConferences();
+        for (Conference conference: conferences
+        ) {
+            if (conference.getConferenceTitle().equals(conferenceTitle) && conference.getId().equals(conferenceId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks whether in the system exist Section with the value of {@param sectionName}
+     * and value of {@param sectionId}.
+     *
+     * @param sectionId is a Long to check.
+     * @param sectionName is a String to check.
+     * @return {@code true} if there is in the system the Section with {@param sectionName}
+     *         and with the {@param sectionId}.
+     */
+    @Override
+    public boolean isSectionNameAndIdFromTheSameSection(Long sectionId, String sectionName) {
+        if (sectionId == null || sectionName == null) {
+            return false;
+        }
+        final List<Section> sections = service.findAllSections();
+        for (Section section: sections
+        ) {
+            if (section.getSectionName().equals(sectionName) && section.getId().equals(sectionId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static boolean isUTF8(final byte[] inputBytes) {

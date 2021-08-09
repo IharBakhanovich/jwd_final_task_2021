@@ -107,4 +107,42 @@ public interface Validator {
      * @return {@code true} if there is the User with {@param nickname} exists in the system.
      */
     boolean isUserWithNicknameExistInSystem(String nickmane);
+
+    /**
+     * Checks whether a Section with the value of {@param sectionName} exist in the system.
+     *
+     * @param sectionName is a Long to check.
+     * @return {@code true} if there is the Section with {@param sectionName} exists in the system.
+     */
+    boolean isSectionWithSuchNameExistInSystem(String sectionName);
+
+    /**
+     * Checks whether a Conference with the value of {@param conferenceTitle} exist in the system.
+     *
+     * @param conferenceTitle is a Long to check.
+     * @return {@code true} if there is the Conference with {@param conferenceTitle} exists in the system.
+     */
+    boolean isConferenceWithSuchTitleExistInSystem(String conferenceTitle);
+
+    /**
+     * Checks whether in the system exist Conference with the value of {@param conferenceTitle}
+     * and value of {@param conferenceId}.
+     *
+     * @param  conferenceId is a Long to check.
+     * @param conferenceTitle  is a String to check.
+     * @return {@code true} if there is in the system the Conference with {@param conferenceTitle}
+     *         and with the {@param conferenceId}.
+     */
+    boolean isConferenceTitleAndIdFromTheSameConference(Long conferenceId, String conferenceTitle);
+
+    /**
+     * Checks whether in the system exist Section with the value of {@param sectionName}
+     * and value of {@param sectionId}.
+     *
+     * @param sectionId is a Long to check.
+     * @param sectionName is a String to check.
+     * @return {@code true} if there is in the system the Section with {@param sectionName}
+     *         and with the {@param sectionId}.
+     */
+    boolean isSectionNameAndIdFromTheSameSection(Long sectionId, String sectionName);
 }

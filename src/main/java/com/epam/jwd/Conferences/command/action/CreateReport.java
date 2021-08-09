@@ -8,6 +8,7 @@ import com.epam.jwd.Conferences.dto.ReportType;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.exception.DuplicateException;
 import com.epam.jwd.Conferences.service.UserService;
+import com.epam.jwd.Conferences.validator.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -45,6 +46,7 @@ public class CreateReport implements Command {
     private static final String QUESTION_TEXT_ATTRIBUTE_NAME = "questionText";
     private static final String INVALID_REPORT_TEXT_MSG = "ReportTextShouldNotBeEmptyMSG";
     private static final String INVALID_REPORT_TEXT_NOT_UTF8_MSG = "ReportTextShouldContainOnlyLatinSignsMSG";
+    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
 
     private static final String ERROR_ATTRIBUTE_NAME = "error";
     private static final CommandResponse CREATE_NEW_REPORT_ERROR_RESPONSE_TO_CREATE_REPORT_PAGE
@@ -53,15 +55,19 @@ public class CreateReport implements Command {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/reports.jsp");
     private static final CommandResponse CREATE_NEW_REPORT_ERROR_RESPONSE_TO_CREATE_ANSWER_PAGE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createAnswer.jsp");
+    private static final CommandResponse CREATE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     private static final String DUPLICATE_SECTION_MESSAGE
             = "The section with such an section name title already exist in the system."
             + " Please choose an other section name.";
 
     private final UserService service;
+    private final Validator validator;
 
     // the private default constructor, to not create the instance of the class with 'new' outside the class
     private CreateReport() {
-        service = UserService.retrieve();
+        this.service = UserService.retrieve();
+        this.validator = Validator.retrieve();
     }
 
     private static class CreateReportHolder {
@@ -96,9 +102,28 @@ public class CreateReport implements Command {
         final String reportType = String.valueOf(request.getParameter(REPORT_TYPE_PARAMETER_NAME));
         final List<User> users = service.findAllUsers();
 
+        // validation of the parameters (whether they exist in the system)
+        if (!validator.isConferenceExistInSystem(conferenceId)
+                || !validator.isSectionExistInSystem(sectionId)
+                || !validator.isReportTypeExistInSystem(reportType)
+                || !validator.isUserWithNicknameExistInSystem(applicantNickname)
+                || !validator.isSectionWithSuchNameExistInSystem(sectionName)
+                || !validator.isConferenceWithSuchTitleExistInSystem(conferenceTitle)
+                || !validator.isConferenceTitleAndIdFromTheSameConference(conferenceId, conferenceTitle)
+                || !validator.isSectionNameAndIdFromTheSameSection(sectionId, sectionName)) {
+            return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+        }
+
+        //validation of questionReportId
+        if (questionReportId != 0) {
+            if(!validator.isReportExistInSystem(questionReportId)) {
+                return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+            }
+        }
+
         if (reportText == null || reportText.trim().equals("")) {
             return prepareErrorPage(request, INVALID_REPORT_TEXT_MSG);
-        } else if (!isStringValid(reportText)) {
+        } else if (!validator.isStringValid(reportText)) {
             return prepareErrorPage(request, INVALID_REPORT_TEXT_NOT_UTF8_MSG);
         }
 
@@ -167,14 +192,9 @@ public class CreateReport implements Command {
         }
     }
 
-    private boolean isStringValid(String toValidate) {
-        byte[] byteArray = toValidate.getBytes();
-        return isUTF8(byteArray);
-    }
-
-    private static boolean isUTF8(final byte[] inputBytes) {
-        final String converted = new String(inputBytes, StandardCharsets.UTF_8);
-        final byte[] outputBytes = converted.getBytes(StandardCharsets.UTF_8);
-        return Arrays.equals(inputBytes, outputBytes);
+    private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
+                                                           String errorMessage) {
+        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
+        return CREATE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE;
     }
 }

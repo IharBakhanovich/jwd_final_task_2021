@@ -147,6 +147,9 @@ public class ApplicationConstants {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createAnswer.jsp");
     private static final CommandResponse REPORT_CREATION_SUCCESS_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/reports.jsp");
+    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
+    private static final CommandResponse CREATE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
 
     //from class CreateSection
