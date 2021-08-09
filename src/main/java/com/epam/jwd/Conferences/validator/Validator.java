@@ -153,4 +153,15 @@ public interface Validator {
      * @return {@code true} if there is the Role with {@param role} exists in the system.
      */
     boolean isRoleWithSuchNameExistInSystem(String role);
+
+    /**
+     * Checks whether in the system exist User with the value of {@param userId}
+     * and value of {@param userRole}.
+     *
+     * @param  userId is a String to check.
+     * @param userRole  is a String to check.
+     * @return {@code true} if there is in the system the User with {@param userId}
+     *         and with the {@param userRole}.
+     */
+    boolean isUserIdAndUserRoleFromTheSameUser(String userId, String userRole);
 }

@@ -12,9 +12,6 @@ import com.epam.jwd.Conferences.service.UserService;
 import com.epam.jwd.Conferences.validator.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
 
 public class CreateSection implements Command {
@@ -167,17 +164,6 @@ public class CreateSection implements Command {
         request.setAttribute(CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME, conferenceManagerId);
 
         return CREATE_NEW_SECTION_ERROR_RESPONSE;
-    }
-
-    private boolean isStringValid(String toValidate) {
-        byte[] byteArrray = toValidate.getBytes();
-        return isUTF8(byteArrray);
-    }
-
-    private static boolean isUTF8(final byte[] inputBytes) {
-        final String converted = new String(inputBytes, StandardCharsets.UTF_8);
-        final byte[] outputBytes = converted.getBytes(StandardCharsets.UTF_8);
-        return Arrays.equals(inputBytes, outputBytes);
     }
 
     private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,

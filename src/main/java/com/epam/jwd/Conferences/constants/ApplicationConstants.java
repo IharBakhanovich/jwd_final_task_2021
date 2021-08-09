@@ -116,6 +116,8 @@ public class ApplicationConstants {
             = "The conference with such a conference title already exist in the system. Please choose an other conference title.";
     private static final String NO_PERMISSION_TO_CREATE_CONFERENCE_MSG = "YouHaveNoPermissionToCreateAConferenceMSG";
     private static final String INVALID_MANAGER_THERE_IS_NO_SUCH_MANAGER_IN_SYSTEM_MSG = "ThereIsNoSuchManagerInSystemMSG";
+    private static final CommandResponse CREATE_CONFERENCE_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
     // from class CreateNewUser
     private static final Logger LOGGER_FOR_CREATE_NEW_USER = LogManager.getLogger(CreateNewUser.class);

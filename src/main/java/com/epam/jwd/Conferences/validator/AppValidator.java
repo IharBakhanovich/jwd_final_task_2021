@@ -357,6 +357,29 @@ public class AppValidator implements Validator {
         return false;
     }
 
+    /**
+     * Checks whether in the system exist User with the value of {@param userId}
+     * and value of {@param userRole}.
+     *
+     * @param userId   is a String to check.
+     * @param userRole is a String to check.
+     * @return {@code true} if there is in the system the User with {@param userId}
+     * and with the {@param userRole}.
+     */
+    @Override
+    public boolean isUserIdAndUserRoleFromTheSameUser(String userId, String userRole) {
+        if (userId == null || userRole == null) {
+            return false;
+        }
+        final Long userIdInLong = Long.valueOf(userId);
+        Optional<User> user = service.findUserByID(userIdInLong);
+        if (!user.isPresent()) {
+            return false;
+        } else {
+            return (user.get().getId().equals(userIdInLong) && user.get().getRole().getName().equals(userRole));
+        }
+    }
+
     private static boolean isUTF8(final byte[] inputBytes) {
         final String converted = new String(inputBytes, StandardCharsets.UTF_8);
         final byte[] outputBytes = converted.getBytes(StandardCharsets.UTF_8);

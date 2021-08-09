@@ -11,6 +11,7 @@ import com.epam.jwd.Conferences.service.UserService;
 import com.epam.jwd.Conferences.validator.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.util.List;
 
 /**
@@ -25,6 +26,8 @@ public class CreateConference implements Command {
     private static final String MANAGER_CONF_PARAMETER_NAME = "managerConf";
     private static final CommandResponse CREATE_NEW_CONFERENCE_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createConference.jsp");
+    private static final CommandResponse CREATE_CONFERENCE_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     private static final String ERROR_ATTRIBUTE_NAME = "error";
     private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
     private static final String USERS_ATTRIBUTE_NAME = "users";
@@ -38,6 +41,8 @@ public class CreateConference implements Command {
     private static final String INVALID_CONFERENCE_TITLE_TEXT_NOT_UTF8_MSG = "ConferenceTitleShouldContainOnlyLatinLettersMSG";
     private static final String INVALID_CONFERENCE_TITLE_TEXT_TOO_LONG_MSG = "ConferenceTitleIsTooLongMSG";
     private static final String INVALID_MANAGER_THERE_IS_NO_SUCH_MANAGER_IN_SYSTEM_MSG = "ThereIsNoSuchManagerInSystemMSG";
+    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
+
 
     private final UserService service;
     private final Validator validator;
@@ -76,7 +81,14 @@ public class CreateConference implements Command {
         final String creatorRole = String.valueOf(request.getParameter(CREATOR_ROLE_PARAMETER_NAME));
         final List<User> users = service.findAllUsers();
 
-        if (creatorRole==null || !creatorRole.equals("ADMIN")) {
+        // validation of the parameters (whether they exist in the system)
+        if (!validator.isUserWithIdExistInSystem(Long.valueOf(creatorId))
+                || !validator.isUserWithNicknameExistInSystem(managerConf)
+                || !validator.isRoleWithSuchNameExistInSystem(creatorRole)) {
+            return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+        }
+
+        if (creatorRole == null || !creatorRole.equals("ADMIN")) {
             return prepareErrorPage(request, NO_PERMISSION_TO_CREATE_CONFERENCE_MSG);
         } else if (confTitle == null || confTitle.trim().equals("")) {
             return prepareErrorPage(request, INVALID_CONFERENCE_TITLE_TEXT_MSG);
@@ -122,5 +134,15 @@ public class CreateConference implements Command {
     private CommandResponse prepareErrorPage(CommandRequest request, String errorMessage) {
         request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
         return CREATE_NEW_CONFERENCE_ERROR_RESPONSE;
+    }
+
+    private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
+                                                           String errorMessage) {
+        final List<Conference> conferences = service.findAllConferences();
+        request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
+        final List<User> users = service.findAllUsers();
+        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
+        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
+        return CREATE_CONFERENCE_ERROR_RESPONSE_TO_MAIN_PAGE;
     }
 }

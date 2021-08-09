@@ -86,9 +86,6 @@
             </form>
         </c:otherwise>
     </c:choose>
-
-    <br>
-    <a href="${pageContext.request.contextPath}/controller"><fmt:message key="label.backToMainPage"/></a>
 </div>
 </body>
 </html>
