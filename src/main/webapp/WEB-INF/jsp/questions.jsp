@@ -37,46 +37,46 @@
                     <th><fmt:message key="label.ShowQuestionLinkColumnName"/></th>
                     <th><fmt:message key="label.WriteAnswerLinkColumnName"/></th>
                 </tr>
-                <c:forEach var="question" items="${requestScope.questions}">
+                <c:forEach var="application" items="${requestScope.questions}">
                     <tr>
                         <td>
-                            <a href="${pageContext.request.contextPath}/controller?command=show_report&id=${question.id}">${question.id}</a>
+                            <a href="${pageContext.request.contextPath}/controller?command=show_report&id=${application.id}">${application.id}</a>
                         </td>
                         <c:forEach var="section" items="${requestScope.sections}">
-                            <c:if test="${question.sectionId==section.id}">
+                            <c:if test="${application.sectionId==section.id}">
                                 <td>${section.sectionName}</td>
                             </c:if>
                         </c:forEach>
                         <c:forEach var="conference" items="${requestScope.conferences}">
-                            <c:if test="${question.conferenceId==conference.id}">
+                            <c:if test="${application.conferenceId==conference.id}">
                                 <td>${conference.conferenceTitle}</td>
                             </c:if>
                         </c:forEach>
-                        <td>${question.reportText}</td>
-                        <td>${question.reportType}</td>
+                        <td>${application.reportText}</td>
+                        <td>${application.reportType}</td>
                         <c:forEach var="user" items="${requestScope.users}">
-                            <c:if test="${question.applicant==user.id}">
+                            <c:if test="${application.applicant==user.id}">
                                 <td>
                                     <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}">${user.nickname}</a>
                                 </td>
                             </c:if>
                         </c:forEach>
                         <td>
-                                ${question.questionReportId}
+                                ${application.questionReportId}
                         </td>
 
                         <td>
-                            <a href="${pageContext.request.contextPath}/controller?command=show_question_context&questionIdForContext=${question.id}&managerId=${requestScope.managerId}&questionReportIdForContext=${question.questionReportId}&sectionName=${requestScope.sectionName}"><fmt:message
+                            <a href="${pageContext.request.contextPath}/controller?command=show_question_context&questionIdForContext=${application.id}&managerId=${requestScope.managerId}&questionReportIdForContext=${application.questionReportId}&sectionName=${requestScope.sectionName}"><fmt:message
                                     key="label.showQuestionHistory"/></a>
                         </td>
                         <td>
                             <c:choose>
-                                <c:when test="${question.questionReportId == 0}">
-                                    <a href="${pageContext.request.contextPath}/controller?command=show_create_answer&questionId=${question.id}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${question.conferenceId}&sectionId=${question.sectionId}&questionText=${question.reportText}"><fmt:message
+                                <c:when test="${application.questionReportId == 0}">
+                                    <a href="${pageContext.request.contextPath}/controller?command=show_create_answer&questionId=${application.id}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${application.conferenceId}&sectionId=${application.sectionId}&questionText=${application.reportText}"><fmt:message
                                             key="label.writeAnAnswer"/></a>
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="${pageContext.request.contextPath}/controller?command=show_create_answer&questionId=${question.questionReportId}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${question.conferenceId}&sectionId=${question.sectionId}&questionText=${question.reportText}"><fmt:message
+                                    <a href="${pageContext.request.contextPath}/controller?command=show_create_answer&questionId=${application.questionReportId}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${application.conferenceId}&sectionId=${application.sectionId}&questionText=${application.reportText}"><fmt:message
                                             key="label.writeAnAnswer"/></a>
                                 </c:otherwise>
                             </c:choose>

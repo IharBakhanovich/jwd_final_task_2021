@@ -415,6 +415,13 @@ public class ApplicationConstants {
 
     // class CreateReport
 
+    // class ShowApplicationsPage
+    public static final String APPLICATIONS_ATTRIBUTE_NAME = "applications";
+    private static final CommandResponse SHOW_APPLICATIONS_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+    private static final CommandResponse SHOW_APPLICATIONS_PAGE_RESPONSE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/applications.jsp");
+
 
 
 }

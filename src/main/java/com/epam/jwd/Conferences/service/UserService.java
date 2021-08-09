@@ -57,4 +57,6 @@ public interface UserService {
     void updateUserRole(Long userId, Long newRole);
 
     List<Report> findAllReports();
+
+    List<Report> findAllApplications(Long managerId);
 }

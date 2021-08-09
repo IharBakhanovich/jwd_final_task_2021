@@ -190,7 +190,7 @@ public class AppUserService implements UserService {
         Optional<Report> question = reportDAO.findById(questionReportId);
         List<Report> answers = reportDAO.findAllReportsByQuestionReportId(questionReportId);
 
-        if(question.isPresent()) {
+        if (question.isPresent()) {
             final Report questionToAdd = new Report(question.get().getId(), question.get().getSectionId(),
                     question.get().getConferenceId(), question.get().getReportText(), question.get().getReportType(),
                     question.get().getApplicant(), question.get().getQuestionReportId());
@@ -208,6 +208,11 @@ public class AppUserService implements UserService {
     @Override
     public List<Report> findAllReports() {
         return reportDAO.findAll();
+    }
+
+    @Override
+    public List<Report> findAllApplications(Long managerId) {
+        return reportDAO.findAllApplicationsByManagerId(managerId);
     }
 
     @Override

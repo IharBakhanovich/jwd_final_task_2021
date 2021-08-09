@@ -35,6 +35,8 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
             = "select * from %s where %s = ? and %s = ?";
     public static final String SELECT_ALL_QUESTION_BY_MANAGER_ID_SQL
             = "select %s.* from %s, %s where %s.%s = 1 and %s.%s = %s.%s and %s.%s = ?";
+    public static final String SELECT_ALL_APPLICATIONS_BY_MANAGER_ID_SQL
+            = "select %s.* from %s, %s where %s.%s = 2 and %s.%s = %s.%s and %s.%s = ?";
     public static final String SELECT_ALL_QUESTION_BY_APPLICANT_ID_SQL
             = "select * from %s where %s = 1 and %s = ?";
 
@@ -43,6 +45,7 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
     private final String findAllQuestionsByManagerIdSql;
     private final String findAllReportsByQuestionReportIdSql;
     private final String findAllQuestionsByApplicantIdSql;
+    private final String findAllApplicationsByManagerIdSql;
 
     private static final String MANAGER_SECT_COLUMN = "managerSect";
     private static final String TABLE_NAME_SECTIONS = "sections";
@@ -61,6 +64,9 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
                 TABLE_NAME_REPORTS, QUESTION_REPORT_ID_COLUMN);
         findAllQuestionsByApplicantIdSql = String.format(SELECT_ALL_QUESTION_BY_APPLICANT_ID_SQL,
                 TABLE_NAME_REPORTS, REPORT_TYPE_COLUMN, APPLICANT_COLUMN);
+        findAllApplicationsByManagerIdSql = String.format(SELECT_ALL_APPLICATIONS_BY_MANAGER_ID_SQL, TABLE_NAME_REPORTS,
+                TABLE_NAME_REPORTS, TABLE_NAME_SECTIONS, TABLE_NAME_REPORTS, REPORT_TYPE_COLUMN, TABLE_NAME_REPORTS,
+                SECTION_ID_COLUMN, TABLE_NAME_SECTIONS, ID_COLUMN, TABLE_NAME_SECTIONS, MANAGER_SECT_COLUMN);
     }
 
     private static class DBReportDAOHolder {
@@ -143,8 +149,8 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
 
     /**
      * Finds the {@link Report} of the applicant.
-     * @param applicantId	The Id of the applicant of the returned {@link Report} report.
      *
+     * @param applicantId The Id of the applicant of the returned {@link Report} report.
      * @return {@link Report}.
      */
     @Override
@@ -175,6 +181,13 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
         return findPreparedEntities(
                 statement -> statement.setLong(1, managerId),
                 findAllQuestionsByApplicantIdSql);
+    }
+
+    @Override
+    public List<Report> findAllApplicationsByManagerId(Long managerId) {
+        return findPreparedEntities(
+                statement -> statement.setLong(1, managerId),
+                findAllApplicationsByManagerIdSql);
     }
 
     @Override

@@ -38,12 +38,17 @@
                 <%--                <p><fmt:message key="label.clickToSeeQuestionsFromUsers"/></p>--%>
                 <a href="${pageContext.request.contextPath}/controller?command=show_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message
                         key="label.ShowQuestionsFromUsersReference"/></a>
+                <a href="${pageContext.request.contextPath}/controller?command=show_applications&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message
+                        key="label.ShowApplicationsFromUsersReference"/></a>
             </c:if>
 
             <c:if test="${not empty sessionScope.userName}">
                 <%--                <p><fmt:message key="label.clickToSeeYourQuestions"/></p>--%>
                 <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}&sectionName=applicantQuestions"><fmt:message
                         key="label.showYourQuestionsReference"/></a>
+                <a href="${pageContext.request.contextPath}/controller?command=show_own_applications&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}&sectionName=applicantApplications"><fmt:message
+                        key="label.showYourApplicationReference"/></a>
+
             </c:if>
 
             <%--            <p><fmt:message key="label.clickToLogOut"/></p>--%>
