@@ -145,4 +145,12 @@ public interface Validator {
      *         and with the {@param sectionId}.
      */
     boolean isSectionNameAndIdFromTheSameSection(Long sectionId, String sectionName);
+
+    /**
+     * Checks whether a Role with the value of {@param role} exist in the system.
+     *
+     * @param role is a Role to check.
+     * @return {@code true} if there is the Role with {@param role} exists in the system.
+     */
+    boolean isRoleWithSuchNameExistInSystem(String role);
 }

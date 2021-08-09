@@ -3,6 +3,7 @@ package com.epam.jwd.Conferences.command.action;
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
+import com.epam.jwd.Conferences.dto.Conference;
 import com.epam.jwd.Conferences.dto.Report;
 import com.epam.jwd.Conferences.dto.ReportType;
 import com.epam.jwd.Conferences.dto.User;
@@ -44,6 +45,7 @@ public class CreateReport implements Command {
     private static final String CREATOR_ID_ATTRIBUTE_NAME = "creatorId";
     private static final String CREATOR_ROLE_ATTRIBUTE_NAME = "creatorRole";
     private static final String QUESTION_TEXT_ATTRIBUTE_NAME = "questionText";
+    private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
     private static final String INVALID_REPORT_TEXT_MSG = "ReportTextShouldNotBeEmptyMSG";
     private static final String INVALID_REPORT_TEXT_NOT_UTF8_MSG = "ReportTextShouldContainOnlyLatinSignsMSG";
     private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
@@ -194,6 +196,10 @@ public class CreateReport implements Command {
 
     private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
                                                            String errorMessage) {
+        final List<Conference> conferences = service.findAllConferences();
+        request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
+        final List<User> users = service.findAllUsers();
+        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
         request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
         return CREATE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE;
     }

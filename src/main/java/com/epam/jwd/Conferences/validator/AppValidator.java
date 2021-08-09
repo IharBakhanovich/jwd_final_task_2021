@@ -336,6 +336,27 @@ public class AppValidator implements Validator {
         return false;
     }
 
+    /**
+     * Checks whether a Role with the value of {@param role} exist in the system.
+     *
+     * @param role is a Role to check.
+     * @return {@code true} if there is the Role with {@param role} exists in the system.
+     */
+    @Override
+    public boolean isRoleWithSuchNameExistInSystem(String role) {
+        if (role == null) {
+            return false;
+        }
+        List<Role> roles = Role.valuesAsList();
+        for (Role role1: roles
+        ) {
+            if (role.equals(role1.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static boolean isUTF8(final byte[] inputBytes) {
         final String converted = new String(inputBytes, StandardCharsets.UTF_8);
         final byte[] outputBytes = converted.getBytes(StandardCharsets.UTF_8);

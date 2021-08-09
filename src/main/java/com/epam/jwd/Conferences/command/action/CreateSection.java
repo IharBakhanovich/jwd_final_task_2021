@@ -9,6 +9,7 @@ import com.epam.jwd.Conferences.dto.Section;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.exception.DuplicateException;
 import com.epam.jwd.Conferences.service.UserService;
+import com.epam.jwd.Conferences.validator.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,11 +27,14 @@ public class CreateSection implements Command {
     private static final String MANAGER_SECTION_PARAMETER_NAME = "managerSect";
     private static final CommandResponse CREATE_NEW_SECTION_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createSection.jsp");
+    private static final CommandResponse CREATE_SECTION_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     private static final String ERROR_ATTRIBUTE_NAME = "error";
     private static final String SECTIONS_ATTRIBUTE_NAME = "sections";
     private static final String CONFERENCE_TITLE_PARAMETER_NAME = "conferenceTitle";
     private static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
     private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
+    private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
     private static final String USERS_ATTRIBUTE_NAME = "users";
     private static final CommandResponse SECTION_CREATION_SUCCESS_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/sections.jsp");
@@ -43,12 +47,15 @@ public class CreateSection implements Command {
     private static final String INVALID_SECTION_NAME_NOT_UTF8_MSG = "SectionNameShouldContainOnlyLatinSignsMSG";
     private static final String NO_PERMISSION_TO_CREATE_SECTION_MSG = "YouHaveNoPermissionToCreateASectionMSG";
     private static final String INVALID_SECTION_NAME_TOO_LONG_MSG = "SectionNameIsTooLongMSG";
+    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
 
     private final UserService service;
+    private final Validator validator;
 
     // the private default constructor, to not create the instance of the class with 'new' outside the class
     private CreateSection() {
         service = UserService.retrieve();
+        validator = Validator.retrieve();
     }
 
     private static class CreateSectionHolder {
@@ -78,6 +85,7 @@ public class CreateSection implements Command {
         final String managerSect = request.getParameter(MANAGER_SECTION_PARAMETER_NAME);
         final Long creatorId = Long.valueOf(request.getParameter(CREATOR_ID_PARAMETER_NAME));
         final String creatorRole = String.valueOf(request.getParameter(CREATOR_ROLE_PARAMETER_NAME));
+        final String conferenceTitleToCheck = String.valueOf(request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME));
 
         final List<User> users = service.findAllUsers();
         final List<Conference> conferences = service.findAllConferences();
@@ -89,13 +97,23 @@ public class CreateSection implements Command {
                 conferenceManagerId = conference.getManagerConf();
             }
         }
+        // validation of the parameters (whether they exist in the system)
+        if (!validator.isConferenceExistInSystem(conferenceId)
+                || !validator.isUserWithIdExistInSystem(creatorId)
+                || !validator.isUserWithNicknameExistInSystem(managerSect)
+                || !validator.isUserWithIdExistInSystem(conferenceManagerId)
+                || !validator.isRoleWithSuchNameExistInSystem(creatorRole)
+                || !validator.isConferenceTitleAndIdFromTheSameConference(conferenceId, conferenceTitleToCheck)) {
+            return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+        }
+
         if (!creatorRole.equals("ADMIN") && !(creatorId.equals(conferenceManagerId))) {
             return prepareErrorPage(request, NO_PERMISSION_TO_CREATE_SECTION_MSG);
         } else if (sectionName == null || sectionName.trim().equals("")) {
             return prepareErrorPage(request, INVALID_SECTION_NAME_MSG);
-        } else if (!isStringValid(sectionName)) {
+        } else if (!validator.isStringValid(sectionName)) {
             return prepareErrorPage(request, INVALID_SECTION_NAME_NOT_UTF8_MSG);
-        } else if (sectionName.length() > MAX_LENGTH_OF_SECTION_NAME_IN_DB) {
+        } else if (!validator.isLengthValid(sectionName, MAX_LENGTH_OF_SECTION_NAME_IN_DB)) {
             return prepareErrorPage(request, INVALID_SECTION_NAME_TOO_LONG_MSG);
         }
 
@@ -140,7 +158,7 @@ public class CreateSection implements Command {
         request.setAttribute(CONFERENCE_TITLE_ATTRIBUTE_NAME, conferenceTitle);
         final List<Conference> conferences = service.findAllConferences();
         Long conferenceManagerId = null;
-        for (Conference conference: conferences
+        for (Conference conference : conferences
         ) {
             if (conference.getConferenceTitle().equals(conferenceTitle)) {
                 conferenceManagerId = conference.getManagerConf();
@@ -160,5 +178,15 @@ public class CreateSection implements Command {
         final String converted = new String(inputBytes, StandardCharsets.UTF_8);
         final byte[] outputBytes = converted.getBytes(StandardCharsets.UTF_8);
         return Arrays.equals(inputBytes, outputBytes);
+    }
+
+    private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
+                                                           String errorMessage) {
+        final List<Conference> conferences = service.findAllConferences();
+        request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
+        final List<User> users = service.findAllUsers();
+        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
+        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
+        return CREATE_SECTION_ERROR_RESPONSE_TO_MAIN_PAGE;
     }
 }
