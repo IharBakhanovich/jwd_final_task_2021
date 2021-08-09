@@ -206,6 +206,11 @@ public class AppUserService implements UserService {
     }
 
     @Override
+    public List<Report> findAllReports() {
+        return reportDAO.findAll();
+    }
+
+    @Override
     public List<Report> findApplicantQuestions(Long managerId) {
         return reportDAO.findAllQuestionsByApplicantId(managerId);
     }

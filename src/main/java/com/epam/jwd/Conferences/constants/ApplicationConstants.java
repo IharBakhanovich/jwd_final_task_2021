@@ -236,6 +236,8 @@ public class ApplicationConstants {
     private static final CommandResponse SHOW_SECTIONS_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/sections.jsp");
     private static final String CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME_F_SCSP = "conferenceManager";
+    private static final CommandResponse SHOW_CONFERENCE_SECTIONS_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
     // from class ShowCreateConferencePage
     private static final CommandResponse CREATE_CONFERENCE_PAGE_RESPONSE

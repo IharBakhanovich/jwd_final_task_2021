@@ -55,4 +55,6 @@ public interface UserService {
     List<Report> findApplicantQuestions(Long managerId);
 
     void updateUserRole(Long userId, Long newRole);
+
+    List<Report> findAllReports();
 }

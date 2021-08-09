@@ -164,4 +164,12 @@ public interface Validator {
      *         and with the {@param userRole}.
      */
     boolean isUserIdAndUserRoleFromTheSameUser(String userId, String userRole);
+
+    /**
+     * Checks whether a Report with the value of {@param reportText} exist in the system.
+     *
+     * @param reportText is a String to check.
+     * @return {@code true} if there is the Report with {@param reportText} exists in the system.
+     */
+    boolean isReportWithSuchTextExistInSystem(String reportText);
 }

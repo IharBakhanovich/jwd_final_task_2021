@@ -111,8 +111,8 @@ public class AppValidator implements Validator {
         }
         final List<Conference> conferences = service.findAllConferences();
         Long conferenceIdFromDatabase = null;
-        for (Conference conference: conferences
-             ) {
+        for (Conference conference : conferences
+        ) {
             if (conference.getId().equals(conferenceId)) {
                 conferenceIdFromDatabase = conference.getId();
             }
@@ -134,7 +134,7 @@ public class AppValidator implements Validator {
         final List<User> users = service.findAllUsers();
         Long userIdFrom = null;
         String userNickName = null;
-        for (User user: users
+        for (User user : users
         ) {
             if (user.getId().equals(userId)) {
                 userIdFrom = user.getId();
@@ -156,7 +156,7 @@ public class AppValidator implements Validator {
         }
         List<Role> roles = Role.valuesAsList();
         String checkRole = null;
-        for (Role role1: roles
+        for (Role role1 : roles
         ) {
             if (role.getName().equals(role1.getName())) {
                 checkRole = role1.getName();
@@ -178,7 +178,7 @@ public class AppValidator implements Validator {
         }
         final List<Section> sections = service.findAllSections();
         Long sectionIdFromDatabase = null;
-        for (Section section: sections
+        for (Section section : sections
         ) {
             if (section.getId().equals(sectionId)) {
                 sectionIdFromDatabase = section.getId();
@@ -215,7 +215,7 @@ public class AppValidator implements Validator {
         }
         List<ReportType> reportTypes = ReportType.valuesAsList();
         String checkReportType = null;
-        for (ReportType reportType: reportTypes
+        for (ReportType reportType : reportTypes
         ) {
             if (reportType.getName().equals(reportTypeName)) {
                 checkReportType = reportType.getName();
@@ -237,7 +237,7 @@ public class AppValidator implements Validator {
         }
         final List<User> users = service.findAllUsers();
         String userNickName = null;
-        for (User user: users
+        for (User user : users
         ) {
             if (user.getNickname().equals(nickname)) {
                 userNickName = user.getNickname();
@@ -258,8 +258,8 @@ public class AppValidator implements Validator {
             return false;
         }
         final List<Section> sections = service.findAllSections();
-        for (Section section: sections
-             ) {
+        for (Section section : sections
+        ) {
             if (section.getSectionName().equals(sectionName)) {
                 return true;
             }
@@ -279,7 +279,7 @@ public class AppValidator implements Validator {
             return false;
         }
         final List<Conference> conferences = service.findAllConferences();
-        for (Conference conference: conferences
+        for (Conference conference : conferences
         ) {
             if (conference.getConferenceTitle().equals(conferenceTitle)) {
                 return true;
@@ -292,10 +292,10 @@ public class AppValidator implements Validator {
      * Checks whether in the system exist Conference with the value of {@param conferenceTitle}
      * and value of {@param conferenceId}.
      *
-     * @param  conferenceId is a Long to check.
-     * @param conferenceTitle  is a String to check.
+     * @param conferenceId    is a Long to check.
+     * @param conferenceTitle is a String to check.
      * @return {@code true} if there is in the system the Conference with {@param conferenceTitle}
-     *         and with the {@param conferenceId}.
+     * and with the {@param conferenceId}.
      */
     @Override
     public boolean isConferenceTitleAndIdFromTheSameConference(Long conferenceId, String conferenceTitle) {
@@ -303,7 +303,7 @@ public class AppValidator implements Validator {
             return false;
         }
         final List<Conference> conferences = service.findAllConferences();
-        for (Conference conference: conferences
+        for (Conference conference : conferences
         ) {
             if (conference.getConferenceTitle().equals(conferenceTitle) && conference.getId().equals(conferenceId)) {
                 return true;
@@ -316,10 +316,10 @@ public class AppValidator implements Validator {
      * Checks whether in the system exist Section with the value of {@param sectionName}
      * and value of {@param sectionId}.
      *
-     * @param sectionId is a Long to check.
+     * @param sectionId   is a Long to check.
      * @param sectionName is a String to check.
      * @return {@code true} if there is in the system the Section with {@param sectionName}
-     *         and with the {@param sectionId}.
+     * and with the {@param sectionId}.
      */
     @Override
     public boolean isSectionNameAndIdFromTheSameSection(Long sectionId, String sectionName) {
@@ -327,7 +327,7 @@ public class AppValidator implements Validator {
             return false;
         }
         final List<Section> sections = service.findAllSections();
-        for (Section section: sections
+        for (Section section : sections
         ) {
             if (section.getSectionName().equals(sectionName) && section.getId().equals(sectionId)) {
                 return true;
@@ -348,7 +348,7 @@ public class AppValidator implements Validator {
             return false;
         }
         List<Role> roles = Role.valuesAsList();
-        for (Role role1: roles
+        for (Role role1 : roles
         ) {
             if (role.equals(role1.getName())) {
                 return true;
@@ -378,6 +378,24 @@ public class AppValidator implements Validator {
         } else {
             return (user.get().getId().equals(userIdInLong) && user.get().getRole().getName().equals(userRole));
         }
+    }
+
+    /**
+     * Checks whether a Report with the value of {@param reportText} exist in the system.
+     *
+     * @param reportText is a String to check.
+     * @return {@code true} if there is the Report with {@param reportText} exists in the system.
+     */
+    @Override
+    public boolean isReportWithSuchTextExistInSystem(String reportText) {
+        List<Report> reports = service.findAllReports();
+        for (Report report: reports
+             ) {
+            if (report.getReportText().equals(reportText)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static boolean isUTF8(final byte[] inputBytes) {
