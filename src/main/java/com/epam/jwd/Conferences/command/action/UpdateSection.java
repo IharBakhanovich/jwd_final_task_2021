@@ -32,10 +32,12 @@ public class UpdateSection implements Command {
     private static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
     private static final String SECTION_MANAGER_ID_ATTRIBUTE_NAME = "sectionManagerId";
     private static final String SECTIONS_ATTRIBUTE_NAME = "sections";
+    private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
     private static final String INVALID_SECTION_NAME_MSG = "SectionNameShouldNotBeEmptyMSG";
     private static final String INVALID_SECTION_NAME_NOT_UTF8_MSG = "SectionNameShouldContainOnlyLatinSignsMSG";
     private static final String NO_PERMISSION_TO_UPDATE_SECTION_MSG = "YouHaveNoPermissionToUpdateASectionMSG";
     private static final String INVALID_SECTION_NAME_TOO_LONG_MSG = "SectionNameIsTooLongMSG";
+    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
 
     private static final CommandResponse SECTION_UPDATE_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/updateSection.jsp");
@@ -43,6 +45,8 @@ public class UpdateSection implements Command {
 
     private static final CommandResponse SECTION_UPDATE_SUCCESS_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/sections.jsp");
+    private static final CommandResponse UPDATE_SECTION_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
     private final UserService service;
     private final Validator validator;
@@ -85,6 +89,18 @@ public class UpdateSection implements Command {
         final Long creatorId = Long.valueOf(request.getParameter("creatorId"));
         final Long conferenceManagerId = Long.valueOf(request.getParameter(CONFERENCE_MANAGER_ID_PARAMETER_NAME));
         Long sectionManagerId = fetchSectionManagerId(sectionManagerNickname);
+
+        // validation of the parameters (whether they exist in the request)
+        if (!validator.isUserWithNicknameExistInSystem(sectionManagerNickname)
+                || !validator.isConferenceExistInSystem(conferenceId)
+                || !validator.isConferenceWithSuchTitleExistInSystem(conferenceTitle)
+                || !validator.isSectionExistInSystem(sectionId)
+                || !validator.isRoleWithSuchNameExistInSystem(creatorRole)
+                || !validator.isUserWithIdExistInSystem(creatorId)
+                || !validator.isUserWithIdExistInSystem(conferenceManagerId)) {
+            return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+        }
+
         if (!creatorRole.equals("ADMIN") && !creatorId.equals(conferenceManagerId) && !creatorId.equals(sectionManagerId)) {
             return prepareErrorPage(request, NO_PERMISSION_TO_UPDATE_SECTION_MSG);
         } else if (sectionName == null || sectionName.trim().equals("")) {
@@ -207,5 +223,15 @@ public class UpdateSection implements Command {
 //        request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
 //        request.setAttribute(CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
         return SECTION_UPDATE_ERROR_RESPONSE;
+    }
+
+    private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
+                                                           String errorMessage) {
+        final List<Conference> conferences = service.findAllConferences();
+        request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
+        final List<User> users = service.findAllUsers();
+        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
+        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
+        return UPDATE_SECTION_ERROR_RESPONSE_TO_MAIN_PAGE;
     }
 }

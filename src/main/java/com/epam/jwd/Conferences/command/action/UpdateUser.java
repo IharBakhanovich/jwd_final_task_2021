@@ -3,6 +3,7 @@ package com.epam.jwd.Conferences.command.action;
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
+import com.epam.jwd.Conferences.dto.Conference;
 import com.epam.jwd.Conferences.dto.Role;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.service.UserService;
@@ -26,6 +27,7 @@ public class UpdateUser implements Command {
     private static final String UPDATER_ID_PARAMETER_NAME = "updaterId";
     private static final String UPDATER_ROLE_PARAMETER_NAME = "updaterRole";
     private static final String ERROR_ATTRIBUTE_NAME = "error";
+    private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
     private static final String EMAIL_REGEX = "^(.+)@(.+)$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
     private static final String USERS_ATTRIBUTE_NAME = "users";
@@ -196,6 +198,10 @@ public class UpdateUser implements Command {
 
     private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
                                              String errorMessage) {
+        final List<Conference> conferences = service.findAllConferences();
+        request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
+        final List<User> users = service.findAllUsers();
+        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
         request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
         return UPDATE_USER_ERROR_RESPONSE_TO_MAIN_PAGE;
     }

@@ -171,6 +171,8 @@ public class ApplicationConstants {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/updateConference.jsp");
     private static final String NO_PERMISSION_TO_CREATE_SECTION_MSG = "YouHaveNoPermissionToCreateASectionMSG";
     private static final String NO_PERMISSION_TO_UPDATE_CONFERENCE_MSG = "YouHaveNoPermissionToUpdateAConferenceMSG";
+    private static final CommandResponse CREATE_UPDATE_CONFERENCE_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
 
     // from class UpdateReport
@@ -178,6 +180,8 @@ public class ApplicationConstants {
     private static final CommandResponse UPDATE_REPORT_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/report.jsp");
     private static final String NO_PERMISSION_TO_UPDATE_REPORT_MSG = "YouHaveNoPermissionToUpdateThisReportMSG";
+    private static final CommandResponse UPDATE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
     // from class UpdateSection
     private static final String NO_PERMISSION_TO_UPDATE_SECTION_MSG = "YouHaveNoPermissionToUpdateASectionMSG";
@@ -210,6 +214,8 @@ public class ApplicationConstants {
     private static final String INVALID_PARAMETERS_MSG = "SomethingWentWrongWithParametersMSG";
     private static final String INVALID_ROLE_PARAMETER_MSG = "SomethingWentWrongWithRoleParameterMSG";
     private static final String NO_PERMISSION_TO_CHANGE_ROLE_TO_ADMIN_MSG = "YouHaveNoPermissionToChaneRoleToAdministratorMSG";
+    private static final CommandResponse UPDATE_SECTION_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
     // from class LoginCommand
     private static final String LOGIN_PARAM_NAME = "login";

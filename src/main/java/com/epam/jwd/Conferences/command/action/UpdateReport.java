@@ -40,6 +40,9 @@ public class UpdateReport implements Command {
     private static final String NO_PERMISSION_TO_UPDATE_REPORT_MSG = "YouHaveNoPermissionToUpdateThisReportMSG";
     private static final String INVALID_REPORT_TEXT_NOT_UTF8_MSG = "ReportTextShouldContainOnlyLatinSignsMSG";
     private static final String INVALID_REPORT_TEXT_MSG = "ReportTextShouldNotBeEmptyMSG";
+    private static final CommandResponse UPDATE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
 
     private final UserService service;
     private final Validator validator;
@@ -84,6 +87,24 @@ public class UpdateReport implements Command {
         final List<Conference> conferences = service.findAllConferences();
         final List<Section> sections = service.findAllSections();
         final List<User> users = service.findAllUsers();
+
+        // validation of the parameters (whether they exist in the request)
+        if (!validator.isConferenceWithSuchTitleExistInSystem(conferenceTitle)
+                || !validator.isSectionWithSuchNameExistInSystem(sectionName)
+                || !validator.isUserWithIdExistInSystem(updaterId)
+                || !validator.isReportExistInSystem(id)
+                || !validator.isReportTypeExistInSystem(reportType)
+                || !validator.isUserWithNicknameExistInSystem(applicantNickname)
+                || !validator.isRoleWithSuchNameExistInSystem(updaterRole)) {
+            return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+        }
+
+        //validation of questionReportId
+        if (questionReportId != 0) {
+            if(!validator.isReportExistInSystem(questionReportId)) {
+                return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+            }
+        }
 
         // data preparation section
         Long sectionId = null;
@@ -167,5 +188,15 @@ public class UpdateReport implements Command {
         request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
 
         return UPDATE_REPORT_ERROR_RESPONSE;
+    }
+
+    private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
+                                                           String errorMessage) {
+        final List<Conference> conferences = service.findAllConferences();
+        request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
+        final List<User> users = service.findAllUsers();
+        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
+        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
+        return UPDATE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE;
     }
 }

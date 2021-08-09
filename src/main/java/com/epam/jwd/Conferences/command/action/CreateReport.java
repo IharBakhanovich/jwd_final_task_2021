@@ -104,7 +104,7 @@ public class CreateReport implements Command {
         final String reportType = String.valueOf(request.getParameter(REPORT_TYPE_PARAMETER_NAME));
         final List<User> users = service.findAllUsers();
 
-        // validation of the parameters (whether they exist in the system)
+        // validation of the parameters (whether they exist in the request)
         if (!validator.isConferenceExistInSystem(conferenceId)
                 || !validator.isSectionExistInSystem(sectionId)
                 || !validator.isReportTypeExistInSystem(reportType)

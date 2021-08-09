@@ -80,8 +80,7 @@
 
                 <br>
                 <br>
-                <input type="submit" value=
-                    <fmt:message key="label.SubmitSectionUpdateButton"/> class="button">
+                <input type="submit" value=<fmt:message key="label.SubmitSectionUpdateButton"/> class="button">
                     <%--                                            <c:choose>--%>
                     <%--                                                <c:when test="${sessionScope.userRole eq Role.ADMIN}">--%>
 
