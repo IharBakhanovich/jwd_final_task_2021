@@ -69,21 +69,26 @@
                     <c:choose>
                         <c:when test="${requestScope.sectionName eq 'applicantQuestions'}">
                             <p><fmt:message key="label.clickBelowToBackToQuestions"/></p>
-                            <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message
-                                    key="label.BackToQuestions"/>Back
-                                to questions</a>
+                            <div class="link">
+                                <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message
+                                        key="label.BackToQuestions"/></a>
+                            </div>
                         </c:when>
                         <c:otherwise>
                             <p><fmt:message key="label.clickBelowToBackToQuestions"/></p>
-                            <a href="${pageContext.request.contextPath}/controller?command=show_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message
-                                    key="label.BackToQuestions"/></a>
+                            <div class="link">
+                                <a href="${pageContext.request.contextPath}/controller?command=show_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message
+                                        key="label.BackToQuestions"/></a>
+                            </div>
                         </c:otherwise>
                     </c:choose>
                 </c:when>
                 <c:otherwise>
                     <p><fmt:message key="label.clickBelowToBackToQuestions"/></p>
-                    <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message
-                            key="label.BackToQuestions"/></a>
+                    <div class="link">
+                        <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message
+                                key="label.BackToQuestions"/></a>
+                    </div>
                 </c:otherwise>
             </c:choose>
         </c:when>

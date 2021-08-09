@@ -140,6 +140,8 @@ public class ApplicationConstants {
     private static final String INVALID_PASSWORD_REPEATED_WRONG_MSG = "PasswordRepeatedWrongMSG";
     private static final String INVALID_PASSWORD_TOO_LONG_MSG = "PasswordTooLongMSG";
     private static final String NO_PERMISSION_TO_CREATE_USER_IN_SYSTEM_MSG = "YouHaveNoPermissionToCreateUserInSystemMSG";
+    private static final CommandResponse SHOW_CREATE_NEW_USER_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
     // from class CreateReport
     private static final Logger LOGGER_FOR_CREATE_REPORT = LogManager.getLogger(CreateReport.class);
@@ -242,6 +244,8 @@ public class ApplicationConstants {
     // from class ShowCreateConferencePage
     private static final CommandResponse CREATE_CONFERENCE_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createConference.jsp");
+    private static final CommandResponse SHOW_CREATE_CONFERENCE_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
     // from class ShowCreateNewUserPage
     private static final CommandResponse SHOW_CREATE_NEW_USER_PAGE_RESPONSE
@@ -393,6 +397,8 @@ public class ApplicationConstants {
     private static final String CREATOR_ID_PARAMETER_NAME_FOR_ANSWER = "managerId";
     private static final String CREATOR_ROLE_PARAMETER_NAME_FOR_ANSWER = "managerRole";
     private static final String QUESTION_REPORT_ID_PARAMETER_NAME_FOR_ANSWER = "questionId";
+    private static final CommandResponse SHOW_CREATE_ANSWER_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
     // from class ShowQuestionContextPage
     private static final String QUESTION_ID_PARAMETER_NAME_FOR_CONTEXT = "questionIdForContext";
