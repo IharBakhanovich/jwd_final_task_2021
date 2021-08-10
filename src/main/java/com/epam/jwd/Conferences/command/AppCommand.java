@@ -41,6 +41,7 @@ public enum AppCommand {
     SHOW_APPLICATIONS(ShowApplicationsPage.getInstance(), ADMIN, MANAGER), // shows applications.jsp page
     SHOW_OWN_QUESTIONS(ShowOwnQuestionPage.getInstance(), ADMIN, MANAGER, USER), // shows question.jsp page
     SHOW_OWN_APPLICATIONS(ShowOwnApplicationsPage.getInstance(), ADMIN, MANAGER, USER), // shows applications.jsp page
+    SHOW_PROCESS_APPLICATION(ShowProcessApplicationPage.getInstance(), ADMIN, MANAGER, USER), // shows processApplications.jsp page
     SHOW_QUESTION_CONTEXT(ShowQuestionContextPage.getInstance(), ADMIN, MANAGER), // shows reports.jsp page that includes only question and all the answers
     CREATE_NEW_USER(CreateNewUser.getInstance(), ADMIN, UNAUTHORIZED), // creates new user and users.jsp/login.jsp page
     CREATE_NEW_CONFERENCE(CreateConference.getInstance(), ADMIN), // creates new conference and shows main.jsp page

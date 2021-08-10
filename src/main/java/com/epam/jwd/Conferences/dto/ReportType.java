@@ -7,7 +7,12 @@ import java.util.List;
 
 public enum ReportType implements DatabaseEntity<Long> {
     QUESTION(1L),
-    APPLICATION(2L);
+    APPLICATION(2L),
+    ANSWER(3L),
+    APPROVED(4L),
+    REJECTED(5L),
+    CANCELLED(6L);
+
 
     private final Long id;
 

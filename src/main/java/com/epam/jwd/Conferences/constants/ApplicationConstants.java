@@ -106,6 +106,13 @@ public class ApplicationConstants {
     private static final String INVALID_REPORT_TEXT_NOT_UTF8_MSG = "ReportTextShouldContainOnlyLatinSignsMSG";
     private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
 
+    private static final CommandResponse SHOW_APPLICATIONS_PAGE_RESPONSE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/applications.jsp");
+    public static final String APPLICATIONS_ATTRIBUTE_NAME = "applications";
+    private static final CommandResponse SHOW_APPLICATIONS_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+    public static final String MANAGER_ROLE_PARAMETER_NAME = "managerRole";
+
     // from class CreateConference
     private static final Logger LOGGER_FOR_CREATE_CONFERENCE = LogManager.getLogger(CreateConference.class);
     private static final CommandResponse CREATE_NEW_CONFERENCE_ERROR_RESPONSE
@@ -416,11 +423,8 @@ public class ApplicationConstants {
     // class CreateReport
 
     // class ShowApplicationsPage
-    public static final String APPLICATIONS_ATTRIBUTE_NAME = "applications";
-    private static final CommandResponse SHOW_APPLICATIONS_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
-    private static final CommandResponse SHOW_APPLICATIONS_PAGE_RESPONSE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/applications.jsp");
+
+    // class ShowOwnApplicationsPage
 
 
 

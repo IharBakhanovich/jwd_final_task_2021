@@ -34,7 +34,7 @@
                     <th><fmt:message key="label.ReportTypeColumnName"/></th>
                     <th><fmt:message key="label.ApplicantColumnName"/></th>
                     <th><fmt:message key="label.QuestionIdColumnName"/></th>
-<%--                    <th><fmt:message key="label.ShowQuestionLinkColumnName"/></th>--%>
+                        <%--                    <th><fmt:message key="label.ShowQuestionLinkColumnName"/></th>--%>
                     <th><fmt:message key="label.ApproveCancelRejectApplicationLinkColumnName"/></th>
                 </tr>
                 <c:forEach var="application" items="${requestScope.applications}">
@@ -65,23 +65,25 @@
                                 ${application.questionReportId}
                         </td>
 
-<%--                        <td>--%>
-<%--                            <a href="${pageContext.request.contextPath}/controller?command=show_question_context&questionIdForContext=${application.id}&managerId=${requestScope.managerId}&questionReportIdForContext=${application.questionReportId}&sectionName=${requestScope.sectionName}"><fmt:message--%>
-<%--                                    key="label.showQuestionHistory"/></a>--%>
-<%--                        </td>--%>
+                            <%--                        <td>--%>
+                            <%--                            <a href="${pageContext.request.contextPath}/controller?command=show_question_context&questionIdForContext=${application.id}&managerId=${requestScope.managerId}&questionReportIdForContext=${application.questionReportId}&sectionName=${requestScope.sectionName}"><fmt:message--%>
+                            <%--                                    key="label.showQuestionHistory"/></a>--%>
+                            <%--                        </td>--%>
                         <td>
-                            <a href="${pageContext.request.contextPath}/controller?command=show_process_application&questionId=${application.id}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${application.conferenceId}&sectionId=${application.sectionId}&questionText=${application.reportText}"><fmt:message
-                                    key="label.processThisApplication"/></a>
-<%--                            <c:choose>--%>
-<%--                                <c:when test="${application.questionReportId == 0}">--%>
-<%--                                    <a href="${pageContext.request.contextPath}/controller?command=show_create_answer&questionId=${application.id}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${application.conferenceId}&sectionId=${application.sectionId}&questionText=${application.reportText}"><fmt:message--%>
-<%--                                            key="label.writeAnAnswer"/></a>--%>
-<%--                                </c:when>--%>
-<%--                                <c:otherwise>--%>
-<%--                                    <a href="${pageContext.request.contextPath}/controller?command=show_create_answer&questionId=${application.questionReportId}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${application.conferenceId}&sectionId=${application.sectionId}&questionText=${application.reportText}"><fmt:message--%>
-<%--                                            key="label.writeAnAnswer"/></a>--%>
-<%--                                </c:otherwise>--%>
-<%--                            </c:choose>--%>
+                            <c:choose>
+                                <c:when test="${requestScope.sectionName eq 'applicantApplications'}">
+                                    <div class="link">
+                                        <a href="${pageContext.request.contextPath}/controller?command=show_process_application&applicationId=${application.id}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${application.conferenceId}&sectionId=${application.sectionId}&applicationText=${application.reportText}&applicationToken=applicantApplication"><fmt:message
+                                                key="label.processThisApplication"/></a>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="link">
+                                        <a href="${pageContext.request.contextPath}/controller?command=show_process_application&applicationId=${application.id}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${application.conferenceId}&sectionId=${application.sectionId}&applicationText=${application.reportText}&applicationToken=userApplication"><fmt:message
+                                                key="label.processThisApplication"/></a>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
                         </td>
                     </tr>
                 </c:forEach>
