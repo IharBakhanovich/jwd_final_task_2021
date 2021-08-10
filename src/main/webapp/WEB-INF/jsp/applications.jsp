@@ -70,7 +70,7 @@
 <%--                                    key="label.showQuestionHistory"/></a>--%>
 <%--                        </td>--%>
                         <td>
-                            <a href="${pageContext.request.contextPath}/controller?command=show_react_to_application&questionId=${application.id}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${application.conferenceId}&sectionId=${application.sectionId}&questionText=${application.reportText}"><fmt:message
+                            <a href="${pageContext.request.contextPath}/controller?command=show_process_application&questionId=${application.id}&managerId=${requestScope.managerId}&managerRole=${sessionScope.userRole}&conferenceId=${application.conferenceId}&sectionId=${application.sectionId}&questionText=${application.reportText}"><fmt:message
                                     key="label.processThisApplication"/></a>
 <%--                            <c:choose>--%>
 <%--                                <c:when test="${application.questionReportId == 0}">--%>

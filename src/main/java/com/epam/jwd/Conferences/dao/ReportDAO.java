@@ -28,4 +28,6 @@ public interface ReportDAO extends DAO<Report, Long> {
     List<Report> findAllQuestionsByApplicantId(Long managerId);
 
     List<Report> findAllApplicationsByManagerId(Long managerId);
+
+    List<Report> findAllApplicationsByApplicantId(Long applicantId);
 }

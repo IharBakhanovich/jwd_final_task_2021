@@ -39,6 +39,8 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
             = "select %s.* from %s, %s where %s.%s = 2 and %s.%s = %s.%s and %s.%s = ?";
     public static final String SELECT_ALL_QUESTION_BY_APPLICANT_ID_SQL
             = "select * from %s where %s = 1 and %s = ?";
+    public static final String SELECT_ALL_APPLICATIONS_BY_APPLICANT_ID_SQL
+            = "select * from %s where %s = 2 and %s = ?";
 
     private final String findReportByApplicantIdSql;
     private final String findAllReportsByConferenceIdAndSectionIdSql;
@@ -46,6 +48,7 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
     private final String findAllReportsByQuestionReportIdSql;
     private final String findAllQuestionsByApplicantIdSql;
     private final String findAllApplicationsByManagerIdSql;
+    private final String findAllApplicationsByApplicantIdSql;
 
     private static final String MANAGER_SECT_COLUMN = "managerSect";
     private static final String TABLE_NAME_SECTIONS = "sections";
@@ -63,6 +66,8 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
         findAllReportsByQuestionReportIdSql = String.format(SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_REPORT_DAO_SQL,
                 TABLE_NAME_REPORTS, QUESTION_REPORT_ID_COLUMN);
         findAllQuestionsByApplicantIdSql = String.format(SELECT_ALL_QUESTION_BY_APPLICANT_ID_SQL,
+                TABLE_NAME_REPORTS, REPORT_TYPE_COLUMN, APPLICANT_COLUMN);
+        findAllApplicationsByApplicantIdSql = String.format(SELECT_ALL_APPLICATIONS_BY_APPLICANT_ID_SQL,
                 TABLE_NAME_REPORTS, REPORT_TYPE_COLUMN, APPLICANT_COLUMN);
         findAllApplicationsByManagerIdSql = String.format(SELECT_ALL_APPLICATIONS_BY_MANAGER_ID_SQL, TABLE_NAME_REPORTS,
                 TABLE_NAME_REPORTS, TABLE_NAME_SECTIONS, TABLE_NAME_REPORTS, REPORT_TYPE_COLUMN, TABLE_NAME_REPORTS,
@@ -188,6 +193,13 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
         return findPreparedEntities(
                 statement -> statement.setLong(1, managerId),
                 findAllApplicationsByManagerIdSql);
+    }
+
+    @Override
+    public List<Report> findAllApplicationsByApplicantId(Long applicantId) {
+        return findPreparedEntities(
+                statement -> statement.setLong(1, applicantId),
+                findAllApplicationsByApplicantIdSql);
     }
 
     @Override
