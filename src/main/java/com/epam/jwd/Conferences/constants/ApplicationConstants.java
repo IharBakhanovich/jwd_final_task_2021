@@ -112,6 +112,7 @@ public class ApplicationConstants {
     private static final CommandResponse SHOW_APPLICATIONS_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     public static final String MANAGER_ROLE_PARAMETER_NAME = "managerRole";
+    private static final String APPLICATION_TOKEN_PARAMETER_NAME = "applicationToken";
 
     // from class CreateConference
     private static final Logger LOGGER_FOR_CREATE_CONFERENCE = LogManager.getLogger(CreateConference.class);
@@ -191,6 +192,7 @@ public class ApplicationConstants {
     private static final String NO_PERMISSION_TO_UPDATE_REPORT_MSG = "YouHaveNoPermissionToUpdateThisReportMSG";
     private static final CommandResponse UPDATE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+    private static final String SECTION_NAME_VALUE_FOR_APPLICATIONS_PAGE = "applicantApplications";
 
     // from class UpdateSection
     private static final String NO_PERMISSION_TO_UPDATE_SECTION_MSG = "YouHaveNoPermissionToUpdateASectionMSG";
@@ -426,6 +428,17 @@ public class ApplicationConstants {
 
     // class ShowOwnApplicationsPage
 
-
+    // class ShowProcessApplicationPage
+    private static final CommandResponse PROCESS_APPLICATION_PAGE_RESPONSE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/processApplication.jsp");
+    private static final String APPLICATION_ID_PARAMETER_NAME = "applicationId";
+    private static final String APPLICATION_TEXT_PARAMETER_NAME = "applicationText";
+    private static final String ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME = "allowedReportTypes";
+    private static final String APPLICATION_ID_ATTRIBUTE_NAME = "applicationId";
+    private static final String APPLICATION_TOKEN_ATTRIBUTE_NAME = "applicationToken";
+    private static final String APPLICATION_TEXT_ATTRIBUTE_NAME = "applicationText";
+    private static final String APPLICANT_ATTRIBUTE_NAME = "applicant";
+    private static final CommandResponse SHOW_PROCESS_APPLICATION_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
 }

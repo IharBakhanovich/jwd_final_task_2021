@@ -16,6 +16,7 @@ public class ShowProcessApplicationPage implements Command {
     private static final CommandResponse PROCESS_APPLICATION_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/processApplication.jsp");
     private static final String MANAGER_ID_PARAMETER_NAME = "managerId";
+    public static final String MANAGER_ID_ATTRIBUTE_NAME = "managerId";
     private static final String MANAGER_ROLE_PARAMETER_NAME = "managerRole";
     private static final String APPLICATION_ID_PARAMETER_NAME = "applicationId";
     private static final String APPLICATION_TOKEN_PARAMETER_NAME = "applicationToken";
@@ -140,6 +141,7 @@ public class ShowProcessApplicationPage implements Command {
         request.setAttribute(APPLICATION_TOKEN_ATTRIBUTE_NAME, applicationToken);
         request.setAttribute(CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
         request.setAttribute(SECTION_ID_ATTRIBUTE_NAME, sectionId);
+        request.setAttribute(MANAGER_ID_ATTRIBUTE_NAME, managerId);
 
         return PROCESS_APPLICATION_PAGE_RESPONSE;
     }

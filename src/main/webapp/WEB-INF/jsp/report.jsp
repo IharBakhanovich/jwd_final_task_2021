@@ -32,7 +32,7 @@
                         key="label.try_again"/></a>
             </c:when>
             <c:otherwise>
-                <form action="${pageContext.request.contextPath}/controller?command=update_report&updaterId=${sessionScope.userId}&updaterRole=${sessionScope.userRole}"
+                <form action="${pageContext.request.contextPath}/controller?command=update_report&updaterId=${sessionScope.userId}&updaterRole=${sessionScope.userRole}&applicationToken=report"
                       method="post">
                     <br>
                     <label for="idField"><fmt:message key="label.id"/></label>

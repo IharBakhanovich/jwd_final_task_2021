@@ -23,6 +23,11 @@ public class UpdateReport implements Command {
     private static final String APPLICANT_PARAMETER_NAME = "applicant";
     private static final String UPDATER_ID_PARAMETER_NAME = "updaterId";
     private static final String UPDATER_ROLE_PARAMETER_NAME = "updaterRole";
+    private static final String APPLICATION_TOKEN_PARAMETER_NAME = "applicationToken";
+    public static final String MANAGER_ID_PARAMETER_NAME = "managerId";
+    public static final String MANAGER_ID_ATTRIBUTE_NAME = "managerId";
+    public static final String APPLICATIONS_ATTRIBUTE_NAME = "applications";
+    private static final String SECTION_NAME_VALUE_FOR_APPLICATIONS_PAGE = "applicantApplications";
     private static final String ERROR_ATTRIBUTE_NAME = "error";
     private static final String REPORT_ATTRIBUTE_NAME = "report";
     private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
@@ -31,6 +36,8 @@ public class UpdateReport implements Command {
     private static final String REPORTS_ATTRIBUTE_NAME = "reports";
     private static final CommandResponse SHOW_REPORTS_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/reports.jsp");
+    private static final CommandResponse SHOW_APPLICATIONS_PAGE_RESPONSE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/applications.jsp");
     private static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
     private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
 
@@ -84,6 +91,7 @@ public class UpdateReport implements Command {
         final Long questionReportId = Long.valueOf(request.getParameter(QUESTION_REPORT_ID_PARAMETER_NAME));
         final Long updaterId = Long.valueOf(request.getParameter(UPDATER_ID_PARAMETER_NAME));
         final String updaterRole = String.valueOf(request.getParameter(UPDATER_ROLE_PARAMETER_NAME));
+        final String applicationToken = String.valueOf(request.getParameter(APPLICATION_TOKEN_PARAMETER_NAME));
         final List<Conference> conferences = service.findAllConferences();
         final List<Section> sections = service.findAllSections();
         final List<User> users = service.findAllUsers();
@@ -165,13 +173,34 @@ public class UpdateReport implements Command {
 
         service.updateReport(reportToUpdate);
 
-        // return sectionReports page of the updated report section
-        final List<Report> reports = service.findAllReportsBySectionID(sectionId, conferenceId);
-        request.setAttribute(REPORTS_ATTRIBUTE_NAME, reports);
-        request.setAttribute(SECTION_NAME_ATTRIBUTE_NAME, sectionName);
-        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
-        request.setAttribute(CONFERENCE_TITLE_PARAMETER_NAME, conferenceTitle);
-        return SHOW_REPORTS_PAGE_RESPONSE;
+        if (applicationToken.equals("applicantApplication")) {
+            final Long managerId = Long.valueOf(request.getParameter(MANAGER_ID_PARAMETER_NAME));
+            request.setAttribute(SECTION_NAME_ATTRIBUTE_NAME, SECTION_NAME_VALUE_FOR_APPLICATIONS_PAGE);
+            request.setAttribute(MANAGER_ID_ATTRIBUTE_NAME, managerId);
+            request.setAttribute(USERS_ATTRIBUTE_NAME, users);
+            final List<Report> applications = service.findApplicantApplications(managerId);
+            request.setAttribute(APPLICATIONS_ATTRIBUTE_NAME, applications);
+            request.setAttribute(SECTIONS_ATTRIBUTE_NAME, sections);
+            request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
+            return SHOW_APPLICATIONS_PAGE_RESPONSE;
+        } else if (applicationToken.equals("userApplication")) {
+            final Long managerId = Long.valueOf(request.getParameter(MANAGER_ID_PARAMETER_NAME));
+            request.setAttribute(MANAGER_ID_ATTRIBUTE_NAME, managerId);
+            request.setAttribute(USERS_ATTRIBUTE_NAME, users);
+            final List<Report> applications = service.findAllApplications(managerId);
+            request.setAttribute(APPLICATIONS_ATTRIBUTE_NAME, applications);
+            request.setAttribute(SECTIONS_ATTRIBUTE_NAME, sections);
+            request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
+            return SHOW_APPLICATIONS_PAGE_RESPONSE;
+        } else {
+            // return sectionReports page of the updated report section
+            final List<Report> reports = service.findAllReportsBySectionID(sectionId, conferenceId);
+            request.setAttribute(REPORTS_ATTRIBUTE_NAME, reports);
+            request.setAttribute(SECTION_NAME_ATTRIBUTE_NAME, sectionName);
+            request.setAttribute(USERS_ATTRIBUTE_NAME, users);
+            request.setAttribute(CONFERENCE_TITLE_PARAMETER_NAME, conferenceTitle);
+            return SHOW_REPORTS_PAGE_RESPONSE;
+        }
     }
 
     private CommandResponse prepareErrorPage(CommandRequest request,

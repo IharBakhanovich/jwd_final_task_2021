@@ -51,7 +51,7 @@
             </c:choose>
         </c:when>
         <c:otherwise>
-            <form action="${pageContext.request.contextPath}/controller?command=update_report&updaterId=${sessionScope.userId}&updaterRole=${sessionScope.userRole}"
+            <form action="${pageContext.request.contextPath}/controller?command=update_report&updaterId=${sessionScope.userId}&updaterRole=${sessionScope.userRole}&applicationToken=${requestScope.applicationToken}&managerId=${requestScope.managerId}"
                   method="post">
                 <label for="applicationIdField"><fmt:message key="label.applicationId"/> </label>
                 <input type="text" id="applicationIdField" name="id" value="${requestScope.applicationId}" readonly>
