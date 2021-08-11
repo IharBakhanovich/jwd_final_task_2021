@@ -52,17 +52,19 @@ public class ShowCreateNewUserPage implements Command {
 
         Role creatorRole = (Role) request.getCurrentSession().get().getAttribute(USER_ROLE_SESSION_ATTRIBUTE);
         Long creatorId = (Long) request.getCurrentSession().get().getAttribute(USER_ID_SESSION_ATTRIBUTE);
+        // if somebody from the system aims to create a new user
+        if (creatorRole != null && creatorId != null) {
+            // validation of the parameters (whether they exist in the request)
+            if (!validator.isUserWithIdExistInSystem(creatorId)
+                    || !validator.isRoleWithSuchNameExistInSystem(creatorRole.getName())
+                    || !validator.isUserIdAndUserRoleFromTheSameUser(String.valueOf(creatorId), creatorRole.getName())) {
+                return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+            }
 
-        // validation of the parameters (whether they exist in the request)
-        if (!validator.isUserWithIdExistInSystem(creatorId)
-                || !validator.isRoleWithSuchNameExistInSystem(creatorRole.getName())
-                || !validator.isUserIdAndUserRoleFromTheSameUser(String.valueOf(creatorId), creatorRole.getName())) {
-            return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
-        }
-
-        // validation whether the really admin want to create Conference
-        if (!creatorRole.getName().equals("ADMIN")) {
-            return prepareErrorPageBackToMainPage(request, NO_PERMISSION_TO_CREATE_CONFERENCE_MSG);
+            // validation whether the really admin want to create Conference
+            if (!creatorRole.getName().equals("ADMIN")) {
+                return prepareErrorPageBackToMainPage(request, NO_PERMISSION_TO_CREATE_CONFERENCE_MSG);
+            }
         }
         return SHOW_CREATE_NEW_USER_PAGE_RESPONSE;
     }
