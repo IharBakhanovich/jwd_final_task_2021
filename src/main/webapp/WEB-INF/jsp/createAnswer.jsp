@@ -61,7 +61,7 @@
                 <br>
                 <label for="reportTypeField"> <fmt:message key="label.reportType"/></label>
                 <select name="reportType" id="reportTypeField">
-                    <c:forEach var="reportType" items="${ReportType.valuesAsList()}">
+                    <c:forEach var="reportType" items="${requestScope.allowedReportTypes}">
                         <option>${reportType}</option>
                     </c:forEach>
                 </select>

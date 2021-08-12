@@ -45,6 +45,7 @@ public class CreateNewUser implements Command {
     private static final String INVALID_PASSWORD_REPEATED_WRONG_MSG = "PasswordRepeatedWrongMSG";
     private static final String INVALID_PASSWORD_TOO_LONG_MSG = "PasswordTooLongMSG";
     private static final String NO_PERMISSION_TO_CREATE_USER_IN_SYSTEM_MSG = "YouHaveNoPermissionToCreateUserInSystemMSG";
+    public static final String ADMIN_CONSTANT = "ADMIN";
 
     private final UserService service;
     private final Validator validator;
@@ -119,7 +120,7 @@ public class CreateNewUser implements Command {
             service.createUser(userToCreate);
             final List<User> updatedUsersList = service.findAllUsers();
             request.setAttribute(USERS_ATTRIBUTE_NAME, updatedUsersList);
-            if (creatorRole.equals("ADMIN")) {
+            if (creatorRole.equals(ADMIN_CONSTANT)) {
                 return USER_CREATION_SUCCESS_RESPONSE_ADMIN;
             } else {
                 return USER_CREATION_SUCCESS_RESPONSE_UNAUTHORISED;

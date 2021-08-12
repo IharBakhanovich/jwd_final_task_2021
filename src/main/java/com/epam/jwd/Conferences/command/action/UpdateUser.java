@@ -49,6 +49,7 @@ public class UpdateUser implements Command {
     private static final String INVALID_PARAMETERS_MSG = "SomethingWentWrongWithParametersMSG";
     private static final String INVALID_ROLE_PARAMETER_MSG = "SomethingWentWrongWithRoleParameterMSG";
     private static final String NO_PERMISSION_TO_CHANGE_ROLE_TO_ADMIN_MSG = "YouHaveNoPermissionToChaneRoleToAdministratorMSG";
+    public static final String ADMIN_CONSTANT = "ADMIN";
 
     private static final CommandResponse UPDATE_USER_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/user.jsp");
@@ -112,7 +113,7 @@ public class UpdateUser implements Command {
         }
 
         // validation of permission to update
-        if (!updaterId.equals(String.valueOf(id)) && !updaterRole.equals("ADMIN")) {
+        if (!updaterId.equals(String.valueOf(id)) && !updaterRole.equals(ADMIN_CONSTANT)) {
             return prepareErrorPage(request, NO_PERMISSION_TO_UPDATE_USER_MSG);
         }
 
@@ -165,7 +166,7 @@ public class UpdateUser implements Command {
         // check whether the Role 'ADMIN' is changed
         Optional<User> userFromDatabase = service.findUserByID(id);
         Role wasUserRole = userFromDatabase.get().getRole();
-        if (wasUserRole.getName().equals("ADMIN") && !role.getName().equals("ADMIN")) {
+        if (wasUserRole.getName().equals(ADMIN_CONSTANT) && !role.getName().equals(ADMIN_CONSTANT)) {
             return prepareErrorPage(request, NO_PERMISSION_TO_CHANGE_ROLE_TO_ADMIN_MSG);
         }
 
@@ -174,7 +175,7 @@ public class UpdateUser implements Command {
                 null, 0, null, false,
                 nickname, firstName, surname, role);
         service.updateUser(userToUpdate);
-        if (updaterRole.equals("ADMIN")) {
+        if (updaterRole.equals(ADMIN_CONSTANT)) {
             final List<User> updatedUsersList = service.findAllUsers();
             request.setAttribute(USERS_ATTRIBUTE_NAME, updatedUsersList);
             return UPDATE_USER_SUCCESS_RESPONSE_FOR_ADMIN;

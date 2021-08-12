@@ -4,11 +4,13 @@ import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.dto.Conference;
+import com.epam.jwd.Conferences.dto.ReportType;
 import com.epam.jwd.Conferences.dto.Section;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.service.UserService;
 import com.epam.jwd.Conferences.validator.Validator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShowCreateAnswerPage implements Command {
@@ -30,6 +32,7 @@ public class ShowCreateAnswerPage implements Command {
     private static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
     private static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
     private static final String USERS_ATTRIBUTE_NAME = "users";
+    private static final String ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME = "allowedReportTypes";
 
     private static final CommandResponse SHOW_CREATE_ANSWER_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
@@ -104,7 +107,10 @@ public class ShowCreateAnswerPage implements Command {
         request.setAttribute(QUESTION_TEXT_ATTRIBUTE_NAME, questionText);
         request.setAttribute(CONFERENCE_TITLE_ATTRIBUTE_NAME, conferenceTitle);
         request.setAttribute(SECTION_NAME_ATTRIBUTE_NAME, sectionName);
-
+        List<ReportType> allowedReportTypes = new ArrayList<>();
+        allowedReportTypes.add(ReportType.ANSWER);
+        allowedReportTypes.add(ReportType.QUESTION);
+        request.setAttribute(ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME, allowedReportTypes);
         return CREATE_ANSWER_PAGE_RESPONSE;
     }
 

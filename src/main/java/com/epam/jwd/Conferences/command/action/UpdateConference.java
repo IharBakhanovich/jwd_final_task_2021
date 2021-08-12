@@ -39,6 +39,7 @@ public class UpdateConference implements Command {
     private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
     private static final CommandResponse CREATE_UPDATE_CONFERENCE_ERROR_RESPONSE_TO_MAIN_PAGE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+    public static final String ADMIN_CONSTANT = "ADMIN";
 
     private static final int MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB = 30;
 
@@ -100,7 +101,7 @@ public class UpdateConference implements Command {
             return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
         }
 
-        if (!creatorRole.equals("ADMIN")) {
+        if (!creatorRole.equals(ADMIN_CONSTANT)) {
             return prepareErrorPage(request, NO_PERMISSION_TO_UPDATE_CONFERENCE_MSG);
         } else if (conferenceTitle == null || conferenceTitle.trim().equals("")) {
             return prepareErrorPage(request, INVALID_CONFERENCE_TITLE_TEXT_MSG);

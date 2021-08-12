@@ -39,7 +39,7 @@
                 <c:forEach var="report" items="${requestScope.reports}">
                     <tr>
                         <td>
-                            <a href="${pageContext.request.contextPath}/controller?command=show_report&id=${report.id}">${report.id}</a>
+                            <a href="${pageContext.request.contextPath}/controller?command=show_report&id=${report.id}&managerRole=${sessionScope.userRole}&managerId=${sessionScope.userId}">${report.id}</a>
                         </td>
                         <td>${report.sectionId}</td>
                         <td>${report.conferenceId}</td>

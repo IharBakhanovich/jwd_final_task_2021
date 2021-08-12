@@ -40,6 +40,10 @@ public class ShowProcessApplicationPage implements Command {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
     private static final String ERROR_ATTRIBUTE_NAME = "error";
+    public static final String ADMIN_CONSTANT = "ADMIN";
+    public static final String MANAGER_CONSTANT = "MANAGER";
+    public static final String APPLICANT_APPLICATION_APPLICATION_TOKEN_VALUE = "applicantApplication";
+    public static final String USER_APPLICATION_APPLICATION_TOKEN_VALUE = "userApplication";
 
     private final UserService service;
     private final Validator validator;
@@ -115,18 +119,19 @@ public class ShowProcessApplicationPage implements Command {
         List<ReportType> allowedReportTypes = new ArrayList<>();
 
 
-        if (applicationToken.equals("applicantApplication") && application.get().getApplicant().equals(managerId)) {
+        if (applicationToken.equals(APPLICANT_APPLICATION_APPLICATION_TOKEN_VALUE)
+                && application.get().getApplicant().equals(managerId)) {
             allowedReportTypes.add(ReportType.APPLICATION);
             allowedReportTypes.add(ReportType.CANCELLED);
-        } else if (applicationToken.equals("userApplication")
-                && (managerRole.equals("ADMIN") || managerRole.equals("MANAGER"))
+        } else if (applicationToken.equals(USER_APPLICATION_APPLICATION_TOKEN_VALUE)
+                && (managerRole.equals(ADMIN_CONSTANT) || managerRole.equals(MANAGER_CONSTANT))
                 && application.get().getApplicant().equals(managerId)) {
             allowedReportTypes.add(ReportType.APPLICATION);
             allowedReportTypes.add(ReportType.APPROVED);
             allowedReportTypes.add(ReportType.REJECTED);
             allowedReportTypes.add(ReportType.CANCELLED);
-        } else if (applicationToken.equals("userApplication")
-                && (managerRole.equals("ADMIN") || managerRole.equals("MANAGER"))) {
+        } else if (applicationToken.equals(USER_APPLICATION_APPLICATION_TOKEN_VALUE)
+                && (managerRole.equals(ADMIN_CONSTANT) || managerRole.equals(MANAGER_CONSTANT))) {
             allowedReportTypes.add(ReportType.APPLICATION);
             allowedReportTypes.add(ReportType.APPROVED);
             allowedReportTypes.add(ReportType.REJECTED);

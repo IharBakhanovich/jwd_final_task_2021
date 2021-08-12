@@ -22,6 +22,7 @@ public class ShowCreateConferencePage implements Command {
     private static final String NO_PERMISSION_TO_CREATE_CONFERENCE_MSG = "YouHaveNoPermissionToCreateAConferenceMSG";
     private static final CommandResponse SHOW_CREATE_CONFERENCE_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+    public static final String ADMIN_CONSTANT = "ADMIN";
 
     // the AppService, that communicates with the repo
     private final UserService userService;
@@ -66,7 +67,7 @@ public class ShowCreateConferencePage implements Command {
         }
 
         // validation whether the really admin want to create Conference
-        if (!creatorRole.equals("ADMIN")) {
+        if (!creatorRole.equals(ADMIN_CONSTANT)) {
             return prepareErrorPageBackToMainPage(request, NO_PERMISSION_TO_CREATE_CONFERENCE_MSG);
         }
 

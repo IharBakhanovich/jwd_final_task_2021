@@ -113,6 +113,10 @@ public class ApplicationConstants {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     public static final String MANAGER_ROLE_PARAMETER_NAME = "managerRole";
     private static final String APPLICATION_TOKEN_PARAMETER_NAME = "applicationToken";
+    private static final String ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME = "allowedReportTypes";
+    public static final String ADMIN_CONSTANT = "ADMIN";
+    public static final String APPLICANT_APPLICATION_APPLICATION_TOKEN_VALUE = "applicantApplication";
+    public static final String USER_APPLICATION_APPLICATION_TOKEN_VALUE = "userApplication";
 
     // from class CreateConference
     private static final Logger LOGGER_FOR_CREATE_CONFERENCE = LogManager.getLogger(CreateConference.class);
@@ -433,12 +437,12 @@ public class ApplicationConstants {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/processApplication.jsp");
     private static final String APPLICATION_ID_PARAMETER_NAME = "applicationId";
     private static final String APPLICATION_TEXT_PARAMETER_NAME = "applicationText";
-    private static final String ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME = "allowedReportTypes";
     private static final String APPLICATION_ID_ATTRIBUTE_NAME = "applicationId";
     private static final String APPLICATION_TOKEN_ATTRIBUTE_NAME = "applicationToken";
     private static final String APPLICATION_TEXT_ATTRIBUTE_NAME = "applicationText";
     private static final String APPLICANT_ATTRIBUTE_NAME = "applicant";
     private static final CommandResponse SHOW_PROCESS_APPLICATION_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+    public static final String MANAGER_CONSTANT = "MANAGER";
 
 }

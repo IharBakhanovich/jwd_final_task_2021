@@ -116,7 +116,7 @@
                     <c:choose>
                         <c:when test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userId == requestScope.report.get().applicant or sessionScope.userId == requestScope.idOfManagerOfReportsSection}">
                             <select name="reportType" id="reportTypeField">
-                                <c:forEach var="reportType" items="${ReportType.valuesAsList()}">
+                                <c:forEach var="reportType" items="${requestScope.allowedReportTypes}">
                                     <c:choose>
                                         <c:when test="${requestScope.report.get().reportType eq reportType}">
                                             <option selected>${reportType}</option>

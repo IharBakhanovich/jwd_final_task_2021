@@ -50,6 +50,9 @@ public class UpdateReport implements Command {
     private static final CommandResponse UPDATE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
+    public static final String ADMIN_CONSTANT = "ADMIN";
+    public static final String APPLICANT_APPLICATION_APPLICATION_TOKEN_VALUE = "applicantApplication";
+    public static final String USER_APPLICATION_APPLICATION_TOKEN_VALUE = "userApplication";
 
     private final UserService service;
     private final Validator validator;
@@ -156,7 +159,7 @@ public class UpdateReport implements Command {
         }
 
         // validation of permission to update
-        if (!updaterId.equals(applicantId) && !updaterRole.equals("ADMIN") && !updaterId.equals(sectionManagerId)) {
+        if (!updaterId.equals(applicantId) && !updaterRole.equals(ADMIN_CONSTANT) && !updaterId.equals(sectionManagerId)) {
             return prepareErrorPage(request, NO_PERMISSION_TO_UPDATE_REPORT_MSG);
         }
 
@@ -173,7 +176,7 @@ public class UpdateReport implements Command {
 
         service.updateReport(reportToUpdate);
 
-        if (applicationToken.equals("applicantApplication")) {
+        if (applicationToken.equals(APPLICANT_APPLICATION_APPLICATION_TOKEN_VALUE)) {
             final Long managerId = Long.valueOf(request.getParameter(MANAGER_ID_PARAMETER_NAME));
             request.setAttribute(SECTION_NAME_ATTRIBUTE_NAME, SECTION_NAME_VALUE_FOR_APPLICATIONS_PAGE);
             request.setAttribute(MANAGER_ID_ATTRIBUTE_NAME, managerId);
@@ -183,7 +186,7 @@ public class UpdateReport implements Command {
             request.setAttribute(SECTIONS_ATTRIBUTE_NAME, sections);
             request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
             return SHOW_APPLICATIONS_PAGE_RESPONSE;
-        } else if (applicationToken.equals("userApplication")) {
+        } else if (applicationToken.equals(USER_APPLICATION_APPLICATION_TOKEN_VALUE)) {
             final Long managerId = Long.valueOf(request.getParameter(MANAGER_ID_PARAMETER_NAME));
             request.setAttribute(MANAGER_ID_ATTRIBUTE_NAME, managerId);
             request.setAttribute(USERS_ATTRIBUTE_NAME, users);

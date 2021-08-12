@@ -42,6 +42,7 @@ public class CreateConference implements Command {
     private static final String INVALID_CONFERENCE_TITLE_TEXT_TOO_LONG_MSG = "ConferenceTitleIsTooLongMSG";
     private static final String INVALID_MANAGER_THERE_IS_NO_SUCH_MANAGER_IN_SYSTEM_MSG = "ThereIsNoSuchManagerInSystemMSG";
     private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
+    public static final String ADMIN_CONSTANT = "ADMIN";
 
 
     private final UserService service;
@@ -88,7 +89,7 @@ public class CreateConference implements Command {
             return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
         }
 
-        if (creatorRole == null || !creatorRole.equals("ADMIN")) {
+        if (creatorRole == null || !creatorRole.equals(ADMIN_CONSTANT)) {
             return prepareErrorPage(request, NO_PERMISSION_TO_CREATE_CONFERENCE_MSG);
         } else if (confTitle == null || confTitle.trim().equals("")) {
             return prepareErrorPage(request, INVALID_CONFERENCE_TITLE_TEXT_MSG);

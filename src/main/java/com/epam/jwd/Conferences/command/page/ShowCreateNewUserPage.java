@@ -19,6 +19,7 @@ public class ShowCreateNewUserPage implements Command {
     private static final String NO_PERMISSION_TO_CREATE_CONFERENCE_MSG = "YouHaveNoPermissionToCreateAConferenceMSG";
     private static final CommandResponse SHOW_CREATE_NEW_USER_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+    public static final String ADMIN_CONSTANT = "ADMIN";
 
     private final Validator validator;
 
@@ -62,7 +63,7 @@ public class ShowCreateNewUserPage implements Command {
             }
 
             // validation whether the really admin want to create Conference
-            if (!creatorRole.getName().equals("ADMIN")) {
+            if (!creatorRole.getName().equals(ADMIN_CONSTANT)) {
                 return prepareErrorPageBackToMainPage(request, NO_PERMISSION_TO_CREATE_CONFERENCE_MSG);
             }
         }
