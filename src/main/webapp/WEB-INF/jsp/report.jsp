@@ -63,7 +63,7 @@
                                                    value="${section.sectionName}" readonly>
                                         </c:when>
                                         <c:otherwise>
-                                            <a href="${pageContext.request.contextPath}/controller?command=show_reports&id=${section.id}&conferenceId=${report.get().conferenceId}&&sectionName=${section.sectionName}"
+                                            <a href="${pageContext.request.contextPath}/controller?command=show_reports&id=${section.id}&conferenceId=${report.get().conferenceId}&sectionName=${section.sectionName}"
                                                id="sectionField" name="sectionName">${section.sectionName}</a>
                                         </c:otherwise>
                                     </c:choose>

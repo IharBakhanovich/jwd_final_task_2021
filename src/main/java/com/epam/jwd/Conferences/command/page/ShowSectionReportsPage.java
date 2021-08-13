@@ -27,6 +27,8 @@ public class ShowSectionReportsPage implements Command {
     private static final String SECTION_ID_ATTRIBUTE_NAME = "sectionId";
     private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
     private static final String USERS_ATTRIBUTE_NAME = "users";
+    private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
+    private static final String SECTIONS_ATTRIBUTE_NAME = "sections";
 
     private final UserService service;
 
@@ -62,13 +64,16 @@ public class ShowSectionReportsPage implements Command {
         final String sectionName = request.getParameter(SECTION_NAME_PARAMETER_NAME);
         final List<Report> reports = service.findAllReportsBySectionID(sectionId, conferenceId);
         final List<Conference> conferences = service.findAllConferences();
+        final List<Section> sections = service.findAllSections();
         String conferenceTitle = null;
         for (Conference conference: conferences
              ) {
-            if(conference.getId() == conferenceId) {
+            if(conference.getId().equals(conferenceId)) {
                 conferenceTitle = conference.getConferenceTitle();
             }
         }
+        request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
+        request.setAttribute(SECTIONS_ATTRIBUTE_NAME, sections);
         request.setAttribute(CONFERENCE_TITLE_ATTRIBUTE_NAME, conferenceTitle);
         request.setAttribute(REPORTS_ATTRIBUTE_NAME, reports);
         request.setAttribute(SECTION_NAME_ATTRIBUTE_NAME, sectionName);

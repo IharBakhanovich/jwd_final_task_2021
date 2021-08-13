@@ -31,8 +31,8 @@
 
                 <tr>
                     <th width="30"><fmt:message key="label.ReportIdColumnName"/></th>
-                    <th><fmt:message key="label.sectionIdColumnName"/></th>
-                    <th><fmt:message key="label.conferenceIdColumnName"/></th>
+                    <th><fmt:message key="label.sectionNameColumnName"/></th>
+                    <th><fmt:message key="label.conferenceTitleColumnName"/></th>
                     <th><fmt:message key="label.reportTextColumnName"/></th>
                     <th><fmt:message key="label.ReportTypeColumnName"/></th>
                     <th><fmt:message key="label.ApplicantColumnName"/></th>
@@ -42,23 +42,33 @@
                         <td>
                             <a href="${pageContext.request.contextPath}/controller?command=show_report&id=${report.id}&managerRole=${sessionScope.userRole}&managerId=${sessionScope.userId}">${report.id}</a>
                         </td>
-                        <td>${report.sectionId}</td>
-                        <td>${report.conferenceId}</td>
+                        <c:forEach var="section" items="${requestScope.sections}">
+                                <ctg:choose-another-element-ForTables
+                                        valueWithWhichCompare="${section.id}" valueToCompare="${report.sectionId}"
+                                        valueToShow="${section.sectionName}"/>
+                        </c:forEach>
+<%--                        <td>${report.sectionId}</td>--%>
+                        <c:forEach var="conference" items="${requestScope.conferences}">
+                            <ctg:choose-another-element-ForTables
+                                    valueWithWhichCompare="${conference.id}" valueToCompare="${report.conferenceId}"
+                                    valueToShow="${conference.conferenceTitle}"/>
+                        </c:forEach>
+<%--                        <td>${report.conferenceId}</td>--%>
                         <td>${report.reportText}</td>
                         <td>${report.reportType}</td>
                         <c:forEach var="user" items="${requestScope.users}">
 
-                            <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}">
-                                <ctg:choose-another-element-ForTables
-                                        valueWithWhichCompare="${report.applicant}" valueToCompare="${user.id}"
-                                        valueToShow="${user.nickname}"/>
-                            </a>
+<%--                            <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}">--%>
+<%--                                <ctg:choose-another-element-ForTables--%>
+<%--                                        valueWithWhichCompare="${report.applicant}" valueToCompare="${user.id}"--%>
+<%--                                        valueToShow="${user.nickname}"/>--%>
+<%--                            </a>--%>
 
-                            <%--                            <c:if test="${report.applicant==user.id}">--%>
-                            <%--                                <td>--%>
-                            <%--                                    <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}">${user.nickname}</a>--%>
-                            <%--                                </td>--%>
-                            <%--                            </c:if>--%>
+                            <c:if test="${report.applicant==user.id}">
+                                <td>
+                                    <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}">${user.nickname}</a>
+                                </td>
+                            </c:if>
                         </c:forEach>
                     </tr>
                 </c:forEach>

@@ -55,7 +55,6 @@ public class ShowReportPage implements Command {
     public CommandResponse execute(CommandRequest request) {
         final Long id = Long.valueOf(request.getParameter(ID_PARAMETER_NAME));
         String managerRole = request.getParameter(MANAGER_ROLE_PARAMETER_NAME);
-        Long managerId = Long.valueOf(request.getParameter(MANAGER_ID_PARAMETER_NAME));
         final Optional<Report> report = service.findReportByID(id);
         final List<Section> sections = service.findAllSections();
         Long sectionManagerId = null;
@@ -66,7 +65,8 @@ public class ShowReportPage implements Command {
             }
         }
         List<ReportType> allowedReportTypes = new ArrayList<>();
-        if (managerId != null && managerRole != null) {
+        if (!managerRole.equals("") && managerRole != null) {
+            Long managerId = Long.valueOf(request.getParameter(MANAGER_ID_PARAMETER_NAME));
             if (managerId.equals(report.get().getApplicant()) && !managerRole.equals(ADMIN_CONSTANT)) {
                 switch (report.get().getReportType()) {
                     case APPLICATION:
