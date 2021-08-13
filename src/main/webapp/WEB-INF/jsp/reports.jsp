@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@page import="com.epam.jwd.Conferences.dto.Role" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="customtags" %>
 <fmt:setLocale value="${sessionScope.language}"/>
 <fmt:setBundle basename="messages"/>
 <html>
@@ -46,11 +47,18 @@
                         <td>${report.reportText}</td>
                         <td>${report.reportType}</td>
                         <c:forEach var="user" items="${requestScope.users}">
-                            <c:if test="${report.applicant==user.id}">
-                                <td>
-                                    <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}">${user.nickname}</a>
-                                </td>
-                            </c:if>
+
+                            <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}">
+                                <ctg:choose-another-element-ForTables
+                                        valueWithWhichCompare="${report.applicant}" valueToCompare="${user.id}"
+                                        valueToShow="${user.nickname}"/>
+                            </a>
+
+                            <%--                            <c:if test="${report.applicant==user.id}">--%>
+                            <%--                                <td>--%>
+                            <%--                                    <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}">${user.nickname}</a>--%>
+                            <%--                                </td>--%>
+                            <%--                            </c:if>--%>
                         </c:forEach>
                     </tr>
                 </c:forEach>
