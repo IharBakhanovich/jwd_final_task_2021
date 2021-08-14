@@ -3,11 +3,21 @@ package com.epam.jwd.Conferences.command.page;
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
+import com.epam.jwd.Conferences.dto.ReportType;
 import com.epam.jwd.Conferences.service.UserService;
+import com.epam.jwd.Conferences.validator.Validator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShowCreateReportPage implements Command {
     private static final CommandResponse CREATE_REPORT_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createReport.jsp");
+
+    private static final CommandResponse SHOW_CREATE_REPORT_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+    private static final String ERROR_ATTRIBUTE_NAME = "error";
+    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
 
     private static final String CREATOR_ID_PARAMETER_NAME = "creatorId";
     private static final String CREATOR_ROLE_PARAMETER_NAME = "creatorRole";
@@ -23,13 +33,16 @@ public class ShowCreateReportPage implements Command {
     private static final String USERS_ATTRIBUTE_NAME = "users";
     private static final String CREATOR_ID_ATTRIBUTE_NAME = "creatorId";
     private static final String CREATOR_ROLE_ATTRIBUTE_NAME = "creatorRole";
+    private static final String ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME = "allowedReportTypes";
 
     // the AppService, that communicates with the repo
-    private final UserService userService;
+    private final UserService service;
+    private final Validator validator;
 
     // the private default constructor, to not create the instance of the class with 'new' outside the class
     private ShowCreateReportPage() {
-        this.userService = UserService.retrieve();
+        this.service = UserService.retrieve();
+        this.validator = Validator.retrieve();
     }
 
     private static class ShowCreateReportPageHolder {
@@ -54,12 +67,28 @@ public class ShowCreateReportPage implements Command {
      */
     @Override
     public CommandResponse execute(CommandRequest request) {
+        List<ReportType> allowedReportTypes = new ArrayList<>();
+        allowedReportTypes.add(ReportType.QUESTION);
+        allowedReportTypes.add(ReportType.APPLICATION);
         final String conferenceTitle = request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME);
         final String conferenceId = request.getParameter(CONFERENCE_ID_PARAMETER_NAME);
         final String creatorId = request.getParameter(CREATOR_ID_PARAMETER_NAME);
         final String creatorRole = request.getParameter(CREATOR_ROLE_PARAMETER_NAME);
         final String sectionId = request.getParameter(SECTION_ID_PARAMETER_NAME);
         final String sectionName = request.getParameter(SECTION_NAME_PARAMETER_NAME);
+
+        // validation of the parameters (whether they exist in the request)
+        if (!validator.isUserWithIdExistInSystem(Long.valueOf(creatorId))
+                || !validator.isRoleWithSuchNameExistInSystem(creatorRole)
+                || !validator.isUserIdAndUserRoleFromTheSameUser(String.valueOf(creatorId), creatorRole)
+                || !validator.isSectionExistInSystem(Long.valueOf(sectionId))
+                || !validator.isConferenceExistInSystem(Long.valueOf(conferenceId))
+                || !validator.isConferenceTitleAndIdFromTheSameConference(Long.valueOf(conferenceId), conferenceTitle)
+                || !validator.isConferenceWithSuchTitleExistInSystem(conferenceTitle)
+                || !validator.isSectionNameAndIdFromTheSameSection(Long.valueOf(sectionId), sectionName)) {
+            return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+        }
+        request.setAttribute(ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME, allowedReportTypes);
         request.setAttribute(CONFERENCE_TITLE_ATTRIBUTE_NAME, conferenceTitle);
         request.setAttribute(CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
         request.setAttribute(CREATOR_ID_ATTRIBUTE_NAME, creatorId);
@@ -67,5 +96,11 @@ public class ShowCreateReportPage implements Command {
         request.setAttribute(SECTION_ID_ATTRIBUTE_NAME, sectionId);
         request.setAttribute(SECTION_NAME_ATTRIBUTE_NAME, sectionName);
         return CREATE_REPORT_PAGE_RESPONSE;
+    }
+
+    private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
+                                                           String errorMessage) {
+        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
+        return SHOW_CREATE_REPORT_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE;
     }
 }

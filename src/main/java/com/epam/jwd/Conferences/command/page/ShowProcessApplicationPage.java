@@ -84,7 +84,9 @@ public class ShowProcessApplicationPage implements Command {
                 || !validator.isSectionExistInSystem(sectionId)
                 || !validator.isUserWithIdExistInSystem(managerId)
                 || !validator.isRoleWithSuchNameExistInSystem(managerRole)
-                || !validator.isReportExistInSystem(applicationId)) {
+                || !validator.isReportExistInSystem(applicationId)
+                || !(applicationToken.equals(APPLICANT_APPLICATION_APPLICATION_TOKEN_VALUE)
+                || applicationToken.equals(USER_APPLICATION_APPLICATION_TOKEN_VALUE))) {
             return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
         }
 

@@ -9,6 +9,7 @@ import com.epam.jwd.Conferences.dao.JdbcUserDAO;
 import com.epam.jwd.Conferences.listener.ApplicationLifecycleListener;
 import com.epam.jwd.Conferences.pool.AppConnectionPool;
 import com.epam.jwd.Conferences.system.Configuration;
+import com.epam.jwd.Conferences.validator.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -267,12 +268,16 @@ public class ApplicationConstants {
     // from class ShowCreateReportPage
     private static final CommandResponse CREATE_REPORT_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createReport.jsp");
+    private static final CommandResponse SHOW_CREATE_REPORT_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
     //from class ShowCreateSectionPage
     private static final CommandResponse CREATE_SECTION_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createSection.jsp");
     private static final CommandResponse SHOW_CREATE_SECTION_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createSection.jsp");
+    private static final CommandResponse SHOW_CREATE_SECTION_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
     // from ShowErrorPage **
     public static final CommandResponse ERROR_PAGE_RESPONSE
@@ -403,6 +408,8 @@ public class ApplicationConstants {
     // from class AppValidator
 
     // from class ShowQuestionPage
+    private static final CommandResponse SHOW_QUESTION_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
     // from class ShowCreateAnswerPage
     private static final CommandResponse CREATE_ANSWER_PAGE_RESPONSE
@@ -418,9 +425,15 @@ public class ApplicationConstants {
     private static final String QUESTION_REPORT_ID_PARAMETER_NAME_FOR_CONTEXT = "questionReportIdForContext";
     private static final String QUESTION_TOKEN_NAME = "question";
     private static final String APPLICANT_QUESTIONS_TOKEN_NAME = "applicantQuestions";
+    public static final String APPLICANT_QUESTIONS_APPLICATION_TOKEN_VALUE = "applicantQuestions";
+    public static final String USER_QUESTIONS_APPLICATION_TOKEN_VALUE = "";
+    private static final CommandResponse SHOW_QUESTION_CONTEXT_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
     // from class ShowOwnQuestionPage
-
+    public static final String APPLICANT_QUESTIONS_TOKEN = "applicantQuestions";
+    private static final CommandResponse SHOW_OWN_QUESTIONS_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
     // Locale's constants
     // class LoginCommand
@@ -431,6 +444,9 @@ public class ApplicationConstants {
     // class ShowApplicationsPage
 
     // class ShowOwnApplicationsPage
+    private static final CommandResponse SHOW_OWN_APPLICATIONS_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+    public static final String APPLICANT_APPLICATIONS_TOKEN = "applicantApplications";
 
     // class ShowProcessApplicationPage
     private static final CommandResponse PROCESS_APPLICATION_PAGE_RESPONSE

@@ -47,23 +47,14 @@
                                         valueWithWhichCompare="${section.id}" valueToCompare="${report.sectionId}"
                                         valueToShow="${section.sectionName}"/>
                         </c:forEach>
-<%--                        <td>${report.sectionId}</td>--%>
                         <c:forEach var="conference" items="${requestScope.conferences}">
                             <ctg:choose-another-element-ForTables
                                     valueWithWhichCompare="${conference.id}" valueToCompare="${report.conferenceId}"
                                     valueToShow="${conference.conferenceTitle}"/>
                         </c:forEach>
-<%--                        <td>${report.conferenceId}</td>--%>
                         <td>${report.reportText}</td>
                         <td>${report.reportType}</td>
                         <c:forEach var="user" items="${requestScope.users}">
-
-<%--                            <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}">--%>
-<%--                                <ctg:choose-another-element-ForTables--%>
-<%--                                        valueWithWhichCompare="${report.applicant}" valueToCompare="${user.id}"--%>
-<%--                                        valueToShow="${user.nickname}"/>--%>
-<%--                            </a>--%>
-
                             <c:if test="${report.applicant==user.id}">
                                 <td>
                                     <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${user.id}">${user.nickname}</a>
@@ -88,7 +79,7 @@
                         <c:when test="${requestScope.sectionName eq 'applicantQuestions'}">
                             <p><fmt:message key="label.clickBelowToBackToQuestions"/></p>
                             <div class="link">
-                                <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message
+                                <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}&sectionName=applicantQuestions"><fmt:message
                                         key="label.BackToQuestions"/></a>
                             </div>
                         </c:when>
@@ -104,7 +95,7 @@
                 <c:otherwise>
                     <p><fmt:message key="label.clickBelowToBackToQuestions"/></p>
                     <div class="link">
-                        <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message
+                        <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}&sectionName=applicantQuestions"><fmt:message
                                 key="label.BackToQuestions"/></a>
                     </div>
                 </c:otherwise>
@@ -121,10 +112,6 @@
             </c:if>
         </c:otherwise>
     </c:choose>
-
-    <%--    <br>--%>
-    <%--    <br>--%>
-    <%--    <a href="${pageContext.request.contextPath}/controller"><fmt:message key="label.backToMainPage"/></a>--%>
 </div>
 </body>
 </html>

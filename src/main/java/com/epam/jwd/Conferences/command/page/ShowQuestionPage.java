@@ -8,6 +8,7 @@ import com.epam.jwd.Conferences.dto.Report;
 import com.epam.jwd.Conferences.dto.Section;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.service.UserService;
+import com.epam.jwd.Conferences.validator.Validator;
 
 import java.util.List;
 
@@ -22,8 +23,14 @@ public class ShowQuestionPage implements Command {
     private static final String USERS_ATTRIBUTE_NAME = "users";
     public static final String MANAGER_ID_PARAMETER_NAME = "managerId";
     public static final String MANAGER_ID_ATTRIBUTE_NAME = "managerId";
+    public static final String MANAGER_ROLE_PARAMETER_NAME = "managerRole";
+    private static final String ERROR_ATTRIBUTE_NAME = "error";
+    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
+    private static final CommandResponse SHOW_QUESTION_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
     private final UserService service;
+    private final Validator validator;
 
     private static class ShowQuestionPagePageHolder {
         private final static ShowQuestionPage instance
@@ -42,11 +49,19 @@ public class ShowQuestionPage implements Command {
     // the private default constructor, to not create the instance of the class with 'new' outside the class
     private ShowQuestionPage() {
         this.service = UserService.retrieve();
+        this.validator = Validator.retrieve();
     }
 
     @Override
     public CommandResponse execute(CommandRequest request) {
         final Long managerId = Long.valueOf(request.getParameter(MANAGER_ID_PARAMETER_NAME));
+        final String managerRole = request.getParameter(MANAGER_ROLE_PARAMETER_NAME);
+        // validation of the parameters (whether they exist in the request)
+        if (!validator.isUserWithIdExistInSystem(managerId)
+                || !validator.isRoleWithSuchNameExistInSystem(managerRole)
+                || !validator.isUserIdAndUserRoleFromTheSameUser(String.valueOf(managerId), managerRole)) {
+            return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+        }
         request.setAttribute(MANAGER_ID_ATTRIBUTE_NAME, managerId);
         final List<User> users = service.findAllUsers();
         request.setAttribute(USERS_ATTRIBUTE_NAME, users);
@@ -57,5 +72,11 @@ public class ShowQuestionPage implements Command {
         final List<Conference> conferences = service.findAllConferences();
         request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
         return SHOW_QUESTIONS_PAGE_RESPONSE;
+    }
+
+    private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
+                                                           String errorMessage) {
+        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
+        return SHOW_QUESTION_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE;
     }
 }
