@@ -3,11 +3,11 @@ package com.epam.jwd.Conferences.command.authentication;
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
-import com.epam.jwd.Conferences.service.UserService;
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 
 public class LogoutCommand implements Command {
-    private static final CommandResponse MAIN_PAGE_REDIRECT
-            = CommandResponse.getCommandResponse(true, "index.jsp");
+//    private static final CommandResponse MAIN_PAGE_REDIRECT
+//            = CommandResponse.getCommandResponse(true, "index.jsp");
 
     // the private default constructor, to not create the instance of the class with 'new' outside the class
     private LogoutCommand() {
@@ -37,6 +37,6 @@ public class LogoutCommand implements Command {
     @Override
     public CommandResponse execute(CommandRequest request) {
         request.invalidateCurrentSession();
-        return MAIN_PAGE_REDIRECT;
+        return ApplicationConstants.MAIN_PAGE_REDIRECT;
     }
 }

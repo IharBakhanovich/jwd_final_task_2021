@@ -9,7 +9,6 @@ import com.epam.jwd.Conferences.dao.JdbcUserDAO;
 import com.epam.jwd.Conferences.listener.ApplicationLifecycleListener;
 import com.epam.jwd.Conferences.pool.AppConnectionPool;
 import com.epam.jwd.Conferences.system.Configuration;
-import com.epam.jwd.Conferences.validator.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

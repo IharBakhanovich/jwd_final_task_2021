@@ -12,7 +12,6 @@ import com.epam.jwd.Conferences.validator.Validator;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 /**
  * Implements 'update_user' action. The singleton.

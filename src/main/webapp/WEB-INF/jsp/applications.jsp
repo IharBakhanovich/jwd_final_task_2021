@@ -40,7 +40,7 @@
                 <c:forEach var="application" items="${requestScope.applications}">
                     <tr>
                         <td>
-                            <a href="${pageContext.request.contextPath}/controller?command=show_report&id=${application.id}">${application.id}</a>
+                            <a href="${pageContext.request.contextPath}/controller?command=show_report&id=${application.id}&managerRole=${sessionScope.userRole}&managerId=${sessionScope.userId}">${application.id}</a>
                         </td>
                         <c:forEach var="section" items="${requestScope.sections}">
                             <c:if test="${application.sectionId==section.id}">

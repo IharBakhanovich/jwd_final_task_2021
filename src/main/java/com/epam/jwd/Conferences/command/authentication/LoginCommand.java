@@ -3,7 +3,7 @@ package com.epam.jwd.Conferences.command.authentication;
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
-import com.epam.jwd.Conferences.command.page.ShowErrorPage;
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.service.UserService;
 
@@ -12,19 +12,19 @@ import javax.servlet.http.HttpSession;
 //команда будет принимать в себя пользователя из формы
 public class LoginCommand implements Command {
 
-    private static final String LOGIN_PARAM_NAME = "login";
-    private static final String PASSWORD_PARAM_NAME = "password";
-    private static final String ERROR_ATTRIBUTE_NAME = "error";
-    private static final String INVALID_CREDENTIALS_MSG = "InvalidCredentialsMSG";
-    private static final CommandResponse LOGIN_ERROR_RESPONSE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/login.jsp");
-    // редиректаемся на index.jsp, после чего должен произойти get
-    private static final CommandResponse LOGIN_SUCCESS_RESPONSE
-            = CommandResponse.getCommandResponse(true, "index.jsp");
-
-    private static final String USER_NAME_SESSION_ATTRIBUTE = "userName";
-    private static final String USER_ROLE_SESSION_ATTRIBUTE = "userRole";
-    private static final String USER_ID_SESSION_ATTRIBUTE = "userId";
+//    private static final String LOGIN_PARAM_NAME = "login";
+//    private static final String PASSWORD_PARAM_NAME = "password";
+//    private static final String ERROR_ATTRIBUTE_NAME = "error";
+//    private static final String INVALID_CREDENTIALS_MSG = "InvalidCredentialsMSG";
+//    private static final CommandResponse LOGIN_ERROR_RESPONSE
+//            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/login.jsp");
+//    // редиректаемся на index.jsp, после чего должен произойти get
+//    private static final CommandResponse LOGIN_SUCCESS_RESPONSE
+//            = CommandResponse.getCommandResponse(true, "index.jsp");
+//
+//    private static final String USER_NAME_SESSION_ATTRIBUTE = "userName";
+//    private static final String USER_ROLE_SESSION_ATTRIBUTE = "userRole";
+//    private static final String USER_ID_SESSION_ATTRIBUTE = "userId";
 
     private final UserService service;
 
@@ -56,8 +56,8 @@ public class LoginCommand implements Command {
      */
     @Override
     public CommandResponse execute(CommandRequest request) {
-        final String login = request.getParameter(LOGIN_PARAM_NAME);
-        final String password = request.getParameter(PASSWORD_PARAM_NAME);
+        final String login = request.getParameter(ApplicationConstants.LOGIN_PARAM_NAME);
+        final String password = request.getParameter(ApplicationConstants.PASSWORD_PARAM_NAME);
         final User user = new User(login, password);
         if (!service.canLogIn(user)) {
             return prepareErrorPage(request);
@@ -66,8 +66,8 @@ public class LoginCommand implements Command {
     }
 
     private CommandResponse prepareErrorPage(CommandRequest request) {
-        request.setAttribute(ERROR_ATTRIBUTE_NAME, INVALID_CREDENTIALS_MSG);
-        return LOGIN_ERROR_RESPONSE;
+        request.setAttribute(ApplicationConstants.ERROR_ATTRIBUTE_NAME, ApplicationConstants.INVALID_CREDENTIALS_MSG);
+        return ApplicationConstants.LOGIN_ERROR_RESPONSE;
     }
 
     private CommandResponse addUserInfoToSession(CommandRequest request, String login) {
@@ -91,13 +91,13 @@ public class LoginCommand implements Command {
         final User loggedInUser = service.findByLogin(login);
 
         //просетали ник текущего юзера в сессию
-        session.setAttribute(USER_NAME_SESSION_ATTRIBUTE, loggedInUser.getNickname());
+        session.setAttribute(ApplicationConstants.USER_NAME_SESSION_ATTRIBUTE, loggedInUser.getNickname());
         //просетали роль текущего юзера в сессию
-        session.setAttribute(USER_ROLE_SESSION_ATTRIBUTE, loggedInUser.getRole());
+        session.setAttribute(ApplicationConstants.USER_ROLE_SESSION_ATTRIBUTE, loggedInUser.getRole());
         //просетали id текущего юзера в сессию
-        session.setAttribute(USER_ID_SESSION_ATTRIBUTE, loggedInUser.getId());
+        session.setAttribute(ApplicationConstants.USER_ID_SESSION_ATTRIBUTE, loggedInUser.getId());
 
         // далее необходимо сделать паттерн PostRedirectGet
-        return LOGIN_SUCCESS_RESPONSE;
+        return ApplicationConstants.LOGIN_SUCCESS_RESPONSE;
     }
 }
