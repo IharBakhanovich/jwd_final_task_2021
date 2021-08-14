@@ -8,6 +8,7 @@ import com.epam.jwd.Conferences.dto.Report;
 import com.epam.jwd.Conferences.dto.Section;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.service.UserService;
+import com.epam.jwd.Conferences.validator.Validator;
 
 import java.util.List;
 
@@ -29,8 +30,13 @@ public class ShowSectionReportsPage implements Command {
     private static final String USERS_ATTRIBUTE_NAME = "users";
     private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
     private static final String SECTIONS_ATTRIBUTE_NAME = "sections";
+    private static final CommandResponse SHOW_SECTION_REPORTS_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
+    private static final String ERROR_ATTRIBUTE_NAME = "error";
 
     private final UserService service;
+    private final Validator validator;
 
     private static class ShowSectionReportsPagePageHolder {
         private final static ShowSectionReportsPage instance
@@ -49,6 +55,7 @@ public class ShowSectionReportsPage implements Command {
     // the private default constructor, to not create the instance of the class with 'new' outside the class
     private ShowSectionReportsPage() {
         this.service = UserService.retrieve();
+        this.validator = Validator.retrieve();
     }
 
     /**
@@ -62,13 +69,21 @@ public class ShowSectionReportsPage implements Command {
         final Long sectionId = Long.valueOf(request.getParameter(ID_PARAMETER_NAME));
         final Long conferenceId = Long.valueOf(request.getParameter(CONFERENCE_ID_PARAMETER_NAME));
         final String sectionName = request.getParameter(SECTION_NAME_PARAMETER_NAME);
+        // validation of the parameters (whether they exist in the request)
+        if (!validator.isConferenceExistInSystem(conferenceId)
+                || !validator.isSectionExistInSystem(sectionId)
+                || !validator.isSectionWithSuchNameExistInSystem(sectionName)
+                || !validator.isSectionNameAndIdFromTheSameSection(sectionId, sectionName)) {
+            return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+        }
         final List<Report> reports = service.findAllReportsBySectionID(sectionId, conferenceId);
         final List<Conference> conferences = service.findAllConferences();
         final List<Section> sections = service.findAllSections();
         String conferenceTitle = null;
-        for (Conference conference: conferences
-             ) {
-            if(conference.getId().equals(conferenceId)) {
+
+        for (Conference conference : conferences
+        ) {
+            if (conference.getId().equals(conferenceId)) {
                 conferenceTitle = conference.getConferenceTitle();
             }
         }
@@ -82,5 +97,11 @@ public class ShowSectionReportsPage implements Command {
         final List<User> users = service.findAllUsers();
         request.setAttribute(USERS_ATTRIBUTE_NAME, users);
         return SHOW_REPORTS_PAGE_RESPONSE;
+    }
+
+    private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
+                                                           String errorMessage) {
+        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
+        return SHOW_SECTION_REPORTS_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE;
     }
 }

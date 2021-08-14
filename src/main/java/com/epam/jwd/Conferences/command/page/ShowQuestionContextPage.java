@@ -25,15 +25,15 @@ public class ShowQuestionContextPage implements Command {
     private static final String QUESTION_TOKEN_NAME = "question";
     private static final String APPLICANT_QUESTIONS_TOKEN_NAME = "applicantQuestions";
     public static final String MANAGER_ID_PARAMETER_NAME = "managerId";
-
-    private final UserService service;
-    private final Validator validator;
     public static final String APPLICANT_QUESTIONS_APPLICATION_TOKEN_VALUE = "applicantQuestions";
     public static final String USER_QUESTIONS_APPLICATION_TOKEN_VALUE = "";
     private static final CommandResponse SHOW_QUESTION_CONTEXT_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
     private static final String ERROR_ATTRIBUTE_NAME = "error";
+
+    private final UserService service;
+    private final Validator validator;
 
     private static class ShowQuestionContextPageHolder {
         private final static ShowQuestionContextPage instance

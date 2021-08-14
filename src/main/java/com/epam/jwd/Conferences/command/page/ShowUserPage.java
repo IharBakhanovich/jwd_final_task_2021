@@ -5,6 +5,8 @@ import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.service.UserService;
+import com.epam.jwd.Conferences.validator.Validator;
+
 import java.util.Optional;
 
 public class ShowUserPage implements Command {
@@ -13,8 +15,13 @@ public class ShowUserPage implements Command {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/user.jsp");
     private static final String ID_PARAMETER_NAME = "id";
     private static final String USER_ATTRIBUTE_NAME = "user";
+    private static final CommandResponse SHOW_USER_PAGE_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
+    private static final String ERROR_ATTRIBUTE_NAME = "error";
 
     private final UserService service;
+    private final Validator validator;
 
     private static class ShowUserPageHolder {
         private final static ShowUserPage instance
@@ -33,6 +40,7 @@ public class ShowUserPage implements Command {
     // the private default constructor, to not create the instance of the class with 'new' outside the class
     private ShowUserPage() {
         this.service = UserService.retrieve();
+        this.validator = Validator.retrieve();
     }
 
     /**
@@ -44,9 +52,19 @@ public class ShowUserPage implements Command {
     @Override
     public CommandResponse execute(CommandRequest request) {
         final Long id = Long.valueOf(request.getParameter(ID_PARAMETER_NAME));
+        // validation of the parameters (whether they exist in the request)
+        if (!validator.isUserWithIdExistInSystem(id)) {
+            return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+        }
         final Optional<User> user = service.findUserByID(id);
 
         request.setAttribute(USER_ATTRIBUTE_NAME, user);
         return SHOW_USER_PAGE_RESPONSE;
+    }
+
+    private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
+                                                           String errorMessage) {
+        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
+        return SHOW_USER_PAGE_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE;
     }
 }

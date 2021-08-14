@@ -5,6 +5,7 @@ import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.dto.*;
 import com.epam.jwd.Conferences.service.UserService;
+import com.epam.jwd.Conferences.validator.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,13 @@ public class ShowReportPage implements Command {
     private static final String MANAGER_ID_PARAMETER_NAME = "managerId";
     private static final String MANAGER_ROLE_PARAMETER_NAME = "managerRole";
     public static final String ADMIN_CONSTANT = "ADMIN";
+    private static final CommandResponse SHOW_REPORT_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
+    private static final String ERROR_ATTRIBUTE_NAME = "error";
 
     private final UserService service;
+    private final Validator validator;
 
     private static class ShowReportPageHolder {
         private final static ShowReportPage instance
@@ -43,6 +49,7 @@ public class ShowReportPage implements Command {
     // the private default constructor, to not create the instance of the class with 'new' outside the class
     private ShowReportPage() {
         this.service = UserService.retrieve();
+        this.validator = Validator.retrieve();
     }
 
     /**
@@ -57,6 +64,11 @@ public class ShowReportPage implements Command {
         String managerRole = request.getParameter(MANAGER_ROLE_PARAMETER_NAME);
         final Optional<Report> report = service.findReportByID(id);
         final List<Section> sections = service.findAllSections();
+        // validation of the parameters (whether they exist in the request)
+        if (!validator.isReportExistInSystem(id)) {
+            return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+        }
+
         Long sectionManagerId = null;
         for (Section section : sections
         ) {
@@ -140,5 +152,11 @@ public class ShowReportPage implements Command {
         request.setAttribute(ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME, allowedReportTypes);
         request.setAttribute(ID_OF_MANAGER_OF_REPORTS_SECTION_ATTRIBUTE_NAME, sectionManagerId);
         return SHOW_REPORT_PAGE_RESPONSE;
+    }
+
+    private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
+                                                           String errorMessage) {
+        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
+        return SHOW_REPORT_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE;
     }
 }

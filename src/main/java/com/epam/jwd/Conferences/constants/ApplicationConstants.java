@@ -295,20 +295,30 @@ public class ApplicationConstants {
     private static final CommandResponse SHOW_REPORT_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/report.jsp");
     public static final String ID_OF_MANAGER_OF_REPORTS_SECTION_ATTRIBUTE_NAME = "idOfManagerOfReportsSection";
+    private static final CommandResponse SHOW_REPORT_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
     // from class ShowSectionReportsPage
+    private static final CommandResponse SHOW_SECTION_REPORTS_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
     // from class ShowUpdateConferencePage
     private static final CommandResponse UPDATE_CONFERENCE_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/updateConference.jsp");
+    private static final CommandResponse SHOW_UPDATE_CONFERENCE_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
     // from class ShowUpdateSectionPage
     private static final CommandResponse UPDATE_SECTION_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/updateSection.jsp");
+    private static final CommandResponse SHOW_UPDATE_SECTION_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
     // from class ShowUserPage
     private static final CommandResponse SHOW_USER_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/user.jsp");
+    private static final CommandResponse SHOW_USER_PAGE_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
     // from class ShowUsersPage
     private static final CommandResponse SHOW_USERS_PAGE_RESPONSE
