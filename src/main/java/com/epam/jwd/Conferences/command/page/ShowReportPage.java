@@ -79,6 +79,10 @@ public class ShowReportPage implements Command {
         List<ReportType> allowedReportTypes = new ArrayList<>();
         if (!managerRole.equals("") && managerRole != null) {
             Long managerId = Long.valueOf(request.getParameter(MANAGER_ID_PARAMETER_NAME));
+            if (!validator.isUserWithIdExistInSystem(managerId)
+                    || !validator.isUserIdAndUserRoleFromTheSameUser(String.valueOf(managerId), managerRole)) {
+                return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+            }
             if (managerId.equals(report.get().getApplicant()) && !managerRole.equals(ADMIN_CONSTANT)) {
                 switch (report.get().getReportType()) {
                     case APPLICATION:

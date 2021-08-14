@@ -3,6 +3,7 @@ package com.epam.jwd.Conferences.command.action;
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.dto.Conference;
 import com.epam.jwd.Conferences.dto.Role;
 import com.epam.jwd.Conferences.dto.Section;
@@ -20,33 +21,33 @@ import java.util.Optional;
 
 public class UpdateConference implements Command {
 
-    private static final Logger logger = LogManager.getLogger(UpdateConference.class);
+    private static final Logger logger = ApplicationConstants.LOGGER_FOR_UPDATE_CONFERENCE; //LogManager.getLogger(UpdateConference.class);
 
-    private static final String CREATOR_ID_PARAMETER_NAME = "creatorId";
-    private static final String CREATOR_ROLE_PARAMETER_NAME = "creatorRole";
-    private static final String CONFERENCE_TITLE_PARAMETER_NAME = "conferenceTitle";
-    private static final String MANAGER_CONF_PARAMETER_NAME = "managerConf";
-    private static final String CONFERENCE_ID_PARAMETER_NAME = "conferenceId";
-    private static final String ERROR_ATTRIBUTE_NAME = "error";
-    private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
-    private static final String USERS_ATTRIBUTE_NAME = "users";
-    private static final String MANAGER_CONFERENCE_ATTRIBUTE_NAME = "managerConf";
-    private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
-    private static final String NO_PERMISSION_TO_UPDATE_CONFERENCE_MSG = "YouHaveNoPermissionToUpdateAConferenceMSG";
-    private static final String INVALID_CONFERENCE_TITLE_TEXT_MSG = "ConferenceTitleShouldNotBeEmptyOrContainOnlySpacesMSG";
-    private static final String INVALID_CONFERENCE_TITLE_TEXT_NOT_UTF8_MSG = "ConferenceTitleShouldContainOnlyLatinLettersMSG";
-    private static final String INVALID_CONFERENCE_TITLE_TEXT_TOO_LONG_MSG = "ConferenceTitleIsTooLongMSG";
-    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
-    private static final CommandResponse CREATE_UPDATE_CONFERENCE_ERROR_RESPONSE_TO_MAIN_PAGE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
-    public static final String ADMIN_CONSTANT = "ADMIN";
-
-    private static final int MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB = 30;
-
-    private static final CommandResponse CONFERENCE_UPDATE_SUCCESS_RESPONSE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
-    private static final CommandResponse CONFERENCE_UPDATE_ERROR_RESPONSE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/updateConference.jsp");
+//    private static final String CREATOR_ID_PARAMETER_NAME = "creatorId";
+//    private static final String CREATOR_ROLE_PARAMETER_NAME = "creatorRole";
+//    private static final String CONFERENCE_TITLE_PARAMETER_NAME = "conferenceTitle";
+//    private static final String MANAGER_CONF_PARAMETER_NAME = "managerConf";
+//    private static final String CONFERENCE_ID_PARAMETER_NAME = "conferenceId";
+//    private static final String ERROR_ATTRIBUTE_NAME = "error";
+//    private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
+//    private static final String USERS_ATTRIBUTE_NAME = "users";
+//    private static final String MANAGER_CONFERENCE_ATTRIBUTE_NAME = "managerConf";
+//    private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
+//    private static final String NO_PERMISSION_TO_UPDATE_CONFERENCE_MSG = "YouHaveNoPermissionToUpdateAConferenceMSG";
+//    private static final String INVALID_CONFERENCE_TITLE_TEXT_MSG = "ConferenceTitleShouldNotBeEmptyOrContainOnlySpacesMSG";
+//    private static final String INVALID_CONFERENCE_TITLE_TEXT_NOT_UTF8_MSG = "ConferenceTitleShouldContainOnlyLatinLettersMSG";
+//    private static final String INVALID_CONFERENCE_TITLE_TEXT_TOO_LONG_MSG = "ConferenceTitleIsTooLongMSG";
+//    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
+//    private static final CommandResponse CREATE_UPDATE_CONFERENCE_ERROR_RESPONSE_TO_MAIN_PAGE
+//            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+//    public static final String ADMIN_CONSTANT = "ADMIN";
+//
+//    private static final int MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB = 30;
+//
+//    private static final CommandResponse CONFERENCE_UPDATE_SUCCESS_RESPONSE
+//            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+//    private static final CommandResponse CONFERENCE_UPDATE_ERROR_RESPONSE
+//            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/updateConference.jsp");
 
     private final UserService service;
     private final Validator validator;
@@ -80,16 +81,16 @@ public class UpdateConference implements Command {
     @Override
     public CommandResponse execute(CommandRequest request) {
 
-        final String conferenceTitle = request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME);
-        final String managerConf = request.getParameter(MANAGER_CONF_PARAMETER_NAME);
-        final String creatorId = String.valueOf(request.getParameter(CREATOR_ID_PARAMETER_NAME));
-        final String creatorRole = String.valueOf(request.getParameter(CREATOR_ROLE_PARAMETER_NAME));
-        final Long conferenceId = Long.valueOf(request.getParameter(CONFERENCE_ID_PARAMETER_NAME));
+        final String conferenceTitle = request.getParameter(ApplicationConstants.CONFERENCE_TITLE_PARAMETER_NAME);
+        final String managerConf = request.getParameter(ApplicationConstants.MANAGER_CONF_PARAMETER_NAME);
+        final String creatorId = String.valueOf(request.getParameter(ApplicationConstants.CREATOR_ID_PARAMETER_NAME));
+        final String creatorRole = String.valueOf(request.getParameter(ApplicationConstants.CREATOR_ROLE_PARAMETER_NAME));
+        final Long conferenceId = Long.valueOf(request.getParameter(ApplicationConstants.CONFERENCE_ID_PARAMETER_NAME));
 
         final List<User> users = service.findAllUsers();
 
         if (creatorId == null) {
-            return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+            return prepareErrorPageBackToMainPage(request, ApplicationConstants.INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
         }
 
         // validation of the parameters (whether they exist in the system)
@@ -98,17 +99,17 @@ public class UpdateConference implements Command {
                 || !validator.isUserWithNicknameExistInSystem(managerConf)
                 || !validator.isRoleWithSuchNameExistInSystem(creatorRole)
                 || !validator.isUserIdAndUserRoleFromTheSameUser(creatorId, creatorRole)) {
-            return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+            return prepareErrorPageBackToMainPage(request, ApplicationConstants.INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
         }
 
-        if (!creatorRole.equals(ADMIN_CONSTANT)) {
-            return prepareErrorPage(request, NO_PERMISSION_TO_UPDATE_CONFERENCE_MSG);
+        if (!creatorRole.equals(ApplicationConstants.ADMIN_CONSTANT)) {
+            return prepareErrorPage(request, ApplicationConstants.NO_PERMISSION_TO_UPDATE_CONFERENCE_MSG);
         } else if (conferenceTitle == null || conferenceTitle.trim().equals("")) {
-            return prepareErrorPage(request, INVALID_CONFERENCE_TITLE_TEXT_MSG);
+            return prepareErrorPage(request, ApplicationConstants.INVALID_CONFERENCE_TITLE_TEXT_MSG);
         } else if (!validator.isStringValid(conferenceTitle)) {
-            return prepareErrorPage(request, INVALID_CONFERENCE_TITLE_TEXT_NOT_UTF8_MSG);
-        } else if (!validator.isLengthValid(conferenceTitle, MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB)) {
-            return prepareErrorPage(request, INVALID_CONFERENCE_TITLE_TEXT_TOO_LONG_MSG);
+            return prepareErrorPage(request, ApplicationConstants.INVALID_CONFERENCE_TITLE_TEXT_NOT_UTF8_MSG);
+        } else if (!validator.isLengthValid(conferenceTitle, ApplicationConstants.MAX_LENGTH_OF_CONFERENCE_TITLE_IN_DB)) {
+            return prepareErrorPage(request, ApplicationConstants.INVALID_CONFERENCE_TITLE_TEXT_TOO_LONG_MSG);
         }
 
         Long managerId = null;
@@ -148,27 +149,27 @@ public class UpdateConference implements Command {
         }
 
         final List<Conference> conferences = service.findAllConferences();
-        request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
-        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
+        request.setAttribute(ApplicationConstants.CONFERENCES_ATTRIBUTE_NAME, conferences);
+        request.setAttribute(ApplicationConstants.USERS_ATTRIBUTE_NAME, users);
 
-        return CONFERENCE_UPDATE_SUCCESS_RESPONSE;
+        return ApplicationConstants.CONFERENCE_UPDATE_SUCCESS_RESPONSE;
     }
 
     private CommandResponse prepareErrorPage(CommandRequest request, String errorMessage) {
-        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
-        final Long conferenceId = Long.valueOf(request.getParameter(CONFERENCE_ID_PARAMETER_NAME));
+        request.setAttribute(ApplicationConstants.ERROR_ATTRIBUTE_NAME, errorMessage);
+        final Long conferenceId = Long.valueOf(request.getParameter(ApplicationConstants.CONFERENCE_ID_PARAMETER_NAME));
         final List<User> users = service.findAllUsers();
-        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
+        request.setAttribute(ApplicationConstants.USERS_ATTRIBUTE_NAME, users);
         final List<Conference> conferences = service.findAllConferences();
         for (Conference conference: conferences
         ) {
             if (conference.getId().equals(conferenceId)) {
-                request.setAttribute(MANAGER_CONFERENCE_ATTRIBUTE_NAME, conference.getManagerConf());
+                request.setAttribute(ApplicationConstants.MANAGER_CONFERENCE_ATTRIBUTE_NAME, conference.getManagerConf());
             }
         }
-        request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
-        request.setAttribute(CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
-        return CONFERENCE_UPDATE_ERROR_RESPONSE;
+        request.setAttribute(ApplicationConstants.CONFERENCES_ATTRIBUTE_NAME, conferences);
+        request.setAttribute(ApplicationConstants.CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
+        return ApplicationConstants.CONFERENCE_UPDATE_ERROR_RESPONSE;
     }
 
     private boolean isTheManagerOfThisConferenceRemainsManager(Long conferenceId) {
@@ -210,10 +211,10 @@ public class UpdateConference implements Command {
     private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
                                                            String errorMessage) {
         final List<Conference> conferences = service.findAllConferences();
-        request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
+        request.setAttribute(ApplicationConstants.CONFERENCES_ATTRIBUTE_NAME, conferences);
         final List<User> users = service.findAllUsers();
-        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
-        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
-        return CREATE_UPDATE_CONFERENCE_ERROR_RESPONSE_TO_MAIN_PAGE;
+        request.setAttribute(ApplicationConstants.USERS_ATTRIBUTE_NAME, users);
+        request.setAttribute(ApplicationConstants.ERROR_ATTRIBUTE_NAME, errorMessage);
+        return ApplicationConstants.CREATE_UPDATE_CONFERENCE_ERROR_RESPONSE_TO_MAIN_PAGE;
     }
 }

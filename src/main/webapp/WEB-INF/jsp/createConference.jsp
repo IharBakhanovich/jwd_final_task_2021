@@ -30,7 +30,7 @@
             <c:choose>
                 <c:when test="${sessionScope.userRole eq Role.ADMIN}">
                     <p class="error_message"><fmt:message key="label.${requestScope.error}"/></p>
-                    <a href="${pageContext.request.contextPath}/controller?command=show_create_conference"><fmt:message
+                    <a href="${pageContext.request.contextPath}/controller?command=show_create_conference&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}"><fmt:message
                             key="label.try_again"/></a>
                 </c:when>
                 <c:otherwise>

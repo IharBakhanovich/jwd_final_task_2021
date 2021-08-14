@@ -3,6 +3,7 @@ package com.epam.jwd.Conferences.command.action;
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.dto.Conference;
 import com.epam.jwd.Conferences.dto.Role;
 import com.epam.jwd.Conferences.dto.Section;
@@ -15,29 +16,31 @@ import java.util.Optional;
 
 public class UpdateSection implements Command {
 
-    private static final String MANAGER_SECTION_NICKNAME_PARAMETER_NAME = "managerSectNickname";
-    private static final String SECTION_NAME_PARAMETER_NAME = "sectionName";
-    private static final String CONFERENCE_ID_PARAMETER_NAME = "conferenceId";
-    private static final String CONFERENCE_TITLE_PARAMETER_NAME = "conferenceTitle";
-    private static final String SECTION_ID_PARAMETER_NAME = "sectionId";
-    private static final String CONFERENCE_MANAGER_ID_PARAMETER_NAME = "conferenceManagerId";
-
-    private static final String CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME = "conferenceManagerId";
-    private static final String CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME_TO_SECTIONS = "conferenceManager";
-    private static final String ERROR_ATTRIBUTE_NAME = "error";
-    private static final String USERS_ATTRIBUTE_NAME = "users";
-    private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
-    private static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
-    private static final String SECTION_ID_ATTRIBUTE_NAME = "sectionId";
-    private static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
-    private static final String SECTION_MANAGER_ID_ATTRIBUTE_NAME = "sectionManagerId";
-    private static final String SECTIONS_ATTRIBUTE_NAME = "sections";
-    private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
-    private static final String INVALID_SECTION_NAME_MSG = "SectionNameShouldNotBeEmptyMSG";
-    private static final String INVALID_SECTION_NAME_NOT_UTF8_MSG = "SectionNameShouldContainOnlyLatinSignsMSG";
-    private static final String NO_PERMISSION_TO_UPDATE_SECTION_MSG = "YouHaveNoPermissionToUpdateASectionMSG";
-    private static final String INVALID_SECTION_NAME_TOO_LONG_MSG = "SectionNameIsTooLongMSG";
-    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
+//    private static final String MANAGER_SECTION_NICKNAME_PARAMETER_NAME = "managerSectNickname";
+//    private static final String SECTION_NAME_PARAMETER_NAME = "sectionName";
+//    private static final String CONFERENCE_ID_PARAMETER_NAME = "conferenceId";
+//    private static final String CONFERENCE_TITLE_PARAMETER_NAME = "conferenceTitle";
+//    private static final String SECTION_ID_PARAMETER_NAME = "sectionId";
+//    private static final String CONFERENCE_MANAGER_ID_PARAMETER_NAME = "conferenceManagerId";
+//    public static final String CREATOR_ID_PARAMETER_NAME = "creatorId";
+//    public static final String CREATOR_ROLE_PARAMETER_NAME = "creatorRole";
+//
+//    private static final String CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME = "conferenceManagerId";
+//    private static final String CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME_TO_SECTIONS = "conferenceManager";
+//    private static final String ERROR_ATTRIBUTE_NAME = "error";
+//    private static final String USERS_ATTRIBUTE_NAME = "users";
+//    private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
+//    private static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
+//    private static final String SECTION_ID_ATTRIBUTE_NAME = "sectionId";
+//    private static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
+//    private static final String SECTION_MANAGER_ID_ATTRIBUTE_NAME = "sectionManagerId";
+//    private static final String SECTIONS_ATTRIBUTE_NAME = "sections";
+//    private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
+//    private static final String INVALID_SECTION_NAME_MSG = "SectionNameShouldNotBeEmptyMSG";
+//    private static final String INVALID_SECTION_NAME_NOT_UTF8_MSG = "SectionNameShouldContainOnlyLatinSignsMSG";
+//    private static final String NO_PERMISSION_TO_UPDATE_SECTION_MSG = "YouHaveNoPermissionToUpdateASectionMSG";
+//    private static final String INVALID_SECTION_NAME_TOO_LONG_MSG = "SectionNameIsTooLongMSG";
+//    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
 
     private static final CommandResponse SECTION_UPDATE_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/updateSection.jsp");
@@ -80,14 +83,17 @@ public class UpdateSection implements Command {
      */
     @Override
     public CommandResponse execute(CommandRequest request) {
-        final String sectionManagerNickname = request.getParameter(MANAGER_SECTION_NICKNAME_PARAMETER_NAME);
-        final String sectionName = request.getParameter(SECTION_NAME_PARAMETER_NAME);
-        final Long conferenceId = Long.valueOf(request.getParameter(CONFERENCE_ID_PARAMETER_NAME));
-        final String conferenceTitle = String.valueOf(request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME));
-        final Long sectionId = Long.valueOf(request.getParameter(SECTION_ID_PARAMETER_NAME));
-        final String creatorRole = String.valueOf(request.getParameter("creatorRole"));
-        final Long creatorId = Long.valueOf(request.getParameter("creatorId"));
-        final Long conferenceManagerId = Long.valueOf(request.getParameter(CONFERENCE_MANAGER_ID_PARAMETER_NAME));
+        final String sectionManagerNickname
+                = request.getParameter(ApplicationConstants.MANAGER_SECTION_NICKNAME_PARAMETER_NAME);
+        final String sectionName = request.getParameter(ApplicationConstants.SECTION_NAME_PARAMETER_NAME);
+        final Long conferenceId = Long.valueOf(request.getParameter(ApplicationConstants.CONFERENCE_ID_PARAMETER_NAME));
+        final String conferenceTitle
+                = String.valueOf(request.getParameter(ApplicationConstants.CONFERENCE_TITLE_PARAMETER_NAME));
+        final Long sectionId
+                = Long.valueOf(request.getParameter(ApplicationConstants.SECTION_ID_PARAMETER_NAME));
+        final String creatorRole = String.valueOf(request.getParameter(ApplicationConstants.CREATOR_ROLE_PARAMETER_NAME));
+        final Long creatorId = Long.valueOf(request.getParameter(ApplicationConstants.CREATOR_ID_PARAMETER_NAME));
+        final Long conferenceManagerId = Long.valueOf(request.getParameter(ApplicationConstants.CONFERENCE_MANAGER_ID_PARAMETER_NAME));
         Long sectionManagerId = fetchSectionManagerId(sectionManagerNickname);
 
         // validation of the parameters (whether they exist in the request)
@@ -98,17 +104,18 @@ public class UpdateSection implements Command {
                 || !validator.isRoleWithSuchNameExistInSystem(creatorRole)
                 || !validator.isUserWithIdExistInSystem(creatorId)
                 || !validator.isUserWithIdExistInSystem(conferenceManagerId)) {
-            return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+            return prepareErrorPageBackToMainPage(request,
+                    ApplicationConstants.INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
         }
 
         if (!creatorRole.equals("ADMIN") && !creatorId.equals(conferenceManagerId) && !creatorId.equals(sectionManagerId)) {
-            return prepareErrorPage(request, NO_PERMISSION_TO_UPDATE_SECTION_MSG);
+            return prepareErrorPage(request, ApplicationConstants.NO_PERMISSION_TO_UPDATE_SECTION_MSG);
         } else if (sectionName == null || sectionName.trim().equals("")) {
-            return prepareErrorPage(request, INVALID_SECTION_NAME_MSG);
+            return prepareErrorPage(request, ApplicationConstants.INVALID_SECTION_NAME_MSG);
         } else if (!validator.isStringValid(sectionName)) {
-            return prepareErrorPage(request, INVALID_SECTION_NAME_NOT_UTF8_MSG);
-        } else if (!validator.isLengthValid(sectionName, MAX_LENGTH_OF_SECTION_NAME_IN_DB)) {
-            return prepareErrorPage(request, INVALID_SECTION_NAME_TOO_LONG_MSG);
+            return prepareErrorPage(request, ApplicationConstants.INVALID_SECTION_NAME_NOT_UTF8_MSG);
+        } else if (!validator.isLengthValid(sectionName, ApplicationConstants.MAX_LENGTH_OF_SECTION_NAME_IN_DB)) {
+            return prepareErrorPage(request, ApplicationConstants.INVALID_SECTION_NAME_TOO_LONG_MSG);
         }
         Section sectionToUpdate = new Section(sectionId, conferenceId, sectionName, sectionManagerId);
         // to have sections and the status of the former section manager before the section update
@@ -135,15 +142,15 @@ public class UpdateSection implements Command {
         if (!isTheManagerOfThisSectionRemainsManager && currentRoleOfFormerSectionManager != Role.USER) {
             service.updateUserRole(formerManagerOrThisSectionId, Role.USER.getId());
         }
-        request.setAttribute(CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME_TO_SECTIONS, conferenceManagerId);
+        request.setAttribute(ApplicationConstants.CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME_TO_SECTIONS, conferenceManagerId);
         final List<Section> sections = service.findAllSectionsByConferenceID(conferenceId);
-        request.setAttribute(SECTIONS_ATTRIBUTE_NAME, sections);
-        request.setAttribute(CONFERENCE_TITLE_ATTRIBUTE_NAME, conferenceTitle);
-        request.setAttribute(CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
+        request.setAttribute(ApplicationConstants.SECTIONS_ATTRIBUTE_NAME, sections);
+        request.setAttribute(ApplicationConstants.CONFERENCE_TITLE_ATTRIBUTE_NAME, conferenceTitle);
+        request.setAttribute(ApplicationConstants.CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
         final List<User> users = service.findAllUsers();
-        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
+        request.setAttribute(ApplicationConstants.USERS_ATTRIBUTE_NAME, users);
 
-        return SECTION_UPDATE_SUCCESS_RESPONSE;
+        return ApplicationConstants.SECTION_UPDATE_SUCCESS_RESPONSE;
     }
 
     private boolean isTheManagerOfThisSectionRemainsManager(Long sectionId) {
@@ -195,21 +202,24 @@ public class UpdateSection implements Command {
 
     private CommandResponse prepareErrorPage(CommandRequest request, String errorMessage) {
         final List<User> users = service.findAllUsers();
-        final Long conferenceId = Long.valueOf(request.getParameter(CONFERENCE_ID_PARAMETER_NAME));
-        final String conferenceTitle = String.valueOf(request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME));
-        final Long sectionId = Long.valueOf(request.getParameter(SECTION_ID_PARAMETER_NAME));
-        final String sectionName = request.getParameter(SECTION_NAME_PARAMETER_NAME);
-        final String sectionManagerNickname = request.getParameter(MANAGER_SECTION_NICKNAME_PARAMETER_NAME);
+        final Long conferenceId = Long.valueOf(request.getParameter(ApplicationConstants.CONFERENCE_ID_PARAMETER_NAME));
+        final String conferenceTitle
+                = String.valueOf(request.getParameter(ApplicationConstants.CONFERENCE_TITLE_PARAMETER_NAME));
+        final Long sectionId = Long.valueOf(request.getParameter(ApplicationConstants.SECTION_ID_PARAMETER_NAME));
+        final String sectionName = request.getParameter(ApplicationConstants.SECTION_NAME_PARAMETER_NAME);
+        final String sectionManagerNickname
+                = request.getParameter(ApplicationConstants.MANAGER_SECTION_NICKNAME_PARAMETER_NAME);
         Long sectionManagerId = fetchSectionManagerId(sectionManagerNickname);
-        final Long conferenceManagerId = Long.valueOf(request.getParameter(CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME));
-        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
-        request.setAttribute(CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
-        request.setAttribute(CONFERENCE_TITLE_ATTRIBUTE_NAME, conferenceTitle);
-        request.setAttribute(SECTION_ID_ATTRIBUTE_NAME, sectionId);
-        request.setAttribute(SECTION_NAME_ATTRIBUTE_NAME, sectionName);
-        request.setAttribute(SECTION_MANAGER_ID_ATTRIBUTE_NAME, sectionManagerId);
-        request.setAttribute(CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME, conferenceManagerId);
-        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
+        final Long conferenceManagerId
+                = Long.valueOf(request.getParameter(ApplicationConstants.CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME));
+        request.setAttribute(ApplicationConstants.USERS_ATTRIBUTE_NAME, users);
+        request.setAttribute(ApplicationConstants.CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
+        request.setAttribute(ApplicationConstants.CONFERENCE_TITLE_ATTRIBUTE_NAME, conferenceTitle);
+        request.setAttribute(ApplicationConstants.SECTION_ID_ATTRIBUTE_NAME, sectionId);
+        request.setAttribute(ApplicationConstants.SECTION_NAME_ATTRIBUTE_NAME, sectionName);
+        request.setAttribute(ApplicationConstants.SECTION_MANAGER_ID_ATTRIBUTE_NAME, sectionManagerId);
+        request.setAttribute(ApplicationConstants.CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME, conferenceManagerId);
+        request.setAttribute(ApplicationConstants.ERROR_ATTRIBUTE_NAME, errorMessage);
 //        final Long conferenceId = Long.valueOf(request.getParameter(CONFERENCE_ID_PARAMETER_NAME));
 //        final List<User> users = service.findAllUsers();
 //        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
@@ -222,16 +232,16 @@ public class UpdateSection implements Command {
 //        }
 //        request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
 //        request.setAttribute(CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
-        return SECTION_UPDATE_ERROR_RESPONSE;
+        return ApplicationConstants.SECTION_UPDATE_ERROR_RESPONSE;
     }
 
     private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
                                                            String errorMessage) {
         final List<Conference> conferences = service.findAllConferences();
-        request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
+        request.setAttribute(ApplicationConstants.CONFERENCES_ATTRIBUTE_NAME, conferences);
         final List<User> users = service.findAllUsers();
-        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
-        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
-        return UPDATE_SECTION_ERROR_RESPONSE_TO_MAIN_PAGE;
+        request.setAttribute(ApplicationConstants.USERS_ATTRIBUTE_NAME, users);
+        request.setAttribute(ApplicationConstants.ERROR_ATTRIBUTE_NAME, errorMessage);
+        return ApplicationConstants.UPDATE_SECTION_ERROR_RESPONSE_TO_MAIN_PAGE;
     }
 }

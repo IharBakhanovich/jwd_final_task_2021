@@ -28,7 +28,7 @@
         <c:choose>
             <c:when test="${not empty requestScope.error}">
                 <p class="error_message"><fmt:message key="label.${requestScope.error}"/></p>
-                <a href="${pageContext.request.contextPath}/controller?command=show_report&id=${requestScope.report.get().id}"><fmt:message
+                <a href="${pageContext.request.contextPath}/controller?command=show_report&id=${requestScope.report.get().id}&managerRole=${sessionScope.userRole}&managerId=${sessionScope.userId}"><fmt:message
                         key="label.try_again"/></a>
             </c:when>
             <c:otherwise>

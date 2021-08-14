@@ -74,7 +74,7 @@ public class ShowUpdateSectionPage implements Command {
                 || !validator.isConferenceWithSuchTitleExistInSystem(conferenceTitle)
                 || !validator.isConferenceTitleAndIdFromTheSameConference(Long.valueOf(conferenceId), conferenceTitle)
                 || !validator.isSectionExistInSystem(sectionId)
-                || !validator.isUserWithIdExistInSystem(Long.valueOf(conferenceId))) {
+                || !validator.isUserWithIdExistInSystem(Long.valueOf(conferenceManagerId))) {
             return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
         }
 
