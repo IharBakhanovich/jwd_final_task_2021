@@ -1,5 +1,6 @@
 package com.epam.jwd.Conferences.listener;
 
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.exception.CouldNotInitializeConnectionPoolException;
 import com.epam.jwd.Conferences.pool.AppConnectionPool;
 import com.epam.jwd.Conferences.pool.ConnectionPool;
@@ -26,7 +27,7 @@ public class ApplicationLifecycleListener implements ServletContextListener {
 
     private final UserService userService;
 
-    private static final Logger logger = LogManager.getLogger(ApplicationLifecycleListener.class);
+    private static final Logger logger = ApplicationConstants.LOGGER_FOR_APPLICATION_LIFECYCLE_LISTENER; //LogManager.getLogger(ApplicationLifecycleListener.class);
     private static final String CONFIGPATH = "/config/logger.properties";
 
     public ApplicationLifecycleListener() {
@@ -51,15 +52,6 @@ public class ApplicationLifecycleListener implements ServletContextListener {
             logger.error("AppConnectionPool was not initialised");
             logger.error(e.getStackTrace());
         }
-
-//        //to delete at the end
-//        userService.create(new User("Alice", "Alice"));
-//        userService.create(new User("Bob", "Bob"));
-//        userService.create(new User("Martin", "Martin"));
-//        userService.create(new User("Kate", "Kate"));
-//        userService.create(new User("Lynn", "Lynn"));
-//        userService.create(new User("Robert", "Robert"));
-//        userService.create(new User("admin", "password", Role.ADMIN));
     }
 
     /**
@@ -69,7 +61,5 @@ public class ApplicationLifecycleListener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent sce) {
         logger.info("Shutting down Connection Pool...");
         AppConnectionPool.getInstance().destroy();
-
-        //userService.clean(); // to delete at the end
     }
 }

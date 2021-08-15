@@ -1,5 +1,6 @@
 package com.epam.jwd.Conferences.validator;
 
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.dao.DAOFactory;
 import com.epam.jwd.Conferences.dto.*;
 import com.epam.jwd.Conferences.service.AppSectionService;
@@ -17,10 +18,10 @@ import java.util.regex.Pattern;
  */
 public class AppValidator implements Validator {
 
-    private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}$";
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
-    private static final String EMAIL_REGEX = "^(.+)@(.+)$";
-    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
+//    private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}$";
+//    private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
+//    private static final String EMAIL_REGEX = "^(.+)@(.+)$";
+//    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     private final UserService service;
 
@@ -69,7 +70,7 @@ public class AppValidator implements Validator {
     public boolean isPasswordComplex(String passwordToCheck) {
         String password = null;
         password = passwordToCheck.trim();
-        Matcher matcher = PASSWORD_PATTERN.matcher(password);
+        Matcher matcher = ApplicationConstants.PASSWORD_PATTERN.matcher(password);
         return matcher.matches();
     }
 
@@ -94,7 +95,7 @@ public class AppValidator implements Validator {
     @Override
     public boolean isEmailValid(String emailToValidate) {
         String eMail = emailToValidate.trim();
-        Matcher matcher = EMAIL_PATTERN.matcher(eMail);
+        Matcher matcher = ApplicationConstants.EMAIL_PATTERN.matcher(eMail);
         return matcher.matches();
     }
 

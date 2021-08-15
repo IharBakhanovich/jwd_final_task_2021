@@ -1,5 +1,6 @@
 package com.epam.jwd.Conferences.dao;
 
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.dto.Section;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +16,7 @@ import java.util.Optional;
  */
 public class DBSectionDAO extends CommonDAO<Section> implements SectionDAO {
 
-    private static final Logger logger = LogManager.getLogger(DBSectionDAO.class);
+    private static final Logger logger = ApplicationConstants.LOGGER_FOR_DB_SECTION_DAO; //LogManager.getLogger(DBSectionDAO.class);
 
     private static final String ID_COLUMN = "id";
     private static final String CONFERENCE_ID_COLUMN = "conferenceId";
@@ -31,14 +32,17 @@ public class DBSectionDAO extends CommonDAO<Section> implements SectionDAO {
 
 
     protected DBSectionDAO(String tableName) {
-        super(tableName, SECTION_TABLE_COLUMN_NAMES);
-        findByTitleSql = String.format(SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_SECTION_DAO, TABLE_NAME_SECTIONS, SECTION_NAME_COLUMN);
-        findAllSectionsByConferenceIdSql = String.format(SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_SECTION_DAO, TABLE_NAME_SECTIONS, CONFERENCE_ID_COLUMN);
+        super(tableName, ApplicationConstants.SECTION_TABLE_COLUMN_NAMES);
+        findByTitleSql = String.format(ApplicationConstants.SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_SECTION_DAO,
+                ApplicationConstants.TABLE_NAME_SECTIONS, ApplicationConstants.SECTION_NAME_COLUMN);
+        findAllSectionsByConferenceIdSql
+                = String.format(ApplicationConstants.SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_SECTION_DAO,
+                ApplicationConstants.TABLE_NAME_SECTIONS, ApplicationConstants.CONFERENCE_ID_COLUMN);
     }
 
     private static class DBSectionDAOHolder {
         private final static DBSectionDAO instance
-                = new DBSectionDAO(TABLE_NAME_SECTIONS);
+                = new DBSectionDAO(ApplicationConstants.TABLE_NAME_SECTIONS);
     }
 
     /**
@@ -52,10 +56,10 @@ public class DBSectionDAO extends CommonDAO<Section> implements SectionDAO {
 
     @Override
     protected Section mapResultSet(ResultSet resultSet) throws SQLException {
-        return new Section(resultSet.getLong(ID_COLUMN),
-                resultSet.getLong(CONFERENCE_ID_COLUMN),
-                resultSet.getString(SECTION_NAME_COLUMN),
-                resultSet.getLong(MANAGER_SECT_COLUMN));
+        return new Section(resultSet.getLong(ApplicationConstants.ID_COLUMN),
+                resultSet.getLong(ApplicationConstants.CONFERENCE_ID_COLUMN),
+                resultSet.getString(ApplicationConstants.SECTION_NAME_COLUMN),
+                resultSet.getLong(ApplicationConstants.MANAGER_SECT_COLUMN));
     }
 
     @Override
@@ -74,14 +78,14 @@ public class DBSectionDAO extends CommonDAO<Section> implements SectionDAO {
         return "update "
                 + getTableName()
                 + " set "
-                + CONFERENCE_ID_COLUMN
+                + ApplicationConstants.CONFERENCE_ID_COLUMN
                 + " = ?, "
-                + SECTION_NAME_COLUMN
+                + ApplicationConstants.SECTION_NAME_COLUMN
                 + " = ?, "
-                + MANAGER_SECT_COLUMN
+                + ApplicationConstants.MANAGER_SECT_COLUMN
                 + " = ?"
                 + " where "
-                + ID_COLUMN
+                + ApplicationConstants.ID_COLUMN
                 + " = ?";
     }
 

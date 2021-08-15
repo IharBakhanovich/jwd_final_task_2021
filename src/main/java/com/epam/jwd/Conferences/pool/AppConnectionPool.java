@@ -1,5 +1,6 @@
 package com.epam.jwd.Conferences.pool;
 
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.exception.CouldNotInitializeConnectionPoolException;
 import com.epam.jwd.Conferences.exception.DatabaseException;
 import com.epam.jwd.Conferences.system.Configuration;
@@ -22,13 +23,28 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class AppConnectionPool implements ConnectionPool {
 
-    private static final Logger logger = LogManager.getLogger(AppConnectionPool.class);
-    public static final String DB_MYSQL_PATH = "jdbc:mysql://";
-    public static final String SUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE = "ConnectionPool was successfully initialized. Amount of available connections: ";
-    private final String UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE = "DB read unsuccessfully. ConnectionPool was NOT initialized";
-
-    private static final int INIT_CONNECTIONS_AMOUNT = 8;
-    private static final int CONNECTIONS_GROW_FACTOR = 4;
+    private static final Logger logger = ApplicationConstants.LOGGER_FOR_APP_CONNECTION_POOL; //LogManager.getLogger(AppConnectionPool.class);
+//    public static final String DB_MYSQL_PATH = "jdbc:mysql://";
+//    public static final String SUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE = "ConnectionPool was successfully initialized. Amount of available connections: ";
+//    public static final String DB_MAX_CONNECTIONS_PROPERTY = "DB_MAX_CONNECTIONS";
+//    public static final String DB_SERVER_PROPERTY = "DB_SERVER";
+//    public static final String DB_PORT_PROPERTY = "DB_PORT";
+//    public static final String DB_NAME_PROPERTY = "DB_NAME";
+//    public static final String DB_USER_PROPERTY = "DB_USER";
+//    public static final String DB_PASSWORD_PROPERTY = "DB_PASSWORD";
+//    public static final String FAILED_TO_OPEN_CONNECTION_MESSAGE = "failed to open connection";
+//    public static final String SQL_DRIVERS_REGISTRATION_START_MESSAGE = "sql drivers registration start...";
+//    public static final String REGISTRATION_SUCCESSFUL_MESSAGE = "registration successful";
+//    public static final String REGISTRATION_UNSUCCESSFUL_MESSAGE = "registration unsuccessful";
+//    public static final String DRIVER_REGISTRATION_FAILED_MESSAGE = "driver registration failed";
+//    public static final String DURING_CROWING_CONNECTION_POOL_MESSAGE = " during crowing connectionPool";
+//    public static final String OPENING_DATABASE_CONNECTION_MESSAGE = "Opening Database Connection...";
+//    public static final String SQL_DRIVERS_UNREGISTERING_START_MESSAGE = "sql drivers unregistering start...";
+//    public static final String UNREGISTERING_DRIVERS_FAILED_MESSAGE = "unregistering drivers failed";
+//    private final String UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE = "DB read unsuccessfully. ConnectionPool was NOT initialized";
+//
+//    private static final int INIT_CONNECTIONS_AMOUNT = 8;
+//    private static final int CONNECTIONS_GROW_FACTOR = 4;
 
     private final int MAX_CONNECTIONS_AMOUNT;
     private final String DB_SERVER;
@@ -49,13 +65,13 @@ public class AppConnectionPool implements ConnectionPool {
         configuration.loadConfig(Configuration.getFilepath());
         Properties properties = configuration.getConfig();
 
-        MAX_CONNECTIONS_AMOUNT = Integer.parseInt(properties.getProperty("DB_MAX_CONNECTIONS"));
-        DB_SERVER = properties.getProperty("DB_SERVER");
-        DB_PORT = properties.getProperty("DB_PORT");
-        DB_NAME = properties.getProperty("DB_NAME");
-        DB_USER = properties.getProperty("DB_USER");
-        DB_PASSWORD = properties.getProperty("DB_PASSWORD");
-        DB_PATH = DB_MYSQL_PATH + DB_SERVER + ":" + DB_PORT + "/" + DB_NAME;
+        MAX_CONNECTIONS_AMOUNT = Integer.parseInt(properties.getProperty(ApplicationConstants.DB_MAX_CONNECTIONS_PROPERTY));
+        DB_SERVER = properties.getProperty(ApplicationConstants.DB_SERVER_PROPERTY);
+        DB_PORT = properties.getProperty(ApplicationConstants.DB_PORT_PROPERTY);
+        DB_NAME = properties.getProperty(ApplicationConstants.DB_NAME_PROPERTY);
+        DB_USER = properties.getProperty(ApplicationConstants.DB_USER_PROPERTY);
+        DB_PASSWORD = properties.getProperty(ApplicationConstants.DB_PASSWORD_PROPERTY);
+        DB_PATH = ApplicationConstants.DB_MYSQL_PATH + DB_SERVER + ":" + DB_PORT + "/" + DB_NAME;
 
         initialized = new AtomicBoolean(false);
         availableConnections = new ArrayBlockingQueue<>(MAX_CONNECTIONS_AMOUNT);
@@ -87,19 +103,18 @@ public class AppConnectionPool implements ConnectionPool {
             if (initialized.compareAndSet(false, true)) {
                 registerDrivers();
                 try {
-                    for (int i = 0; i < INIT_CONNECTIONS_AMOUNT; i++) {
+                    for (int i = 0; i < ApplicationConstants.INIT_CONNECTIONS_AMOUNT; i++) {
                         final Connection connection = DriverManager.getConnection(DB_PATH, DB_USER, DB_PASSWORD);
                         final ProxyConnection proxyConnection = new ProxyConnection(connection);
                         availableConnections.add(proxyConnection);
-                        logger.info(SUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE + availableConnections.size());
-                        //initialize connection
+                        logger.info(ApplicationConstants.SUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE + availableConnections.size());
                     }
                 } catch (SQLException e) {
-                    logger.error(UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE);
+                    logger.error(ApplicationConstants.UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE);
                     initialized.set(false);
-                    throw new CouldNotInitializeConnectionPoolException("failed to open connection", e);
+                    throw new CouldNotInitializeConnectionPoolException(ApplicationConstants.FAILED_TO_OPEN_CONNECTION_MESSAGE, e);
                 }
-                connectionsOpened.set(INIT_CONNECTIONS_AMOUNT);
+                connectionsOpened.set(ApplicationConstants.INIT_CONNECTIONS_AMOUNT);
             }
         } finally {
             lock.unlock();
@@ -107,15 +122,15 @@ public class AppConnectionPool implements ConnectionPool {
     }
 
     private void registerDrivers() throws CouldNotInitializeConnectionPoolException {
-        logger.info("sql drivers registration start...");
+        logger.info(ApplicationConstants.SQL_DRIVERS_REGISTRATION_START_MESSAGE);
         try {
             //jdbc:mysql://localhost:3306/conferences
             DriverManager.registerDriver(DriverManager.getDriver(DB_PATH));
-            logger.info("registration successful");
+            logger.info(ApplicationConstants.REGISTRATION_SUCCESSFUL_MESSAGE);
         } catch (SQLException e) {
-            logger.info("registration unsuccessful");
+            logger.info(ApplicationConstants.REGISTRATION_UNSUCCESSFUL_MESSAGE);
             initialized.set(false); // in this case next thread sees false and initialized pool again
-            throw new CouldNotInitializeConnectionPoolException("driver registration failed", e);
+            throw new CouldNotInitializeConnectionPoolException(ApplicationConstants.DRIVER_REGISTRATION_FAILED_MESSAGE, e);
         }
     }
 
@@ -158,16 +173,18 @@ public class AppConnectionPool implements ConnectionPool {
                     && currentOpenedConnections < MAX_CONNECTIONS_AMOUNT) {
                 if (MAX_CONNECTIONS_AMOUNT - currentOpenedConnections <= 4) {
                     try {
-                        addConnections(currentOpenedConnections, CONNECTIONS_GROW_FACTOR);
+                        addConnections(currentOpenedConnections, ApplicationConstants.CONNECTIONS_GROW_FACTOR);
                     } catch (SQLException e) {
-                        logger.error(UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE + " during crowing connectionPool");
+                        logger.error(ApplicationConstants.UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE
+                                + ApplicationConstants.DURING_CROWING_CONNECTION_POOL_MESSAGE);
                     }
                 } else {
                     int amountConnectionsToCreate = MAX_CONNECTIONS_AMOUNT - currentOpenedConnections;
                     try {
                         addConnections(currentOpenedConnections, amountConnectionsToCreate);
                     } catch (SQLException e) {
-                        logger.error(UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE + " during crowing connectionPool");
+                        logger.error(ApplicationConstants.UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE
+                                + ApplicationConstants.DURING_CROWING_CONNECTION_POOL_MESSAGE);
                     }
                 }
             }
@@ -181,7 +198,7 @@ public class AppConnectionPool implements ConnectionPool {
     private void addConnections(int currentOpenedConnections, int amountConnectionsToCreate) throws SQLException {
         int amountOpenedConnections = currentOpenedConnections;
         for (int i = 0; i < amountConnectionsToCreate; i++) {
-            logger.info("Opening Database Connection...");
+            logger.info(ApplicationConstants.OPENING_DATABASE_CONNECTION_MESSAGE);
             try {
                 final Connection addedConnection = DriverManager.getConnection(DB_PATH, DB_USER, DB_PASSWORD);
                 final ProxyConnection proxyConnection = new ProxyConnection(addedConnection);
@@ -253,13 +270,13 @@ public class AppConnectionPool implements ConnectionPool {
     }
 
     private void deregisterDrivers() {
-        logger.info("sql drivers unregistering start...");
+        logger.info(ApplicationConstants.SQL_DRIVERS_UNREGISTERING_START_MESSAGE);
         final Enumeration<Driver> drivers = DriverManager.getDrivers();
         while (drivers.hasMoreElements()) {
             try {
                 DriverManager.deregisterDriver(drivers.nextElement());
             } catch (SQLException e) {
-                logger.error("unregistering drivers failed");
+                logger.error(ApplicationConstants.UNREGISTERING_DRIVERS_FAILED_MESSAGE);
             }
         }
     }

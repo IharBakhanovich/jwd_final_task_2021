@@ -1,5 +1,6 @@
 package com.epam.jwd.Conferences.system;
 
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.exception.ConfigNotFoundException;
 import com.epam.jwd.Conferences.pool.AppConnectionPool;
 import org.apache.logging.log4j.LogManager;
@@ -19,9 +20,13 @@ import java.util.Properties;
  */
 public class Configuration {
 
-    private static final Logger logger = LogManager.getLogger(Configuration.class);
-    private static final String FILEPATH
-            = "C:\\Studium\\EPAM\\FinalTask_WebProject\\src\\main\\resources\\application.properties";
+    private static final Logger logger = ApplicationConstants.LOGGER_FOR_CONFIGURATION; //LogManager.getLogger(Configuration.class);
+//    private static final String FILEPATH
+//            = "C:\\Studium\\EPAM\\FinalTask_WebProject\\src\\main\\resources\\application.properties";
+//    public static final String SUCESSFULLY_READ_CONFIG_MESSAGE = "Sucessfully read config.";
+//    public static final String CONFIG_FILE_COULD_NOT_BE_FOUND_MESSAGE = "Config file could not be found.";
+//    public static final String CONFIG_FILE_COULD_NOT_BE_LOADED_MESSAGE = "Config file could not be loaded.";
+//    public static final String CONFIG_FILE_WAS_NOT_FOUND_MESSAGE = "Config file was not found";
 
     private Properties config = new Properties();
 
@@ -62,12 +67,12 @@ public class Configuration {
             config = new Properties();
             inputStream = new FileInputStream(filepath);
             config.load(inputStream);
-            logger.info("Sucessfully read config.");
+            logger.info(ApplicationConstants.SUCESSFULLY_READ_CONFIG_MESSAGE);
         } catch (FileNotFoundException e1) {
-            logger.error("Config file could not be found.");
-            throw new ConfigNotFoundException("");
+            logger.error(ApplicationConstants.CONFIG_FILE_COULD_NOT_BE_FOUND_MESSAGE);
+            throw new ConfigNotFoundException(ApplicationConstants.CONFIG_FILE_WAS_NOT_FOUND_MESSAGE);
         } catch (IOException e2) {
-            logger.error("Config file could not be loaded.");
+            logger.error(ApplicationConstants.CONFIG_FILE_COULD_NOT_BE_LOADED_MESSAGE);
             throw new ConfigNotFoundException("");
         }
         return true;
@@ -79,6 +84,6 @@ public class Configuration {
      * @return the FILEPATH for the config
      */
     public static String getFilepath() {
-        return FILEPATH;
+        return ApplicationConstants.FILEPATH;
     }
 }

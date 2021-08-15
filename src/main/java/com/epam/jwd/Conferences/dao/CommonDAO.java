@@ -1,5 +1,6 @@
 package com.epam.jwd.Conferences.dao;
 
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.dto.DatabaseEntity;
 import com.epam.jwd.Conferences.exception.DatabaseException;
 import com.epam.jwd.Conferences.exception.DuplicateException;
@@ -20,9 +21,9 @@ public abstract class CommonDAO<T extends DatabaseEntity<Long>> implements DAO<T
 
     private static final Logger logger = LogManager.getLogger(CommonDAO.class);
 
-    private static final String FIND_ALL_SQL_TEMPLATE = "select * from %s";
-    private static final String FIND_BY_ID_SQL_TEMPLATE = "select * from %s where id = ?";
-    private static final String DELETE_ENTITY_BY_ID_SQL_TEMPLATE = "delete from %s where id = ?";
+//    private static final String FIND_ALL_SQL_TEMPLATE = "select * from %s";
+//    private static final String FIND_BY_ID_SQL_TEMPLATE = "select * from %s where id = ?";
+//    private static final String DELETE_ENTITY_BY_ID_SQL_TEMPLATE = "delete from %s where id = ?";
 
     private final String tableName;
     private final String[] tableColumns;
@@ -35,10 +36,10 @@ public abstract class CommonDAO<T extends DatabaseEntity<Long>> implements DAO<T
     protected CommonDAO(String tableName, String[] tableColumns) {
         this.tableName = tableName;
         this.tableColumns = tableColumns;
-        this.findAllSql = String.format(FIND_ALL_SQL_TEMPLATE, tableName);
-        this.findByIdSql = String.format(FIND_BY_ID_SQL_TEMPLATE, tableName);
+        this.findAllSql = String.format(ApplicationConstants.FIND_ALL_SQL_TEMPLATE, tableName);
+        this.findByIdSql = String.format(ApplicationConstants.FIND_BY_ID_SQL_TEMPLATE, tableName);
         this.saveEntitySql = getSaveEntitySqlByTableNameAndTableColumnNames(tableName, tableColumns);
-        this.deleteEntitySql = String.format(DELETE_ENTITY_BY_ID_SQL_TEMPLATE, tableName);
+        this.deleteEntitySql = String.format(ApplicationConstants.DELETE_ENTITY_BY_ID_SQL_TEMPLATE, tableName);
         this.updateEntitySql = getUpdateEntitySql();
     }
 

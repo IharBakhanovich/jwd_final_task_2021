@@ -12,15 +12,16 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 
-import static com.epam.jwd.Conferences.controller.ApplicationController.COMMAND_PARAM_NAME;
+//import static com.epam.jwd.Conferences.controller.ApplicationController.COMMAND_PARAM_NAME;
 import static com.epam.jwd.Conferences.dto.Role.UNAUTHORIZED;
 
 // ранее фильтры необходимо было конфигурить через web.xml, тэгом filter,
 // внутри которого задавать имя и т.д. Начиная с сервлетов 3-й версии, можно делать это с помощью аннотаций
 @WebFilter(urlPatterns = "/*")
 public class PermissionFilter implements Filter {
-    private static final String USER_ROLE_SESSION_ATTRIBUTE = "userRole";
-    private static final String ERROR_REDIRECT_LOCATION = "/controller?command=main_page";
+//    private static final String USER_ROLE_SESSION_ATTRIBUTE = "userRole";
+//    private static final String ERROR_REDIRECT_LOCATION = "/controller?command=main_page";
+
     //будем хранить мапу енам, где ключи это енамы (Role), а в качестве значения команда, которую можно выполнить
     private final Map<Role, Set<AppCommand>> commandsByRoles;
 
@@ -86,14 +87,14 @@ public class PermissionFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             // появляется error.jsp и здесь мы должны на эту страницу перейти
-            ((HttpServletResponse) servletResponse).sendRedirect(ERROR_REDIRECT_LOCATION); //тут заменил command=error на command=main_page, чтобы сбрасывать всех у кого не хватает прав на главную страницу
+            ((HttpServletResponse) servletResponse).sendRedirect(ApplicationConstants.ERROR_REDIRECT_LOCATION); //тут заменил command=error на command=main_page, чтобы сбрасывать всех у кого не хватает прав на главную страницу
             // после error можно &errorCode=403, а в ShowErrorPage в методе execute позаполнять эти поля
         }
     }
 
     private Role extractRoleFromSession(HttpSession session) {
-        return session != null && session.getAttribute(USER_ROLE_SESSION_ATTRIBUTE) != null
-                ? (Role) session.getAttribute(USER_ROLE_SESSION_ATTRIBUTE)
+        return session != null && session.getAttribute(ApplicationConstants.USER_ROLE_SESSION_ATTRIBUTE) != null
+                ? (Role) session.getAttribute(ApplicationConstants.USER_ROLE_SESSION_ATTRIBUTE)
                 : UNAUTHORIZED;
     }
 }

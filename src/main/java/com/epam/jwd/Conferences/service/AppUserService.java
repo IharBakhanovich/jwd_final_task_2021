@@ -1,6 +1,7 @@
 package com.epam.jwd.Conferences.service;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.dao.*;
 import com.epam.jwd.Conferences.dto.*;
 import com.epam.jwd.Conferences.exception.DuplicateException;
@@ -18,7 +19,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 public class AppUserService implements UserService {
 
-    private static final String NOT_FOUND_MESSAGE = "User with such a login does no exist. Login: %s";
+//    private static final String NOT_FOUND_MESSAGE = "User with such a login does no exist. Login: %s";
 
     private final UserDAO userDAO;
     private final ConferenceDAO conferenceDAO;
@@ -102,7 +103,7 @@ public class AppUserService implements UserService {
     @Override
     public User findByLogin(String login) {
         return userDAO.findUserByNickname(login)
-                .orElseThrow(() -> new EntityNotFoundException(String.format(NOT_FOUND_MESSAGE, login)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ApplicationConstants.NOT_FOUND_MESSAGE, login)));
     }
 
     @Override

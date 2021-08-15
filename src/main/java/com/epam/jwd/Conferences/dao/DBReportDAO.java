@@ -1,5 +1,6 @@
 package com.epam.jwd.Conferences.dao;
 
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.dto.Report;
 import com.epam.jwd.Conferences.dto.ReportType;
 import org.apache.logging.log4j.LogManager;
@@ -16,31 +17,36 @@ import java.util.Optional;
  */
 public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
 
-    private static final Logger logger = LogManager.getLogger(DBSectionDAO.class);
+    private static final Logger logger = ApplicationConstants.LOGGER_FOR_DB_REPORT_DAO; //LogManager.getLogger(DBSectionDAO.class);
 
-    private static final String ID_COLUMN = "id";
-    private static final String SECTION_ID_COLUMN = "sectionId";
-    private static final String CONFERENCE_ID_COLUMN = "conferenceId";
-    private static final String REPORT_TEXT_COLUMN = "reportText";
-    private static final String REPORT_TYPE_COLUMN = "reportType";
-    private static final String APPLICANT_COLUMN = "applicant";
-    private static final String TABLE_NAME_REPORTS = "reports";
-    private static final String QUESTION_REPORT_ID_COLUMN = "questionReportId";
-    private static final String[] REPORT_TABLE_COLUMN_NAMES
-            = {ID_COLUMN, SECTION_ID_COLUMN, CONFERENCE_ID_COLUMN,
-            REPORT_TEXT_COLUMN, REPORT_TYPE_COLUMN, APPLICANT_COLUMN, QUESTION_REPORT_ID_COLUMN};
-    public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_REPORT_DAO_SQL
-            = "select * from %s where %s = ?";
-    public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_ONE_AND_COLUMN_TWO_FOR_DB_REPORT_DAO_SQL
-            = "select * from %s where %s = ? and %s = ?";
-    public static final String SELECT_ALL_QUESTION_BY_MANAGER_ID_SQL
-            = "select %s.* from %s, %s where %s.%s = 1 and %s.%s = %s.%s and %s.%s = ?";
-    public static final String SELECT_ALL_APPLICATIONS_BY_MANAGER_ID_SQL
-            = "select %s.* from %s, %s where %s.%s = 2 and %s.%s = %s.%s and %s.%s = ?";
-    public static final String SELECT_ALL_QUESTION_BY_APPLICANT_ID_SQL
-            = "select * from %s where %s = 1 and %s = ?";
-    public static final String SELECT_ALL_APPLICATIONS_BY_APPLICANT_ID_SQL
-            = "select * from %s where %s = 2 and %s = ?";
+//    private static final String ID_COLUMN = "id";
+//    private static final String SECTION_ID_COLUMN = "sectionId";
+//    private static final String CONFERENCE_ID_COLUMN = "conferenceId";
+//    private static final String REPORT_TEXT_COLUMN = "reportText";
+//    private static final String REPORT_TYPE_COLUMN = "reportType";
+//    private static final String APPLICANT_COLUMN = "applicant";
+//    private static final String TABLE_NAME_REPORTS = "reports";
+//    private static final String QUESTION_REPORT_ID_COLUMN = "questionReportId";
+//    private static final String[] REPORT_TABLE_COLUMN_NAMES
+//            = {ApplicationConstants.ID_COLUMN, ApplicationConstants.SECTION_ID_COLUMN,
+//            ApplicationConstants.CONFERENCE_ID_COLUMN, ApplicationConstants.REPORT_TEXT_COLUMN,
+//            ApplicationConstants.REPORT_TYPE_COLUMN, ApplicationConstants.APPLICANT_COLUMN,
+//            ApplicationConstants.QUESTION_REPORT_ID_COLUMN};
+//    public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_REPORT_DAO_SQL
+//            = "select * from %s where %s = ?";
+//    public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_ONE_AND_COLUMN_TWO_FOR_DB_REPORT_DAO_SQL
+//            = "select * from %s where %s = ? and %s = ?";
+//    public static final String SELECT_ALL_QUESTION_BY_MANAGER_ID_SQL
+//            = "select %s.* from %s, %s where %s.%s = 1 and %s.%s = %s.%s and %s.%s = ?";
+//    public static final String SELECT_ALL_APPLICATIONS_BY_MANAGER_ID_SQL
+//            = "select %s.* from %s, %s where %s.%s = 2 and %s.%s = %s.%s and %s.%s = ?";
+//    public static final String SELECT_ALL_QUESTION_BY_APPLICANT_ID_SQL
+//            = "select * from %s where %s = 1 and %s = ?";
+//    public static final String SELECT_ALL_APPLICATIONS_BY_APPLICANT_ID_SQL
+//            = "select * from %s where %s = 2 and %s = ?";
+//
+//    private static final String MANAGER_SECT_COLUMN = "managerSect";
+//    private static final String TABLE_NAME_SECTIONS = "sections";
 
     private final String findReportByApplicantIdSql;
     private final String findAllReportsByConferenceIdAndSectionIdSql;
@@ -50,33 +56,44 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
     private final String findAllApplicationsByManagerIdSql;
     private final String findAllApplicationsByApplicantIdSql;
 
-    private static final String MANAGER_SECT_COLUMN = "managerSect";
-    private static final String TABLE_NAME_SECTIONS = "sections";
-
     protected DBReportDAO(String tableName) {
-        super(tableName, REPORT_TABLE_COLUMN_NAMES);
-        findReportByApplicantIdSql = String.format(SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_REPORT_DAO_SQL,
-                TABLE_NAME_REPORTS, APPLICANT_COLUMN);
+        super(tableName, ApplicationConstants.REPORT_TABLE_COLUMN_NAMES);
+        findReportByApplicantIdSql = String.format(ApplicationConstants.SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_REPORT_DAO_SQL,
+                ApplicationConstants.TABLE_NAME_REPORTS, ApplicationConstants.APPLICANT_COLUMN);
         findAllReportsByConferenceIdAndSectionIdSql = String.format(
-                SELECT_ALL_FROM_TABLE_BY_COLUMN_ONE_AND_COLUMN_TWO_FOR_DB_REPORT_DAO_SQL,
-                TABLE_NAME_REPORTS, SECTION_ID_COLUMN, CONFERENCE_ID_COLUMN);
-        findAllQuestionsByManagerIdSql = String.format(SELECT_ALL_QUESTION_BY_MANAGER_ID_SQL, TABLE_NAME_REPORTS,
-                TABLE_NAME_REPORTS, TABLE_NAME_SECTIONS, TABLE_NAME_REPORTS, REPORT_TYPE_COLUMN, TABLE_NAME_REPORTS,
-                SECTION_ID_COLUMN, TABLE_NAME_SECTIONS, ID_COLUMN, TABLE_NAME_SECTIONS, MANAGER_SECT_COLUMN);
-        findAllReportsByQuestionReportIdSql = String.format(SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_REPORT_DAO_SQL,
-                TABLE_NAME_REPORTS, QUESTION_REPORT_ID_COLUMN);
-        findAllQuestionsByApplicantIdSql = String.format(SELECT_ALL_QUESTION_BY_APPLICANT_ID_SQL,
-                TABLE_NAME_REPORTS, REPORT_TYPE_COLUMN, APPLICANT_COLUMN);
-        findAllApplicationsByApplicantIdSql = String.format(SELECT_ALL_APPLICATIONS_BY_APPLICANT_ID_SQL,
-                TABLE_NAME_REPORTS, REPORT_TYPE_COLUMN, APPLICANT_COLUMN);
-        findAllApplicationsByManagerIdSql = String.format(SELECT_ALL_APPLICATIONS_BY_MANAGER_ID_SQL, TABLE_NAME_REPORTS,
-                TABLE_NAME_REPORTS, TABLE_NAME_SECTIONS, TABLE_NAME_REPORTS, REPORT_TYPE_COLUMN, TABLE_NAME_REPORTS,
-                SECTION_ID_COLUMN, TABLE_NAME_SECTIONS, ID_COLUMN, TABLE_NAME_SECTIONS, MANAGER_SECT_COLUMN);
+                ApplicationConstants.SELECT_ALL_FROM_TABLE_BY_COLUMN_ONE_AND_COLUMN_TWO_FOR_DB_REPORT_DAO_SQL,
+                ApplicationConstants.TABLE_NAME_REPORTS,
+                ApplicationConstants.SECTION_ID_COLUMN,
+                ApplicationConstants.CONFERENCE_ID_COLUMN);
+        findAllQuestionsByManagerIdSql = String.format(ApplicationConstants.SELECT_ALL_QUESTION_BY_MANAGER_ID_SQL,
+                ApplicationConstants.TABLE_NAME_REPORTS, ApplicationConstants.TABLE_NAME_REPORTS,
+                ApplicationConstants.TABLE_NAME_SECTIONS, ApplicationConstants.TABLE_NAME_REPORTS,
+                ApplicationConstants.REPORT_TYPE_COLUMN, ApplicationConstants.TABLE_NAME_REPORTS,
+                ApplicationConstants.SECTION_ID_COLUMN, ApplicationConstants.TABLE_NAME_SECTIONS,
+                ApplicationConstants.ID_COLUMN, ApplicationConstants.TABLE_NAME_SECTIONS,
+                ApplicationConstants.MANAGER_SECT_COLUMN);
+        findAllReportsByQuestionReportIdSql
+                = String.format(ApplicationConstants.SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_REPORT_DAO_SQL,
+                ApplicationConstants.TABLE_NAME_REPORTS, ApplicationConstants.QUESTION_REPORT_ID_COLUMN);
+        findAllQuestionsByApplicantIdSql = String.format(ApplicationConstants.SELECT_ALL_QUESTION_BY_APPLICANT_ID_SQL,
+                ApplicationConstants.TABLE_NAME_REPORTS, ApplicationConstants.REPORT_TYPE_COLUMN,
+                ApplicationConstants.APPLICANT_COLUMN);
+        findAllApplicationsByApplicantIdSql = String.format(ApplicationConstants.SELECT_ALL_APPLICATIONS_BY_APPLICANT_ID_SQL,
+                ApplicationConstants.TABLE_NAME_REPORTS, ApplicationConstants.REPORT_TYPE_COLUMN,
+                ApplicationConstants.APPLICANT_COLUMN);
+        findAllApplicationsByManagerIdSql
+                = String.format(ApplicationConstants.SELECT_ALL_APPLICATIONS_BY_MANAGER_ID_SQL,
+                ApplicationConstants.TABLE_NAME_REPORTS, ApplicationConstants.TABLE_NAME_REPORTS,
+                ApplicationConstants.TABLE_NAME_SECTIONS, ApplicationConstants.TABLE_NAME_REPORTS,
+                ApplicationConstants.REPORT_TYPE_COLUMN, ApplicationConstants.TABLE_NAME_REPORTS,
+                ApplicationConstants.SECTION_ID_COLUMN, ApplicationConstants.TABLE_NAME_SECTIONS,
+                ApplicationConstants.ID_COLUMN, ApplicationConstants.TABLE_NAME_SECTIONS,
+                ApplicationConstants.MANAGER_SECT_COLUMN);
     }
 
     private static class DBReportDAOHolder {
         private final static DBReportDAO instance
-                = new DBReportDAO(TABLE_NAME_REPORTS);
+                = new DBReportDAO(ApplicationConstants.TABLE_NAME_REPORTS);
     }
 
     /**
@@ -90,13 +107,13 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
 
     @Override
     protected Report mapResultSet(ResultSet resultSet) throws SQLException {
-        return new Report(resultSet.getLong(ID_COLUMN),
-                resultSet.getLong(SECTION_ID_COLUMN),
-                resultSet.getLong(CONFERENCE_ID_COLUMN),
-                resultSet.getString(REPORT_TEXT_COLUMN),
-                ReportType.resolveReportTypeById(resultSet.getLong(REPORT_TYPE_COLUMN)),
-                resultSet.getLong(APPLICANT_COLUMN),
-                resultSet.getLong(QUESTION_REPORT_ID_COLUMN));
+        return new Report(resultSet.getLong(ApplicationConstants.ID_COLUMN),
+                resultSet.getLong(ApplicationConstants.SECTION_ID_COLUMN),
+                resultSet.getLong(ApplicationConstants.CONFERENCE_ID_COLUMN),
+                resultSet.getString(ApplicationConstants.REPORT_TEXT_COLUMN),
+                ReportType.resolveReportTypeById(resultSet.getLong(ApplicationConstants.REPORT_TYPE_COLUMN)),
+                resultSet.getLong(ApplicationConstants.APPLICANT_COLUMN),
+                resultSet.getLong(ApplicationConstants.QUESTION_REPORT_ID_COLUMN));
     }
 
     @Override
@@ -119,20 +136,20 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
         return "update "
                 + getTableName()
                 + " set "
-                + SECTION_ID_COLUMN
+                + ApplicationConstants.SECTION_ID_COLUMN
                 + " = ?, "
-                + CONFERENCE_ID_COLUMN
+                + ApplicationConstants.CONFERENCE_ID_COLUMN
                 + " = ?, "
-                + REPORT_TEXT_COLUMN
+                + ApplicationConstants.REPORT_TEXT_COLUMN
                 + " = ?, "
-                + REPORT_TYPE_COLUMN
+                + ApplicationConstants.REPORT_TYPE_COLUMN
                 + " = ?, "
-                + APPLICANT_COLUMN
+                + ApplicationConstants.APPLICANT_COLUMN
                 + " = ?, "
-                + QUESTION_REPORT_ID_COLUMN
+                + ApplicationConstants.QUESTION_REPORT_ID_COLUMN
                 + " = ?"
                 + " where "
-                + ID_COLUMN
+                + ApplicationConstants.ID_COLUMN
                 + " = ?";
     }
 

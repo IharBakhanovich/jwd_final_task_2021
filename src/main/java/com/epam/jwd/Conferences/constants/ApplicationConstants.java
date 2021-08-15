@@ -2,10 +2,7 @@ package com.epam.jwd.Conferences.constants;
 
 import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.command.action.*;
-import com.epam.jwd.Conferences.dao.CommonDAO;
-import com.epam.jwd.Conferences.dao.DBConferenceDAO;
-import com.epam.jwd.Conferences.dao.DBSectionDAO;
-import com.epam.jwd.Conferences.dao.JdbcUserDAO;
+import com.epam.jwd.Conferences.dao.*;
 import com.epam.jwd.Conferences.listener.ApplicationLifecycleListener;
 import com.epam.jwd.Conferences.pool.AppConnectionPool;
 import com.epam.jwd.Conferences.system.Configuration;
@@ -345,6 +342,7 @@ public class ApplicationConstants {
     public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_CONFERENCE_DAO = "select * from %s where %s = ?";
 
     // from class DBReportDAO
+    public static final Logger LOGGER_FOR_DB_REPORT_DAO = LogManager.getLogger(DBReportDAO.class);
     public static final String SECTION_ID_COLUMN = "sectionId";
 
     public static final String REPORT_TEXT_COLUMN = "reportText";
@@ -363,6 +361,10 @@ public class ApplicationConstants {
             "select %s.* from %s, %s where %s.%s = 1 and %s.%s = %s.%s and %s.%s = ?";
     public static final String SELECT_ALL_QUESTION_BY_APPLICANT_ID_SQL
             = "select * from %s where %s = 1 and %s = ?";
+    public static final String SELECT_ALL_APPLICATIONS_BY_APPLICANT_ID_SQL
+            = "select * from %s where %s = 2 and %s = ?";
+    public static final String SELECT_ALL_APPLICATIONS_BY_MANAGER_ID_SQL
+            = "select %s.* from %s, %s where %s.%s = 2 and %s.%s = %s.%s and %s.%s = ?";
 
     // from class DBSectionDAO
     public static final Logger LOGGER_FOR_DB_SECTION_DAO = LogManager.getLogger(DBSectionDAO.class);
@@ -408,14 +410,33 @@ public class ApplicationConstants {
     public static final Logger LOGGER_FOR_APP_CONNECTION_POOL = LogManager.getLogger(AppConnectionPool.class);
     public static final String DB_MYSQL_PATH = "jdbc:mysql://";
     public static final String SUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE = "ConnectionPool was successfully initialized. Amount of available connections: ";
-    public final String UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE = "DB read unsuccessfully. ConnectionPool was NOT initialized";
+    public static final String UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE = "DB read unsuccessfully. ConnectionPool was NOT initialized";
+    public static final String FAILED_TO_OPEN_CONNECTION_MESSAGE = "failed to open connection";
+    public static final String SQL_DRIVERS_REGISTRATION_START_MESSAGE = "sql drivers registration start...";
+    public static final String REGISTRATION_SUCCESSFUL_MESSAGE = "registration successful";
+    public static final String REGISTRATION_UNSUCCESSFUL_MESSAGE = "registration unsuccessful";
+    public static final String DRIVER_REGISTRATION_FAILED_MESSAGE = "driver registration failed";
+    public static final String DURING_CROWING_CONNECTION_POOL_MESSAGE = " during crowing connectionPool";
+    public static final String OPENING_DATABASE_CONNECTION_MESSAGE = "Opening Database Connection...";
+    public static final String SQL_DRIVERS_UNREGISTERING_START_MESSAGE = "sql drivers unregistering start...";
+    public static final String UNREGISTERING_DRIVERS_FAILED_MESSAGE = "unregistering drivers failed";
     public static final int INIT_CONNECTIONS_AMOUNT = 8;
     public static final int CONNECTIONS_GROW_FACTOR = 4;
+    public static final String DB_MAX_CONNECTIONS_PROPERTY = "DB_MAX_CONNECTIONS";
+    public static final String DB_SERVER_PROPERTY = "DB_SERVER";
+    public static final String DB_PORT_PROPERTY = "DB_PORT";
+    public static final String DB_NAME_PROPERTY = "DB_NAME";
+    public static final String DB_USER_PROPERTY = "DB_USER";
+    public static final String DB_PASSWORD_PROPERTY = "DB_PASSWORD";
 
     // from class Configuration
     public static final Logger LOGGER_FOR_CONFIGURATION = LogManager.getLogger(Configuration.class);
     public static final String FILEPATH
             = "C:\\Studium\\EPAM\\FinalTask_WebProject\\src\\main\\resources\\application.properties";
+    public static final String SUCESSFULLY_READ_CONFIG_MESSAGE = "Sucessfully read config.";
+    public static final String CONFIG_FILE_COULD_NOT_BE_FOUND_MESSAGE = "Config file could not be found.";
+    public static final String CONFIG_FILE_COULD_NOT_BE_LOADED_MESSAGE = "Config file could not be loaded.";
+    public static final String CONFIG_FILE_WAS_NOT_FOUND_MESSAGE = "Config file was not found";
 
     // from class AppValidator
 

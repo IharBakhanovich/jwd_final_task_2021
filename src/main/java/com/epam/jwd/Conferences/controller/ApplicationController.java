@@ -17,8 +17,8 @@ import javax.servlet.annotation.*;
  */
 @WebServlet(urlPatterns = "/controller")
 public class ApplicationController extends HttpServlet {
-
-    public static final String COMMAND_PARAM_NAME = "command";
+//
+//    public static final String COMMAND_PARAM_NAME = "command";
     private String message;
 
     // прописываем все методы, с которыми может работать контроллер

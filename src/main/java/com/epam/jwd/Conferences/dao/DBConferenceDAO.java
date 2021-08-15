@@ -1,5 +1,6 @@
 package com.epam.jwd.Conferences.dao;
 
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.dto.Conference;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,25 +15,27 @@ import java.util.Optional;
  */
 public class DBConferenceDAO extends CommonDAO<Conference> implements ConferenceDAO {
 
-    private static final Logger logger = LogManager.getLogger(DBConferenceDAO.class);
+    private static final Logger logger = ApplicationConstants.LOGGER_FOR_DB_CONFERENCE_DAO; //LogManager.getLogger(DBConferenceDAO.class);
 
-    private static final String ID_COLUMN = "id";
-    private static final String CONFERENCE_TITLE_COLUMN = "conferenceTitle";
-    private static final String MANAGER_CONF_COLUMN = "managerConf";
-    private static final String TABLE_NAME_CONFERENCES = "conferences";
-    private static final String[] COLUMN_NAMES_FOR_DB_CONFERENCE_DAO = {ID_COLUMN, CONFERENCE_TITLE_COLUMN, MANAGER_CONF_COLUMN};
-    public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_CONFERENCE_DAO = "select * from %s where %s = ?";
+//    private static final String ID_COLUMN = "id";
+//    private static final String CONFERENCE_TITLE_COLUMN = "conferenceTitle";
+//    private static final String MANAGER_CONF_COLUMN = "managerConf";
+//    private static final String TABLE_NAME_CONFERENCES = "conferences";
+//    private static final String[] COLUMN_NAMES_FOR_DB_CONFERENCE_DAO = {ApplicationConstants.ID_COLUMN,
+//            ApplicationConstants.CONFERENCE_TITLE_COLUMN, ApplicationConstants.MANAGER_CONF_COLUMN};
+//    public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_CONFERENCE_DAO = "select * from %s where %s = ?";
 
     private final String findByTitleSql;
 
     protected DBConferenceDAO(String tableName) {
-        super(tableName, COLUMN_NAMES_FOR_DB_CONFERENCE_DAO);
-        findByTitleSql = String.format(SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_CONFERENCE_DAO, TABLE_NAME_CONFERENCES, CONFERENCE_TITLE_COLUMN);
+        super(tableName, ApplicationConstants.COLUMN_NAMES_FOR_DB_CONFERENCE_DAO);
+        findByTitleSql = String.format(ApplicationConstants.SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_CONFERENCE_DAO,
+                ApplicationConstants.TABLE_NAME_CONFERENCES, ApplicationConstants.CONFERENCE_TITLE_COLUMN);
     }
 
     private static class DBConferenceDAOHolder {
         private final static DBConferenceDAO instance
-                = new DBConferenceDAO(TABLE_NAME_CONFERENCES);
+                = new DBConferenceDAO(ApplicationConstants.TABLE_NAME_CONFERENCES);
     }
 
     /**
@@ -46,9 +49,9 @@ public class DBConferenceDAO extends CommonDAO<Conference> implements Conference
 
     @Override
     protected Conference mapResultSet(ResultSet resultSet) throws SQLException {
-        return new Conference(resultSet.getLong(ID_COLUMN),
-                resultSet.getString(CONFERENCE_TITLE_COLUMN),
-                resultSet.getLong(MANAGER_CONF_COLUMN));
+        return new Conference(resultSet.getLong(ApplicationConstants.ID_COLUMN),
+                resultSet.getString(ApplicationConstants.CONFERENCE_TITLE_COLUMN),
+                resultSet.getLong(ApplicationConstants.MANAGER_CONF_COLUMN));
     }
 
     @Override
@@ -66,12 +69,12 @@ public class DBConferenceDAO extends CommonDAO<Conference> implements Conference
         return "update "
                 + getTableName()
                 + " set "
-                + CONFERENCE_TITLE_COLUMN
+                + ApplicationConstants.CONFERENCE_TITLE_COLUMN
                 + " = ?, "
-                + MANAGER_CONF_COLUMN
+                + ApplicationConstants.MANAGER_CONF_COLUMN
                 + " = ?"
                 + " where "
-                + ID_COLUMN
+                + ApplicationConstants.ID_COLUMN
                 + " = ?";
     }
 
