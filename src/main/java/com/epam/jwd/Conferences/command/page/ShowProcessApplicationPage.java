@@ -3,6 +3,7 @@ package com.epam.jwd.Conferences.command.page;
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.dto.*;
 import com.epam.jwd.Conferences.service.UserService;
 import com.epam.jwd.Conferences.validator.Validator;
@@ -13,37 +14,37 @@ import java.util.Optional;
 
 public class ShowProcessApplicationPage implements Command {
 
-    private static final CommandResponse PROCESS_APPLICATION_PAGE_RESPONSE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/processApplication.jsp");
-    private static final String MANAGER_ID_PARAMETER_NAME = "managerId";
-    public static final String MANAGER_ID_ATTRIBUTE_NAME = "managerId";
-    private static final String MANAGER_ROLE_PARAMETER_NAME = "managerRole";
-    private static final String APPLICATION_ID_PARAMETER_NAME = "applicationId";
-    private static final String APPLICATION_TOKEN_PARAMETER_NAME = "applicationToken";
-
-    private static final String APPLICATION_TEXT_PARAMETER_NAME = "applicationText";
-    private static final String CONFERENCE_ID_PARAMETER_NAME = "conferenceId";
-    private static final String SECTION_ID_PARAMETER_NAME = "sectionId";
-
-    private static final String ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME = "allowedReportTypes";
-    private static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
-    private static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
-    private static final String APPLICATION_ID_ATTRIBUTE_NAME = "applicationId";
-    private static final String APPLICATION_TOKEN_ATTRIBUTE_NAME = "applicationToken";
-    private static final String APPLICATION_TEXT_ATTRIBUTE_NAME = "applicationText";
-    private static final String APPLICANT_ATTRIBUTE_NAME = "applicant";
-    private static final String QUESTION_REPORT_ID_ATTRIBUTE_NAME = "questionId";
-    private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
-    private static final String SECTION_ID_ATTRIBUTE_NAME = "sectionId";
-
-    private static final CommandResponse SHOW_PROCESS_APPLICATION_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
-    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
-    private static final String ERROR_ATTRIBUTE_NAME = "error";
-    public static final String ADMIN_CONSTANT = "ADMIN";
-    public static final String MANAGER_CONSTANT = "MANAGER";
-    public static final String APPLICANT_APPLICATION_APPLICATION_TOKEN_VALUE = "applicantApplication";
-    public static final String USER_APPLICATION_APPLICATION_TOKEN_VALUE = "userApplication";
+//    private static final CommandResponse PROCESS_APPLICATION_PAGE_RESPONSE
+//            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/processApplication.jsp");
+//    private static final String MANAGER_ID_PARAMETER_NAME = "managerId";
+//    public static final String MANAGER_ID_ATTRIBUTE_NAME = "managerId";
+//    private static final String MANAGER_ROLE_PARAMETER_NAME = "managerRole";
+//    private static final String APPLICATION_ID_PARAMETER_NAME = "applicationId";
+//    private static final String APPLICATION_TOKEN_PARAMETER_NAME = "applicationToken";
+//
+//    private static final String APPLICATION_TEXT_PARAMETER_NAME = "applicationText";
+//    private static final String CONFERENCE_ID_PARAMETER_NAME = "conferenceId";
+//    private static final String SECTION_ID_PARAMETER_NAME = "sectionId";
+//
+//    private static final String ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME = "allowedReportTypes";
+//    private static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
+//    private static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
+//    private static final String APPLICATION_ID_ATTRIBUTE_NAME = "applicationId";
+//    private static final String APPLICATION_TOKEN_ATTRIBUTE_NAME = "applicationToken";
+//    private static final String APPLICATION_TEXT_ATTRIBUTE_NAME = "applicationText";
+//    private static final String APPLICANT_ATTRIBUTE_NAME = "applicant";
+//    private static final String QUESTION_REPORT_ID_ATTRIBUTE_NAME = "questionId";
+//    private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
+//    private static final String SECTION_ID_ATTRIBUTE_NAME = "sectionId";
+//
+//    private static final CommandResponse SHOW_PROCESS_APPLICATION_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+//            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+//    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
+//    private static final String ERROR_ATTRIBUTE_NAME = "error";
+//    public static final String ADMIN_CONSTANT = "ADMIN";
+//    public static final String MANAGER_CONSTANT = "MANAGER";
+//    public static final String APPLICANT_APPLICATION_APPLICATION_TOKEN_VALUE = "applicantApplication";
+//    public static final String USER_APPLICATION_APPLICATION_TOKEN_VALUE = "userApplication";
 
     private final UserService service;
     private final Validator validator;
@@ -71,13 +72,13 @@ public class ShowProcessApplicationPage implements Command {
     @Override
     public CommandResponse execute(CommandRequest request) {
 
-        final Long managerId = Long.valueOf(request.getParameter(MANAGER_ID_PARAMETER_NAME));
-        final String managerRole = request.getParameter(MANAGER_ROLE_PARAMETER_NAME);
-        final Long conferenceId = Long.valueOf(request.getParameter(CONFERENCE_ID_PARAMETER_NAME));
-        final Long sectionId = Long.valueOf(request.getParameter(SECTION_ID_PARAMETER_NAME));
-        final String applicationText = request.getParameter(APPLICATION_TEXT_PARAMETER_NAME);
-        final String applicationToken = request.getParameter(APPLICATION_TOKEN_PARAMETER_NAME);
-        final Long applicationId = Long.valueOf(request.getParameter(APPLICATION_ID_PARAMETER_NAME));
+        final Long managerId = Long.valueOf(request.getParameter(ApplicationConstants.MANAGER_ID_PARAMETER_NAME));
+        final String managerRole = request.getParameter(ApplicationConstants.MANAGER_ROLE_PARAMETER_NAME);
+        final Long conferenceId = Long.valueOf(request.getParameter(ApplicationConstants.CONFERENCE_ID_PARAMETER_NAME));
+        final Long sectionId = Long.valueOf(request.getParameter(ApplicationConstants.SECTION_ID_PARAMETER_NAME));
+        final String applicationText = request.getParameter(ApplicationConstants.APPLICATION_TEXT_PARAMETER_NAME);
+        final String applicationToken = request.getParameter(ApplicationConstants.APPLICATION_TOKEN_PARAMETER_NAME);
+        final Long applicationId = Long.valueOf(request.getParameter(ApplicationConstants.APPLICATION_ID_PARAMETER_NAME));
 
         // validation of the parameters (whether they exist in the request)
         if (!validator.isConferenceExistInSystem(conferenceId)
@@ -85,9 +86,9 @@ public class ShowProcessApplicationPage implements Command {
                 || !validator.isUserWithIdExistInSystem(managerId)
                 || !validator.isRoleWithSuchNameExistInSystem(managerRole)
                 || !validator.isReportExistInSystem(applicationId)
-                || !(applicationToken.equals(APPLICANT_APPLICATION_APPLICATION_TOKEN_VALUE)
-                || applicationToken.equals(USER_APPLICATION_APPLICATION_TOKEN_VALUE))) {
-            return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+                || !(applicationToken.equals(ApplicationConstants.APPLICANT_APPLICATION_APPLICATION_TOKEN_VALUE)
+                || applicationToken.equals(ApplicationConstants.USER_APPLICATION_APPLICATION_TOKEN_VALUE))) {
+            return prepareErrorPageBackToMainPage(request, ApplicationConstants.INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
         }
 
         Optional<Report> application = service.findReportByID(applicationId);
@@ -121,41 +122,43 @@ public class ShowProcessApplicationPage implements Command {
         List<ReportType> allowedReportTypes = new ArrayList<>();
 
 
-        if (applicationToken.equals(APPLICANT_APPLICATION_APPLICATION_TOKEN_VALUE)
+        if (applicationToken.equals(ApplicationConstants.APPLICANT_APPLICATION_APPLICATION_TOKEN_VALUE)
                 && application.get().getApplicant().equals(managerId)) {
             allowedReportTypes.add(ReportType.APPLICATION);
             allowedReportTypes.add(ReportType.CANCELLED);
-        } else if (applicationToken.equals(USER_APPLICATION_APPLICATION_TOKEN_VALUE)
-                && (managerRole.equals(ADMIN_CONSTANT) || managerRole.equals(MANAGER_CONSTANT))
+        } else if (applicationToken.equals(ApplicationConstants.USER_APPLICATION_APPLICATION_TOKEN_VALUE)
+                && (managerRole.equals(ApplicationConstants.ADMIN_CONSTANT)
+                || managerRole.equals(ApplicationConstants.MANAGER_CONSTANT))
                 && application.get().getApplicant().equals(managerId)) {
             allowedReportTypes.add(ReportType.APPLICATION);
             allowedReportTypes.add(ReportType.APPROVED);
             allowedReportTypes.add(ReportType.REJECTED);
             allowedReportTypes.add(ReportType.CANCELLED);
-        } else if (applicationToken.equals(USER_APPLICATION_APPLICATION_TOKEN_VALUE)
-                && (managerRole.equals(ADMIN_CONSTANT) || managerRole.equals(MANAGER_CONSTANT))) {
+        } else if (applicationToken.equals(ApplicationConstants.USER_APPLICATION_APPLICATION_TOKEN_VALUE)
+                && (managerRole.equals(ApplicationConstants.ADMIN_CONSTANT)
+                || managerRole.equals(ApplicationConstants.MANAGER_CONSTANT))) {
             allowedReportTypes.add(ReportType.APPLICATION);
             allowedReportTypes.add(ReportType.APPROVED);
             allowedReportTypes.add(ReportType.REJECTED);
         }
-        request.setAttribute(ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME, allowedReportTypes);
-        request.setAttribute(CONFERENCE_TITLE_ATTRIBUTE_NAME, conferenceTitle);
-        request.setAttribute(SECTION_NAME_ATTRIBUTE_NAME, sectionName);
-        request.setAttribute(APPLICANT_ATTRIBUTE_NAME, applicant);
-        request.setAttribute(APPLICATION_ID_ATTRIBUTE_NAME, applicationId);
-        request.setAttribute(APPLICATION_TEXT_ATTRIBUTE_NAME, applicationText);
-        request.setAttribute(QUESTION_REPORT_ID_ATTRIBUTE_NAME, application.get().getQuestionReportId());
-        request.setAttribute(APPLICATION_TOKEN_ATTRIBUTE_NAME, applicationToken);
-        request.setAttribute(CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
-        request.setAttribute(SECTION_ID_ATTRIBUTE_NAME, sectionId);
-        request.setAttribute(MANAGER_ID_ATTRIBUTE_NAME, managerId);
+        request.setAttribute(ApplicationConstants.ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME, allowedReportTypes);
+        request.setAttribute(ApplicationConstants.CONFERENCE_TITLE_ATTRIBUTE_NAME, conferenceTitle);
+        request.setAttribute(ApplicationConstants.SECTION_NAME_ATTRIBUTE_NAME, sectionName);
+        request.setAttribute(ApplicationConstants.APPLICANT_ATTRIBUTE_NAME, applicant);
+        request.setAttribute(ApplicationConstants.APPLICATION_ID_ATTRIBUTE_NAME, applicationId);
+        request.setAttribute(ApplicationConstants.APPLICATION_TEXT_ATTRIBUTE_NAME, applicationText);
+        request.setAttribute(ApplicationConstants.QUESTION_REPORT_ID_ATTRIBUTE_NAME, application.get().getQuestionReportId());
+        request.setAttribute(ApplicationConstants.APPLICATION_TOKEN_ATTRIBUTE_NAME, applicationToken);
+        request.setAttribute(ApplicationConstants.CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
+        request.setAttribute(ApplicationConstants.SECTION_ID_ATTRIBUTE_NAME, sectionId);
+        request.setAttribute(ApplicationConstants.MANAGER_ID_ATTRIBUTE_NAME, managerId);
 
-        return PROCESS_APPLICATION_PAGE_RESPONSE;
+        return ApplicationConstants.PROCESS_APPLICATION_PAGE_RESPONSE;
     }
 
     private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
                                                            String errorMessage) {
-        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
-        return SHOW_PROCESS_APPLICATION_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE;
+        request.setAttribute(ApplicationConstants.ERROR_ATTRIBUTE_NAME, errorMessage);
+        return ApplicationConstants.SHOW_PROCESS_APPLICATION_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE;
     }
 }

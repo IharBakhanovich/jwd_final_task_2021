@@ -3,6 +3,7 @@ package com.epam.jwd.Conferences.command.page;
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.service.UserService;
 
@@ -11,10 +12,10 @@ import java.util.List;
 
 public class ShowUsersPage implements Command {
 
-    private static final CommandResponse SHOW_USERS_PAGE_RESPONSE
-            = CommandResponse.getCommandResponse(false, "WEB-INF/jsp/users.jsp");
-
-    private static final String USERS_ATTRIBUTE_NAME = "users";
+//    private static final CommandResponse SHOW_USERS_PAGE_RESPONSE
+//            = CommandResponse.getCommandResponse(false, "WEB-INF/jsp/users.jsp");
+//
+//    private static final String USERS_ATTRIBUTE_NAME = "users";
 
     // the AppService, that communicates with the repo
     private final UserService userService;
@@ -50,7 +51,7 @@ public class ShowUsersPage implements Command {
         //т.е. в CommandRequest (интерфейс) будет метод void setAttribute()
         //TODO из репозитория с помощью сервиса забрать конференции о положить в аттрибут users
         final List<User> users = userService.findAllUsers();
-        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
-        return SHOW_USERS_PAGE_RESPONSE;
+        request.setAttribute(ApplicationConstants.USERS_ATTRIBUTE_NAME, users);
+        return ApplicationConstants.SHOW_USERS_PAGE_RESPONSE;
     }
 }

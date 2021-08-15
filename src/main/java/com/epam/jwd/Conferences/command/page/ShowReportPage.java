@@ -3,6 +3,7 @@ package com.epam.jwd.Conferences.command.page;
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.dto.*;
 import com.epam.jwd.Conferences.service.UserService;
 import com.epam.jwd.Conferences.validator.Validator;
@@ -12,22 +13,22 @@ import java.util.List;
 import java.util.Optional;
 
 public class ShowReportPage implements Command {
-    private static final CommandResponse SHOW_REPORT_PAGE_RESPONSE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/report.jsp");
-    private static final String ID_PARAMETER_NAME = "id";
-    private static final String REPORT_ATTRIBUTE_NAME = "report";
-    private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
-    private static final String SECTIONS_ATTRIBUTE_NAME = "sections";
-    private static final String USERS_ATTRIBUTE_NAME = "users";
-    public static final String ID_OF_MANAGER_OF_REPORTS_SECTION_ATTRIBUTE_NAME = "idOfManagerOfReportsSection";
-    private static final String ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME = "allowedReportTypes";
-    private static final String MANAGER_ID_PARAMETER_NAME = "managerId";
-    private static final String MANAGER_ROLE_PARAMETER_NAME = "managerRole";
-    public static final String ADMIN_CONSTANT = "ADMIN";
-    private static final CommandResponse SHOW_REPORT_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
-    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
-    private static final String ERROR_ATTRIBUTE_NAME = "error";
+//    private static final CommandResponse SHOW_REPORT_PAGE_RESPONSE
+//            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/report.jsp");
+//    private static final String ID_PARAMETER_NAME = "id";
+//    private static final String REPORT_ATTRIBUTE_NAME = "report";
+//    private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
+//    private static final String SECTIONS_ATTRIBUTE_NAME = "sections";
+//    private static final String USERS_ATTRIBUTE_NAME = "users";
+//    public static final String ID_OF_MANAGER_OF_REPORTS_SECTION_ATTRIBUTE_NAME = "idOfManagerOfReportsSection";
+//    private static final String ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME = "allowedReportTypes";
+//    private static final String MANAGER_ID_PARAMETER_NAME = "managerId";
+//    private static final String MANAGER_ROLE_PARAMETER_NAME = "managerRole";
+//    public static final String ADMIN_CONSTANT = "ADMIN";
+//    private static final CommandResponse SHOW_REPORT_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+//            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+//    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
+//    private static final String ERROR_ATTRIBUTE_NAME = "error";
 
     private final UserService service;
     private final Validator validator;
@@ -60,13 +61,14 @@ public class ShowReportPage implements Command {
      */
     @Override
     public CommandResponse execute(CommandRequest request) {
-        final Long id = Long.valueOf(request.getParameter(ID_PARAMETER_NAME));
-        String managerRole = request.getParameter(MANAGER_ROLE_PARAMETER_NAME);
+        final Long id = Long.valueOf(request.getParameter(ApplicationConstants.ID_PARAMETER_NAME));
+        String managerRole = request.getParameter(ApplicationConstants.MANAGER_ROLE_PARAMETER_NAME);
         final Optional<Report> report = service.findReportByID(id);
         final List<Section> sections = service.findAllSections();
         // validation of the parameters (whether they exist in the request)
         if (!validator.isReportExistInSystem(id)) {
-            return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+            return prepareErrorPageBackToMainPage(request,
+                    ApplicationConstants.INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
         }
 
         Long sectionManagerId = null;
@@ -78,12 +80,13 @@ public class ShowReportPage implements Command {
         }
         List<ReportType> allowedReportTypes = new ArrayList<>();
         if (!managerRole.equals("") && managerRole != null) {
-            Long managerId = Long.valueOf(request.getParameter(MANAGER_ID_PARAMETER_NAME));
+            Long managerId = Long.valueOf(request.getParameter(ApplicationConstants.MANAGER_ID_PARAMETER_NAME));
             if (!validator.isUserWithIdExistInSystem(managerId)
                     || !validator.isUserIdAndUserRoleFromTheSameUser(String.valueOf(managerId), managerRole)) {
-                return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+                return prepareErrorPageBackToMainPage(request, ApplicationConstants.INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
             }
-            if (managerId.equals(report.get().getApplicant()) && !managerRole.equals(ADMIN_CONSTANT)) {
+            if (managerId.equals(report.get().getApplicant())
+                    && !managerRole.equals(ApplicationConstants.ADMIN_CONSTANT)) {
                 switch (report.get().getReportType()) {
                     case APPLICATION:
                         allowedReportTypes.add(ReportType.APPLICATION);
@@ -111,7 +114,8 @@ public class ShowReportPage implements Command {
                         allowedReportTypes.add(ReportType.ANSWER);
                         break;
                 }
-            } else if (managerRole.equals(ADMIN_CONSTANT) || managerId.equals(sectionManagerId)) {
+            } else if (managerRole.equals(ApplicationConstants.ADMIN_CONSTANT)
+                    || managerId.equals(sectionManagerId)) {
                 switch (report.get().getReportType()) {
                     case CANCELLED:
                         allowedReportTypes.add(ReportType.CANCELLED);
@@ -148,19 +152,19 @@ public class ShowReportPage implements Command {
             }
         }
         final List<Conference> conferences = service.findAllConferences();
-        request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
+        request.setAttribute(ApplicationConstants.CONFERENCES_ATTRIBUTE_NAME, conferences);
         final List<User> users = service.findAllUsers();
-        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
-        request.setAttribute(SECTIONS_ATTRIBUTE_NAME, sections);
-        request.setAttribute(REPORT_ATTRIBUTE_NAME, report);
-        request.setAttribute(ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME, allowedReportTypes);
-        request.setAttribute(ID_OF_MANAGER_OF_REPORTS_SECTION_ATTRIBUTE_NAME, sectionManagerId);
-        return SHOW_REPORT_PAGE_RESPONSE;
+        request.setAttribute(ApplicationConstants.USERS_ATTRIBUTE_NAME, users);
+        request.setAttribute(ApplicationConstants.SECTIONS_ATTRIBUTE_NAME, sections);
+        request.setAttribute(ApplicationConstants.REPORT_ATTRIBUTE_NAME, report);
+        request.setAttribute(ApplicationConstants.ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME, allowedReportTypes);
+        request.setAttribute(ApplicationConstants.ID_OF_MANAGER_OF_REPORTS_SECTION_ATTRIBUTE_NAME, sectionManagerId);
+        return ApplicationConstants.SHOW_REPORT_PAGE_RESPONSE;
     }
 
     private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
                                                            String errorMessage) {
-        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
-        return SHOW_REPORT_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE;
+        request.setAttribute(ApplicationConstants.ERROR_ATTRIBUTE_NAME, errorMessage);
+        return ApplicationConstants.SHOW_REPORT_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE;
     }
 }
