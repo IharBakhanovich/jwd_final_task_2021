@@ -91,7 +91,7 @@ public abstract class CommonDAO<T extends DatabaseEntity<Long>> implements DAO<T
             if (state.startsWith("08")) {
                 logger.error("No Database Connection.");
                 throw new NoConnectionException("No Connection.");
-            } else if (state.equals("23505")) {
+            } else if (state.equals("23505") || state.equals("23000")) {
                 logger.error("An attempt at updating User data violated unique constraints.");
                 throw new DuplicateException("Violation of unique constraints.");
             } else {
