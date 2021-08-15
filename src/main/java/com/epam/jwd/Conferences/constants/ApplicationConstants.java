@@ -473,4 +473,8 @@ public class ApplicationConstants {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     public static final String MANAGER_CONSTANT = "MANAGER";
 
+    // class ShowHelpPage
+    public static final CommandResponse SHOW_HELP_PAGE_RESPONSE
+            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/help.jsp");
+
 }

@@ -3,11 +3,12 @@ package com.epam.jwd.Conferences.command.page;
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 
 public class ShowHelpPage implements Command {
 
-    private static final CommandResponse SHOW_APPLICATIONS_PAGE_RESPONSE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/help.jsp");
+//    private static final CommandResponse SHOW_HELP_PAGE_RESPONSE
+//            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/help.jsp");
 
     private static class ShowHelpPageHolder {
         private final static ShowHelpPage instance
@@ -35,6 +36,6 @@ public class ShowHelpPage implements Command {
      */
     @Override
     public CommandResponse execute(CommandRequest request) {
-        return SHOW_APPLICATIONS_PAGE_RESPONSE;
+        return ApplicationConstants.SHOW_HELP_PAGE_RESPONSE;
     }
 }

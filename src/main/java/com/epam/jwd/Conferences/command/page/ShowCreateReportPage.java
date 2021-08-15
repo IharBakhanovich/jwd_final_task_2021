@@ -3,6 +3,7 @@ package com.epam.jwd.Conferences.command.page;
 import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
+import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.dto.ReportType;
 import com.epam.jwd.Conferences.service.UserService;
 import com.epam.jwd.Conferences.validator.Validator;
@@ -11,29 +12,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShowCreateReportPage implements Command {
-    private static final CommandResponse CREATE_REPORT_PAGE_RESPONSE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createReport.jsp");
-
-    private static final CommandResponse SHOW_CREATE_REPORT_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
-    private static final String ERROR_ATTRIBUTE_NAME = "error";
-    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
-
-    private static final String CREATOR_ID_PARAMETER_NAME = "creatorId";
-    private static final String CREATOR_ROLE_PARAMETER_NAME = "creatorRole";
-    private static final String CONFERENCE_ID_PARAMETER_NAME = "conferenceId";
-    private static final String CONFERENCE_TITLE_PARAMETER_NAME = "conferenceTitle";
-    private static final String SECTION_ID_PARAMETER_NAME = "sectionId";
-    private static final String SECTION_NAME_PARAMETER_NAME = "sectionName";
-
-    private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
-    private static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
-    private static final String SECTION_ID_ATTRIBUTE_NAME = "sectionId";
-    private static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
-    private static final String USERS_ATTRIBUTE_NAME = "users";
-    private static final String CREATOR_ID_ATTRIBUTE_NAME = "creatorId";
-    private static final String CREATOR_ROLE_ATTRIBUTE_NAME = "creatorRole";
-    private static final String ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME = "allowedReportTypes";
+//    private static final CommandResponse CREATE_REPORT_PAGE_RESPONSE
+//            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createReport.jsp");
+//
+//    private static final CommandResponse SHOW_CREATE_REPORT_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+//            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+//    private static final String ERROR_ATTRIBUTE_NAME = "error";
+//    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
+//
+//    private static final String CREATOR_ID_PARAMETER_NAME = "creatorId";
+//    private static final String CREATOR_ROLE_PARAMETER_NAME = "creatorRole";
+//    private static final String CONFERENCE_ID_PARAMETER_NAME = "conferenceId";
+//    private static final String CONFERENCE_TITLE_PARAMETER_NAME = "conferenceTitle";
+//    private static final String SECTION_ID_PARAMETER_NAME = "sectionId";
+//    private static final String SECTION_NAME_PARAMETER_NAME = "sectionName";
+//
+//    private static final String CONFERENCE_ID_ATTRIBUTE_NAME = "conferenceId";
+//    private static final String CONFERENCE_TITLE_ATTRIBUTE_NAME = "conferenceTitle";
+//    private static final String SECTION_ID_ATTRIBUTE_NAME = "sectionId";
+//    private static final String SECTION_NAME_ATTRIBUTE_NAME = "sectionName";
+//    private static final String USERS_ATTRIBUTE_NAME = "users";
+//    private static final String CREATOR_ID_ATTRIBUTE_NAME = "creatorId";
+//    private static final String CREATOR_ROLE_ATTRIBUTE_NAME = "creatorRole";
+//    private static final String ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME = "allowedReportTypes";
 
     // the AppService, that communicates with the repo
     private final UserService service;
@@ -70,12 +71,12 @@ public class ShowCreateReportPage implements Command {
         List<ReportType> allowedReportTypes = new ArrayList<>();
         allowedReportTypes.add(ReportType.QUESTION);
         allowedReportTypes.add(ReportType.APPLICATION);
-        final String conferenceTitle = request.getParameter(CONFERENCE_TITLE_PARAMETER_NAME);
-        final String conferenceId = request.getParameter(CONFERENCE_ID_PARAMETER_NAME);
-        final String creatorId = request.getParameter(CREATOR_ID_PARAMETER_NAME);
-        final String creatorRole = request.getParameter(CREATOR_ROLE_PARAMETER_NAME);
-        final String sectionId = request.getParameter(SECTION_ID_PARAMETER_NAME);
-        final String sectionName = request.getParameter(SECTION_NAME_PARAMETER_NAME);
+        final String conferenceTitle = request.getParameter(ApplicationConstants.CONFERENCE_TITLE_PARAMETER_NAME);
+        final String conferenceId = request.getParameter(ApplicationConstants.CONFERENCE_ID_PARAMETER_NAME);
+        final String creatorId = request.getParameter(ApplicationConstants.CREATOR_ID_PARAMETER_NAME);
+        final String creatorRole = request.getParameter(ApplicationConstants.CREATOR_ROLE_PARAMETER_NAME);
+        final String sectionId = request.getParameter(ApplicationConstants.SECTION_ID_PARAMETER_NAME);
+        final String sectionName = request.getParameter(ApplicationConstants.SECTION_NAME_PARAMETER_NAME);
 
         // validation of the parameters (whether they exist in the request)
         if (!validator.isUserWithIdExistInSystem(Long.valueOf(creatorId))
@@ -86,21 +87,21 @@ public class ShowCreateReportPage implements Command {
                 || !validator.isConferenceTitleAndIdFromTheSameConference(Long.valueOf(conferenceId), conferenceTitle)
                 || !validator.isConferenceWithSuchTitleExistInSystem(conferenceTitle)
                 || !validator.isSectionNameAndIdFromTheSameSection(Long.valueOf(sectionId), sectionName)) {
-            return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+            return prepareErrorPageBackToMainPage(request, ApplicationConstants.INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
         }
-        request.setAttribute(ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME, allowedReportTypes);
-        request.setAttribute(CONFERENCE_TITLE_ATTRIBUTE_NAME, conferenceTitle);
-        request.setAttribute(CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
-        request.setAttribute(CREATOR_ID_ATTRIBUTE_NAME, creatorId);
-        request.setAttribute(CREATOR_ROLE_ATTRIBUTE_NAME, creatorRole);
-        request.setAttribute(SECTION_ID_ATTRIBUTE_NAME, sectionId);
-        request.setAttribute(SECTION_NAME_ATTRIBUTE_NAME, sectionName);
-        return CREATE_REPORT_PAGE_RESPONSE;
+        request.setAttribute(ApplicationConstants.ALLOWED_REPORT_TYPES_ATTRIBUTE_NAME, allowedReportTypes);
+        request.setAttribute(ApplicationConstants.CONFERENCE_TITLE_ATTRIBUTE_NAME, conferenceTitle);
+        request.setAttribute(ApplicationConstants.CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
+        request.setAttribute(ApplicationConstants.CREATOR_ID_ATTRIBUTE_NAME, creatorId);
+        request.setAttribute(ApplicationConstants.CREATOR_ROLE_ATTRIBUTE_NAME, creatorRole);
+        request.setAttribute(ApplicationConstants.SECTION_ID_ATTRIBUTE_NAME, sectionId);
+        request.setAttribute(ApplicationConstants.SECTION_NAME_ATTRIBUTE_NAME, sectionName);
+        return ApplicationConstants.CREATE_REPORT_PAGE_RESPONSE;
     }
 
     private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
                                                            String errorMessage) {
-        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
-        return SHOW_CREATE_REPORT_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE;
+        request.setAttribute(ApplicationConstants.ERROR_ATTRIBUTE_NAME, errorMessage);
+        return ApplicationConstants.SHOW_CREATE_REPORT_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE;
     }
 }

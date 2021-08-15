@@ -7,8 +7,8 @@ import com.epam.jwd.Conferences.constants.ApplicationConstants;
 
 public class ShowLoginPage implements Command {
 
-    private static final CommandResponse LOGIN_PAGE_RESPONSE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/login.jsp");
+//    private static final CommandResponse LOGIN_PAGE_RESPONSE
+//            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/login.jsp");
 
     // the private default constructor, to not create the instance of the class with 'new' outside the class
     private ShowLoginPage() {

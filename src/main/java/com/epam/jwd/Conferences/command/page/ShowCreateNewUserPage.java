@@ -9,17 +9,17 @@ import com.epam.jwd.Conferences.validator.Validator;
 
 public class ShowCreateNewUserPage implements Command {
 
-    private static final CommandResponse SHOW_CREATE_NEW_USER_PAGE_RESPONSE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createNewUser.jsp");
-    private static final String USER_NAME_SESSION_ATTRIBUTE = "userName";
-    private static final String USER_ROLE_SESSION_ATTRIBUTE = "userRole";
-    private static final String USER_ID_SESSION_ATTRIBUTE = "userId";
-    private static final String ERROR_ATTRIBUTE_NAME = "error";
-    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
-    private static final String NO_PERMISSION_TO_CREATE_CONFERENCE_MSG = "YouHaveNoPermissionToCreateAConferenceMSG";
-    private static final CommandResponse SHOW_CREATE_NEW_USER_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
-    public static final String ADMIN_CONSTANT = "ADMIN";
+//    private static final CommandResponse SHOW_CREATE_NEW_USER_PAGE_RESPONSE
+//            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createNewUser.jsp");
+//    private static final String USER_NAME_SESSION_ATTRIBUTE = "userName";
+//    private static final String USER_ROLE_SESSION_ATTRIBUTE = "userRole";
+//    private static final String USER_ID_SESSION_ATTRIBUTE = "userId";
+//    private static final String ERROR_ATTRIBUTE_NAME = "error";
+//    private static final String INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG = "SomethingWrongWithParameters";
+//    private static final String NO_PERMISSION_TO_CREATE_CONFERENCE_MSG = "YouHaveNoPermissionToCreateAConferenceMSG";
+//    private static final CommandResponse SHOW_CREATE_NEW_USER_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
+//            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
+//    public static final String ADMIN_CONSTANT = "ADMIN";
 
     private final Validator validator;
 
@@ -51,28 +51,32 @@ public class ShowCreateNewUserPage implements Command {
     @Override
     public CommandResponse execute(CommandRequest request) {
 
-        Role creatorRole = (Role) request.getCurrentSession().get().getAttribute(USER_ROLE_SESSION_ATTRIBUTE);
-        Long creatorId = (Long) request.getCurrentSession().get().getAttribute(USER_ID_SESSION_ATTRIBUTE);
+        Role creatorRole = (Role) request
+                .getCurrentSession().get().getAttribute(ApplicationConstants.USER_ROLE_SESSION_ATTRIBUTE);
+        Long creatorId = (Long) request
+                .getCurrentSession().get().getAttribute(ApplicationConstants.USER_ID_SESSION_ATTRIBUTE);
         // if somebody from the system aims to create a new user
         if (creatorRole != null && creatorId != null) {
             // validation of the parameters (whether they exist in the request)
             if (!validator.isUserWithIdExistInSystem(creatorId)
                     || !validator.isRoleWithSuchNameExistInSystem(creatorRole.getName())
                     || !validator.isUserIdAndUserRoleFromTheSameUser(String.valueOf(creatorId), creatorRole.getName())) {
-                return prepareErrorPageBackToMainPage(request, INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+                return prepareErrorPageBackToMainPage(request,
+                        ApplicationConstants.INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
             }
 
             // validation whether the really admin want to create Conference
-            if (!creatorRole.getName().equals(ADMIN_CONSTANT)) {
-                return prepareErrorPageBackToMainPage(request, NO_PERMISSION_TO_CREATE_CONFERENCE_MSG);
+            if (!creatorRole.getName().equals(ApplicationConstants.ADMIN_CONSTANT)) {
+                return prepareErrorPageBackToMainPage(request,
+                        ApplicationConstants.NO_PERMISSION_TO_CREATE_CONFERENCE_MSG);
             }
         }
-        return SHOW_CREATE_NEW_USER_PAGE_RESPONSE;
+        return ApplicationConstants.SHOW_CREATE_NEW_USER_PAGE_RESPONSE;
     }
 
     private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
                                                            String errorMessage) {
-        request.setAttribute(ERROR_ATTRIBUTE_NAME, errorMessage);
-        return SHOW_CREATE_NEW_USER_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE;
+        request.setAttribute(ApplicationConstants.ERROR_ATTRIBUTE_NAME, errorMessage);
+        return ApplicationConstants.SHOW_CREATE_NEW_USER_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE;
     }
 }

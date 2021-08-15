@@ -7,8 +7,8 @@ import com.epam.jwd.Conferences.constants.ApplicationConstants;
 
 public class ShowErrorPage implements Command {
 
-    private static final CommandResponse ERROR_PAGE_RESPONSE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/error.jsp");
+//    private static final CommandResponse ERROR_PAGE_RESPONSE
+//            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/error.jsp");
 
     // the private default constructor, to not create the instance of the class with 'new' outside the class
     private ShowErrorPage() {
