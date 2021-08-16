@@ -2,6 +2,7 @@ package com.epam.jwd.Conferences.constants;
 
 import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.command.action.*;
+import com.epam.jwd.Conferences.controller.ApplicationController;
 import com.epam.jwd.Conferences.dao.*;
 import com.epam.jwd.Conferences.listener.ApplicationLifecycleListener;
 import com.epam.jwd.Conferences.pool.AppConnectionPool;
@@ -21,6 +22,7 @@ public class ApplicationConstants {
      */
     private ApplicationConstants() {}
 
+    // Constants
     // from all the classes
     public static final String CREATOR_ID_PARAMETER_NAME = "creatorId";
     public static final String CREATOR_ROLE_PARAMETER_NAME = "creatorRole";
@@ -172,7 +174,6 @@ public class ApplicationConstants {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createSection.jsp");
     public static final CommandResponse CREATE_SECTION_ERROR_RESPONSE_TO_MAIN_PAGE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
-
     public static final CommandResponse SECTION_CREATION_SUCCESS_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/sections.jsp");
     public static final String CONFERENCE_MANAGER_ATTRIBUTE_NAME = "conferenceManager";
@@ -187,7 +188,6 @@ public class ApplicationConstants {
     public static final String NO_PERMISSION_TO_UPDATE_CONFERENCE_MSG = "YouHaveNoPermissionToUpdateAConferenceMSG";
     public static final CommandResponse CREATE_UPDATE_CONFERENCE_ERROR_RESPONSE_TO_MAIN_PAGE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
-
 
     // from class UpdateReport
     public static final String APPLICANT_PARAMETER_NAME = "applicant";
@@ -237,7 +237,6 @@ public class ApplicationConstants {
     public static final String PASSWORD_PARAM_NAME = "password";
     public static final CommandResponse LOGIN_ERROR_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/login.jsp");
-    // редиректаемся на index.jsp, после чего должен произойти get
     public static final CommandResponse LOGIN_SUCCESS_RESPONSE
             = CommandResponse.getCommandResponse(true, "index.jsp");
     public static final String USER_NAME_SESSION_ATTRIBUTE = "userName";
@@ -273,16 +272,14 @@ public class ApplicationConstants {
     //from class ShowCreateSectionPage
     public static final CommandResponse CREATE_SECTION_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createSection.jsp");
-    public static final CommandResponse SHOW_CREATE_SECTION_ERROR_RESPONSE
-            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createSection.jsp");
     public static final CommandResponse SHOW_CREATE_SECTION_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
-    // from ShowErrorPage **
+    // from ShowErrorPage
     public static final CommandResponse ERROR_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/error.jsp");
 
-    // from class ShowLoginPage **
+    // from class ShowLoginPage
     public static final CommandResponse LOGIN_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/login.jsp");
 
@@ -325,16 +322,16 @@ public class ApplicationConstants {
 
     // from class ApplicationController
     public static final String COMMAND_PARAM_NAME = "command";
+    public static final Logger LOGGER_FOR_APPLICATION_CONTROLLER
+            = LogManager.getLogger(ApplicationController.class);
+    public static final String ERROR_WITH_THE_MESSAGE_ERROR_MESSAGE = "Error with the message: ";
 
     // from class CommonDAO
     public static final Logger LOGGER_FOR_COMMON_DAO = LogManager.getLogger(CommonDAO.class);
-
     public static final String FIND_ALL_SQL_TEMPLATE = "select * from %s";
     public static final String FIND_BY_ID_SQL_TEMPLATE = "select * from %s where id = ?";
     public static final String DELETE_ENTITY_BY_ID_SQL_TEMPLATE = "delete from %s where id = ?";
-
     public static final Logger LOGGER_FOR_DB_CONFERENCE_DAO = LogManager.getLogger(DBConferenceDAO.class);
-
     public static final String CONFERENCE_TITLE_COLUMN = "conferenceTitle";
     public static final String MANAGER_CONF_COLUMN = "managerConf";
     public static final String TABLE_NAME_CONFERENCES = "conferences";
@@ -344,7 +341,6 @@ public class ApplicationConstants {
     // from class DBReportDAO
     public static final Logger LOGGER_FOR_DB_REPORT_DAO = LogManager.getLogger(DBReportDAO.class);
     public static final String SECTION_ID_COLUMN = "sectionId";
-
     public static final String REPORT_TEXT_COLUMN = "reportText";
     public static final String REPORT_TYPE_COLUMN = "reportType";
     public static final String APPLICANT_COLUMN = "applicant";
@@ -375,7 +371,6 @@ public class ApplicationConstants {
 
     // from class DBUserDAO
     public static final Logger LOGGER_FOR_DB_USER_DAO = LogManager.getLogger(JdbcUserDAO.class);
-
     public static final String EMAIL_COLUMN = "email";
     public static final String PASSWORD_COLUMN = "password";
     public static final String SALT_COLUMN = "salt";
@@ -457,7 +452,6 @@ public class ApplicationConstants {
     public static final String QUESTION_ID_PARAMETER_NAME_FOR_CONTEXT = "questionIdForContext";
     public static final String QUESTION_REPORT_ID_PARAMETER_NAME_FOR_CONTEXT = "questionReportIdForContext";
     public static final String QUESTION_TOKEN_NAME = "question";
-    public static final String APPLICANT_QUESTIONS_TOKEN_NAME = "applicantQuestions";
     public static final String APPLICANT_QUESTIONS_APPLICATION_TOKEN_VALUE = "applicantQuestions";
     public static final String USER_QUESTIONS_APPLICATION_TOKEN_VALUE = "";
     public static final CommandResponse SHOW_QUESTION_CONTEXT_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
@@ -468,20 +462,19 @@ public class ApplicationConstants {
     public static final CommandResponse SHOW_OWN_QUESTIONS_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
 
-    // Locale's constants
-    // class LoginCommand
+    // from class LoginCommand
     public static final String INVALID_CREDENTIALS_MSG = "InvalidCredentialsMSG";
 
-    // class CreateReport
+    // from class CreateReport
 
-    // class ShowApplicationsPage
+    // from class ShowApplicationsPage
 
-    // class ShowOwnApplicationsPage
+    // from class ShowOwnApplicationsPage
     public static final CommandResponse SHOW_OWN_APPLICATIONS_PAGE_REPORT_ERROR_RESPONSE_TO_MAIN_PAGE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     public static final String APPLICANT_APPLICATIONS_TOKEN = "applicantApplications";
 
-    // class ShowProcessApplicationPage
+    // from class ShowProcessApplicationPage
     public static final CommandResponse PROCESS_APPLICATION_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/processApplication.jsp");
     public static final String APPLICATION_ID_PARAMETER_NAME = "applicationId";
@@ -494,8 +487,7 @@ public class ApplicationConstants {
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/main.jsp");
     public static final String MANAGER_CONSTANT = "MANAGER";
 
-    // class ShowHelpPage
+    // from class ShowHelpPage
     public static final CommandResponse SHOW_HELP_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/help.jsp");
-
 }

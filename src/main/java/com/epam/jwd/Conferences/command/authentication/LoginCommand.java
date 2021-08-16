@@ -89,19 +89,15 @@ public class LoginCommand implements Command {
         request.getCurrentSession()
                 .ifPresent(httpSession -> httpSession.setAttribute("language", finalValueOfSessionLocaleParameter));
 
-        //можно было бы целиком положить user в сессию, однако для этого его пришлось бы сериализовывать,
-        // во вторых в сессии не хочется хранить пароль
-        //поэтому достанем текущего user из сервиса
+        // fetches the current user from service
         final User loggedInUser = service.findByLogin(login);
 
-        //просетали ник текущего юзера в сессию
+        // sets only the nickname, the role and the id of the current user to the session
         session.setAttribute(ApplicationConstants.USER_NAME_SESSION_ATTRIBUTE, loggedInUser.getNickname());
-        //просетали роль текущего юзера в сессию
         session.setAttribute(ApplicationConstants.USER_ROLE_SESSION_ATTRIBUTE, loggedInUser.getRole());
-        //просетали id текущего юзера в сессию
         session.setAttribute(ApplicationConstants.USER_ID_SESSION_ATTRIBUTE, loggedInUser.getId());
 
-        // далее необходимо сделать паттерн PostRedirectGet
+        // redirects on index.jsp with the pattern 'PostRedirectGet', after that will happened 'get'
         return ApplicationConstants.LOGIN_SUCCESS_RESPONSE;
     }
 }

@@ -4,6 +4,7 @@ import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.constants.ApplicationConstants;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.Optional;
@@ -17,28 +18,31 @@ import javax.servlet.annotation.*;
  */
 @WebServlet(urlPatterns = "/controller")
 public class ApplicationController extends HttpServlet {
-//
+
+    private static final Logger logger = ApplicationConstants.LOGGER_FOR_APPLICATION_CONTROLLER;
+//    public static final String ERROR_WITH_THE_MESSAGE_ERROR_MESSAGE = "Error with the message: ";
 //    public static final String COMMAND_PARAM_NAME = "command";
+
     private String message;
 
-    // прописываем все методы, с которыми может работать контроллер
+    // write all the methods, with which the controller can work
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
         process(request, response);
     }
 
-    // метод doPost такой же как метод doGet, т.к. по архитектуре они не отличаются
+    // the 'doPost' method the same as the 'doGet', because architecturally the have no differences
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
         process(request, response);
     }
 
     private void process(HttpServletRequest request, HttpServletResponse response) {
-        //  в сервлете ожидаем что к нам пришла команда из request.getParameter
+        // it is awaited in the servlet that the command came from 'request.getParameter'
         final String commandName = request.getParameter(ApplicationConstants.COMMAND_PARAM_NAME);
 
-        //теперь пользуемся тем, что создали AppCommand, который возвращает название команды
+        // now the AppCommand is used to return the command name
         final Command command = Command.withName(commandName);
 
-        //теперь выполняем эту команду и получаем респонз, на основании которого нужно что-то делать
+        // the command is executed and the response is received, with which something should be done
         // у HttpServletRequest есть метод getRequestDispatcher, который возвращает RequestDispatcher по пути.
         // В RequestDispatcher есть метод forward(ServletRequest request, ServletResponse response)
         // - который пересылает запрос на соответствующую URI в рамках этого сервера и это должен быть
@@ -50,7 +54,7 @@ public class ApplicationController extends HttpServlet {
         // Следовательно CommandResponse должен отвечать на вопрос: является ли результат редиректом (на внешний ресурс),
         // или форвардом - на внутренний ресурс. И еще у него должен быть путь (смотри interface CommandResponse).
         // в параметрах создаем анонимный класс CommandRequest
-        // TODO надо написать нормальную реализацию Command Request
+        // there is only one place where the CommandResponse is used, that is why it is realised without a realisation
         final CommandResponse resp = command.execute(new CommandRequest() {
             @Override
             public HttpSession createSession() {
@@ -77,7 +81,7 @@ public class ApplicationController extends HttpServlet {
 
             @Override
             public void setAttribute(String name, Object value) {
-                // просетеваем аттрибут, который окажется в RequestScope
+                // setting of the attribute, which will be in the RequestScope
                 request.setAttribute(name, value);
             }
         });
@@ -100,28 +104,24 @@ public class ApplicationController extends HttpServlet {
         // т.е. иметь метод boolean redirect(); и у него должен быть путь String path();
         try {
             if (resp.isRedirect()) {
-                // если из редиректа
-                // httpServlet response
-                // Command resp
+                // if from redirect
                 response.sendRedirect(resp.getPath());
             } else {
-                // в противном случае делаем
+                // otherwise
                 final RequestDispatcher requestDispatcher = request.getRequestDispatcher(resp.getPath());
-                // а теперь по диспатчеру можем сказать
+                // and tell to dispatcher to forward
                 requestDispatcher.forward(request, response);
-
             }
         } catch (IOException | ServletException exception) {
-            // хотим, чтобы все ошибки вели на рандомную страницу ошибок
-            // response.sendRedirect(); // 404
+            // to lead all the error to the error page
             try {
                 response.sendRedirect("/controller?command=error");
             } catch (IOException e) {
-                // TODO записать в лог
+                logger.error(ApplicationConstants.ERROR_WITH_THE_MESSAGE_ERROR_MESSAGE + e.getMessage());
             }
         }
-
-        // теперь контроллер будет работать с чем угодно, даже если commandName не пришел все равно он разбереться
+        // now the controller will work with everything. If a commandName will be unknown,
+        // the controller understand what it should do
     }
 
     public void destroy() {

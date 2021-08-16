@@ -7,7 +7,6 @@ import com.epam.jwd.Conferences.exception.DuplicateException;
 import com.epam.jwd.Conferences.exception.EntityNotFoundException;
 import com.epam.jwd.Conferences.exception.NoConnectionException;
 import com.epam.jwd.Conferences.pool.ConnectionPool;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
@@ -19,7 +18,7 @@ import java.util.*;
  */
 public abstract class CommonDAO<T extends DatabaseEntity<Long>> implements DAO<T, Long> {
 
-    private static final Logger logger = LogManager.getLogger(CommonDAO.class);
+    private static final Logger logger = ApplicationConstants.LOGGER_FOR_COMMON_DAO; //LogManager.getLogger(CommonDAO.class);
 
 //    private static final String FIND_ALL_SQL_TEMPLATE = "select * from %s";
 //    private static final String FIND_BY_ID_SQL_TEMPLATE = "select * from %s where id = ?";

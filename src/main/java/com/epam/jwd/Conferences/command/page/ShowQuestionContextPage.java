@@ -75,7 +75,7 @@ public class ShowQuestionContextPage implements Command {
             return prepareErrorPageBackToMainPage(request,
                     ApplicationConstants.INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
         }
-        List<Report> questionContextReports = null;
+        List<Report> questionContextReports;
         if (questionReportId != 0) {
             if (!validator.isReportExistInSystem(questionReportId)) {
                 return prepareErrorPageBackToMainPage(request,
