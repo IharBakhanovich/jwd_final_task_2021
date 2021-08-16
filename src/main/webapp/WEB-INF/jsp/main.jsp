@@ -99,6 +99,13 @@
                     </c:choose>
                 </table>
             </c:if>
+            <c:if test="${sessionScope.userRole eq Role.ADMIN}">
+                <div class="link">
+                    <a href="${pageContext.request.contextPath}/controller?command=show_create_conference&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}"><fmt:message
+                            key="label.createConferenceReference"/></a>
+                </div>
+
+            </c:if>
 
             <%--    <h2><fmt:message key="label.personal.section"/></h2>--%>
             <%--    <c:choose>--%>

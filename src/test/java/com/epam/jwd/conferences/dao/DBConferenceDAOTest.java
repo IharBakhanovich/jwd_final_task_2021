@@ -7,18 +7,16 @@ import com.epam.jwd.Conferences.exception.CouldNotInitializeConnectionPoolExcept
 import com.epam.jwd.Conferences.exception.DuplicateException;
 import com.epam.jwd.Conferences.pool.ConnectionPool;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.*;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Test for the AreaDAO
+ * Test for the DBConferenceDAO
  */
 @RunWith(JUnitPlatform.class)
 @TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
@@ -69,9 +67,7 @@ public class DBConferenceDAOTest {
     @Test
     @Order(2)
     void InsertConferenceDuplicate() {
-        Assertions.assertThrows(DuplicateException.class, () -> {
-            conferenceDAO.save(conference);
-        });
+        Assertions.assertThrows(DuplicateException.class, () -> conferenceDAO.save(conference));
     }
 
     @Test
@@ -109,7 +105,7 @@ public class DBConferenceDAOTest {
 
 
     @AfterAll
-    public void tearDown() throws SQLException {
+    public void tearDown() {
         //conferenceDAO.delete(conferenceId);
         conferences.clear();
         ConnectionPool.retrieve().destroy();

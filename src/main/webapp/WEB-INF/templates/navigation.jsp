@@ -30,8 +30,8 @@
                         key="label.userPageReference"/></a>
 
                 <%--                <p><fmt:message key="label.clickToAddNewConference"/></p>--%>
-                <a href="${pageContext.request.contextPath}/controller?command=show_create_conference&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}"><fmt:message
-                        key="label.createConferenceReference"/></a>
+<%--                <a href="${pageContext.request.contextPath}/controller?command=show_create_conference&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}"><fmt:message--%>
+<%--                        key="label.createConferenceReference"/></a>--%>
             </c:if>
 
             <c:if test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userRole eq Role.MANAGER}">
