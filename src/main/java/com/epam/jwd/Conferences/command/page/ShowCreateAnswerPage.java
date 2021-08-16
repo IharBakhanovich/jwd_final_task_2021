@@ -13,6 +13,11 @@ import com.epam.jwd.Conferences.validator.Validator;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implements 'show_create_answer' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class ShowCreateAnswerPage implements Command {
     private static final CommandResponse CREATE_ANSWER_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createAnswer.jsp");
@@ -63,6 +68,12 @@ public class ShowCreateAnswerPage implements Command {
         return ShowCreateAnswerPage.ShowCreateAnswerPageHolder.instance;
     }
 
+    /**
+     * Executes the command. Returns the commandResponse.
+     *
+     * @param request a CommandRequest object of this command.
+     * @return a CommandResponse object of this command.
+     */
     @Override
     public CommandResponse execute(CommandRequest request) {
         final Long questionReportId = Long.valueOf(request.getParameter(QUESTION_REPORT_ID_PARAMETER_NAME_FOR_ANSWER));

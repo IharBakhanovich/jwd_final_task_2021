@@ -11,6 +11,11 @@ import com.epam.jwd.Conferences.validator.Validator;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implements 'show_create_report' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class ShowCreateReportPage implements Command {
 //    private static final CommandResponse CREATE_REPORT_PAGE_RESPONSE
 //            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createReport.jsp");

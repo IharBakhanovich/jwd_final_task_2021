@@ -12,20 +12,21 @@ import java.util.List;
 
 import static com.epam.jwd.Conferences.dto.Role.*;
 
-// для того, чтобы по значению параметра commandName (команде) в контроллере вытащить класс, соответствующий команде
-// класс содержит в себе все присутствующие в приложении команды
 /**
- * To get the right Command by the 'commandName' parameter in Controller.
+ * To fetch the right Command by the 'commandName' parameter in Controller.
+ * The Class contains all used in system commands.
+ *
+ * @author Ihar Bakhanovich
  */
 public enum AppCommand {
-    //соответственно для енама будем передавать параметр (class Command)
-    // и в таком духе на каждую команду: название - команда
+
+    // for all enums will be the own parameter - command (class Command)
     MAIN_PAGE(ShowMainPage.getInstance()),
-    SHOW_USERS(ShowUsersPage.getInstance(), ADMIN), //посмотреть юзеров может только админ
-    SHOW_LOGIN(ShowLoginPage.getInstance(), UNAUTHORIZED), // открывать логин страницу может только UNAUTHORIZED
-    LOGOUT(LogoutCommand.getInstance(), USER, ADMIN, MANAGER), //USER и ADMIN могут logout
-    LOGIN(LoginCommand.getInstance(), UNAUTHORIZED), //логиниться может только UNAUTHORIZED
-    ERROR(ShowErrorPage.getInstance()),//для всех пользователей, поэтому не выделяем,
+    SHOW_USERS(ShowUsersPage.getInstance(), ADMIN), // to show users page can only admin
+    SHOW_LOGIN(ShowLoginPage.getInstance(), UNAUTHORIZED), // this page can open only UNAUTHORIZED user
+    LOGOUT(LogoutCommand.getInstance(), USER, ADMIN, MANAGER), //USER, ADMIN and MANAGER can logout
+    LOGIN(LoginCommand.getInstance(), UNAUTHORIZED), // login command can only UNAUTHORIZED user
+    ERROR(ShowErrorPage.getInstance()),// for all users, that is why no roles are specified
     SHOW_SECTIONS(ShowConferenceSectionsPage.getInstance(), USER, ADMIN, UNAUTHORIZED, MANAGER),
     SHOW_REPORTS(ShowSectionReportsPage.getInstance(), USER, ADMIN, UNAUTHORIZED, MANAGER),
     SHOW_USER(ShowUserPage.getInstance(), USER, ADMIN, MANAGER), //shows a user
@@ -52,19 +53,19 @@ public enum AppCommand {
     UPDATE_REPORT(UpdateReport.getInstance(), ADMIN, USER, MANAGER), // updates report data
     UPDATE_CONFERENCE(UpdateConference.getInstance(), ADMIN), // updates report data
     UPDATE_SECTION(UpdateSection.getInstance(), ADMIN, USER, MANAGER), // updates report data
-    DEFAULT(ShowMainPage.getInstance()); // по дефолту показываем главную страницу
+    DEFAULT(ShowMainPage.getInstance()); // show by default main page
 
-    // поле, которое будет заполняться из конструктора
+    // the field, that filled in from the constructor
     private final Command command;
 
-    // поле в котором будут храниться все roles.
-    // Соответственно для каждой команды прямо в appCommand можно сказать какие роли имеют право эту команду выполнить
+    // the field, that contains all the roles. Therefore in Controller for all the command can be determined,
+    // which roles has rights to invoke this command.
     private final List<Role> allowedRoles;
 
-    // принимаем roles в качестве var args, т.е. можно вообще не передать никаких ролей
+    // take roles as 'var args', i.e. it can be no roles to be transferred
     AppCommand(Command command, Role... roles) {
         this.command = command;
-        // если ролей нет, до добавляем всех и это значит, что делать можно всем
+        // if there are no roles that means that all the roles can invoke this command
         this.allowedRoles = roles != null && roles.length > 0 ? Arrays.asList(roles) : Role.valuesAsList();
     }
 
@@ -86,12 +87,9 @@ public enum AppCommand {
         return allowedRoles;
     }
 
-    //теперь нужен способ по названию получать команду (статический фабричный метод)
-    // если имя константы в нижнем регистре совпадает с name, тогда возвращаем эту команду
-    // в случае, если такой команды не нашлось - можем возвращать страницу 404 или дефолтную команду
-    //
     /**
-     * Returns the {@link AppCommand} by the name of the command.
+     * Returns the {@link AppCommand} by the name of the command. If the name of the constant without cases
+     * matches with name, it returns this command/ If there is no such a command - returns DEFAULT command
      *
      * @param name ist the name of the command.
      * @return the {@link AppCommand} in case if the command exists in the class.

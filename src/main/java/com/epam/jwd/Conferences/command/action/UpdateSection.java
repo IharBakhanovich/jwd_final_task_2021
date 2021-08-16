@@ -14,6 +14,11 @@ import com.epam.jwd.Conferences.validator.Validator;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implements 'update_section' action. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class UpdateSection implements Command {
 
 //    private static final String MANAGER_SECTION_NICKNAME_PARAMETER_NAME = "managerSectNickname";
@@ -220,18 +225,6 @@ public class UpdateSection implements Command {
         request.setAttribute(ApplicationConstants.SECTION_MANAGER_ID_ATTRIBUTE_NAME, sectionManagerId);
         request.setAttribute(ApplicationConstants.CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME, conferenceManagerId);
         request.setAttribute(ApplicationConstants.ERROR_ATTRIBUTE_NAME, errorMessage);
-//        final Long conferenceId = Long.valueOf(request.getParameter(CONFERENCE_ID_PARAMETER_NAME));
-//        final List<User> users = service.findAllUsers();
-//        request.setAttribute(USERS_ATTRIBUTE_NAME, users);
-//        final List<Conference> conferences = service.findAllConferences();
-//        for (Conference conference: conferences
-//        ) {
-//            if (conference.getId().equals(conferenceId)) {
-//                request.setAttribute(MANAGER_CONFERENCE_ATTRIBUTE_NAME, conference.getManagerConf());
-//            }
-//        }
-//        request.setAttribute(CONFERENCES_ATTRIBUTE_NAME, conferences);
-//        request.setAttribute(CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
         return ApplicationConstants.SECTION_UPDATE_ERROR_RESPONSE;
     }
 

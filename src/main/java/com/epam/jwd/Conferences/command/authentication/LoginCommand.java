@@ -9,7 +9,11 @@ import com.epam.jwd.Conferences.service.UserService;
 
 import javax.servlet.http.HttpSession;
 
-//команда будет принимать в себя пользователя из формы
+/**
+ * Implements 'login' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class LoginCommand implements Command {
 
 //    private static final String LOGIN_PARAM_NAME = "login";

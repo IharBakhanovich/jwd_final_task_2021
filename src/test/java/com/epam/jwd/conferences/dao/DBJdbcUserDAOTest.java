@@ -17,7 +17,7 @@ import java.util.Optional;
 import static at.favre.lib.crypto.bcrypt.BCrypt.MIN_COST;
 
 /**
- * Test for the DBJdbcUserDAO
+ * Tests for the DBJdbcUserDAO
  */
 @RunWith(JUnitPlatform.class)
 @TestInstance(value = TestInstance.Lifecycle.PER_CLASS)

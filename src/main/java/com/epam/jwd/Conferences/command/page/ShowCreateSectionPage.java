@@ -11,6 +11,11 @@ import com.epam.jwd.Conferences.validator.Validator;
 
 import java.util.List;
 
+/**
+ * Implements 'show_create_section' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class ShowCreateSectionPage implements Command {
 //    private static final CommandResponse CREATE_SECTION_PAGE_RESPONSE
 //            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/createSection.jsp");

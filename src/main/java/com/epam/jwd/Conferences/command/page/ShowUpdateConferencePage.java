@@ -11,6 +11,11 @@ import com.epam.jwd.Conferences.validator.Validator;
 
 import java.util.List;
 
+/**
+ * Implements 'show_update_conference' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class ShowUpdateConferencePage implements Command {
 //    private static final CommandResponse UPDATE_CONFERENCE_PAGE_RESPONSE
 //            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/updateConference.jsp");
@@ -72,8 +77,8 @@ public class ShowUpdateConferencePage implements Command {
         final List<User> users = service.findAllUsers();
         request.setAttribute(ApplicationConstants.USERS_ATTRIBUTE_NAME, users);
         final List<Conference> conferences = service.findAllConferences();
-        for (Conference conference: conferences
-             ) {
+        for (Conference conference : conferences
+        ) {
             if (conference.getId().equals(conferenceId)) {
                 request.setAttribute(ApplicationConstants.MANAGER_CONFERENCE_ATTRIBUTE_NAME, conference.getManagerConf());
             }

@@ -11,6 +11,11 @@ import com.epam.jwd.Conferences.validator.Validator;
 
 import java.util.List;
 
+/**
+ * Implements 'show_question_context' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class ShowQuestionContextPage implements Command {
 
 //    private static final String QUESTION_ID_PARAMETER_NAME_FOR_CONTEXT = "questionIdForContext";
@@ -71,7 +76,7 @@ public class ShowQuestionContextPage implements Command {
                     ApplicationConstants.INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
         }
         List<Report> questionContextReports = null;
-        if (questionReportId!=0) {
+        if (questionReportId != 0) {
             if (!validator.isReportExistInSystem(questionReportId)) {
                 return prepareErrorPageBackToMainPage(request,
                         ApplicationConstants.INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);

@@ -10,6 +10,11 @@ import com.epam.jwd.Conferences.validator.Validator;
 
 import java.util.List;
 
+/**
+ * Implements 'show_create_conference' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class ShowCreateConferencePage implements Command {
 
 //    private static final CommandResponse CREATE_CONFERENCE_PAGE_RESPONSE

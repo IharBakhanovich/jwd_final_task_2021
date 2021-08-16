@@ -11,10 +11,15 @@ import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.exception.DuplicateException;
 import com.epam.jwd.Conferences.service.UserService;
 import com.epam.jwd.Conferences.validator.Validator;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.util.List;
 
+/**
+ * Implements 'create_section' action. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class CreateSection implements Command {
     private static final Logger logger = ApplicationConstants.LOGGER_FOR_CREATE_SECTION; //LogManager.getLogger(CreateSection.class);
 
@@ -82,8 +87,10 @@ public class CreateSection implements Command {
         final String sectionName = request.getParameter(ApplicationConstants.SECTION_NAME_PARAMETER_NAME);
         final String managerSect = request.getParameter(ApplicationConstants.MANAGER_SECTION_PARAMETER_NAME);
         final Long creatorId = Long.valueOf(request.getParameter(ApplicationConstants.CREATOR_ID_PARAMETER_NAME));
-        final String creatorRole = String.valueOf(request.getParameter(ApplicationConstants.CREATOR_ROLE_PARAMETER_NAME));
-        final String conferenceTitleToCheck = String.valueOf(request.getParameter(ApplicationConstants.CONFERENCE_TITLE_PARAMETER_NAME));
+        final String creatorRole
+                = String.valueOf(request.getParameter(ApplicationConstants.CREATOR_ROLE_PARAMETER_NAME));
+        final String conferenceTitleToCheck
+                = String.valueOf(request.getParameter(ApplicationConstants.CONFERENCE_TITLE_PARAMETER_NAME));
 
         final List<User> users = service.findAllUsers();
         final List<Conference> conferences = service.findAllConferences();
@@ -102,7 +109,8 @@ public class CreateSection implements Command {
                 || !validator.isUserWithIdExistInSystem(conferenceManagerId)
                 || !validator.isRoleWithSuchNameExistInSystem(creatorRole)
                 || !validator.isConferenceTitleAndIdFromTheSameConference(conferenceId, conferenceTitleToCheck)) {
-            return prepareErrorPageBackToMainPage(request, ApplicationConstants.INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
+            return prepareErrorPageBackToMainPage(request,
+                    ApplicationConstants.INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
         }
 
         if (!creatorRole.equals("ADMIN") && !(creatorId.equals(conferenceManagerId))) {

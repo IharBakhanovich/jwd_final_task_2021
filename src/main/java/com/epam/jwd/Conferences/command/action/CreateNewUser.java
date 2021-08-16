@@ -8,13 +8,14 @@ import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.exception.DuplicateException;
 import com.epam.jwd.Conferences.service.UserService;
 import com.epam.jwd.Conferences.validator.Validator;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 /**
  * Implements 'create_new_user' action. The singleton.
+ *
+ * @author Ihar Bakhanovich
  */
 public class CreateNewUser implements Command {
 

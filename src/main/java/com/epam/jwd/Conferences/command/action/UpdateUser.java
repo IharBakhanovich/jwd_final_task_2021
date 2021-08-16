@@ -15,6 +15,8 @@ import java.util.Optional;
 
 /**
  * Implements 'update_user' action. The singleton.
+ *
+ * @author Ihar Bakhanovich
  */
 public class UpdateUser implements Command {
 
@@ -155,7 +157,7 @@ public class UpdateUser implements Command {
         }
 
         if (!validator.isLengthValid(surname, ApplicationConstants.MAX_LENGTH_OF_SURNAME_IN_DB)) {
-            return prepareErrorPage(request,ApplicationConstants.INVALID_SURNAME_TOO_LONG_MSG);
+            return prepareErrorPage(request, ApplicationConstants.INVALID_SURNAME_TOO_LONG_MSG);
         }
 
         // check parameter role
@@ -199,7 +201,7 @@ public class UpdateUser implements Command {
     }
 
     private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
-                                             String errorMessage) {
+                                                           String errorMessage) {
         final List<Conference> conferences = service.findAllConferences();
         request.setAttribute(ApplicationConstants.CONFERENCES_ATTRIBUTE_NAME, conferences);
         final List<User> users = service.findAllUsers();

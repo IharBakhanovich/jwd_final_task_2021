@@ -13,6 +13,11 @@ import com.epam.jwd.Conferences.validator.Validator;
 
 import java.util.List;
 
+/**
+ * Implements 'show_own_applications' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class ShowOwnApplicationsPage implements Command {
 
     private static final CommandResponse SHOW_APPLICATIONS_PAGE_RESPONSE
@@ -56,6 +61,12 @@ public class ShowOwnApplicationsPage implements Command {
         this.validator = Validator.retrieve();
     }
 
+    /**
+     * Executes the command. Returns the commandResponse.
+     *
+     * @param request a CommandRequest object of this command.
+     * @return a CommandResponse object of this command.
+     */
     @Override
     public CommandResponse execute(CommandRequest request) {
         final Long managerId = Long.valueOf(request.getParameter(ApplicationConstants.MANAGER_ID_PARAMETER_NAME));

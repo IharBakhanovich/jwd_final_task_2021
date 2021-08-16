@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 
 /**
- * @author Ihar Bakhanovich
+ * Tests for ConnectionPool
  */
 public class ConnectionPoolTest {
 

@@ -7,6 +7,11 @@ import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.dto.Role;
 import com.epam.jwd.Conferences.validator.Validator;
 
+/**
+ * Implements 'show_create_new_user' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class ShowCreateNewUserPage implements Command {
 
 //    private static final CommandResponse SHOW_CREATE_NEW_USER_PAGE_RESPONSE

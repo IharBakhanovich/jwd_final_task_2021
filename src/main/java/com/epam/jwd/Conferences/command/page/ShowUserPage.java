@@ -10,6 +10,11 @@ import com.epam.jwd.Conferences.validator.Validator;
 
 import java.util.Optional;
 
+/**
+ * Implements 'show_user' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class ShowUserPage implements Command {
 
 //    private static final CommandResponse SHOW_USER_PAGE_RESPONSE

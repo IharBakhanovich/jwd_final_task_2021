@@ -11,6 +11,11 @@ import com.epam.jwd.Conferences.validator.Validator;
 
 import java.util.List;
 
+/**
+ * Implements 'show_update_section' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class ShowUpdateSectionPage implements Command {
 //    private static final CommandResponse UPDATE_SECTION_PAGE_RESPONSE
 //            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/updateSection.jsp");
@@ -83,8 +88,8 @@ public class ShowUpdateSectionPage implements Command {
         String sectionName = null;
         Long sectionManagerId = null;
         final List<Section> sections = service.findAllSections();
-        for (Section section: sections
-             ) {
+        for (Section section : sections
+        ) {
             if (section.getId().equals(sectionId)) {
                 sectionName = section.getSectionName();
                 sectionManagerId = section.getManagerSect();

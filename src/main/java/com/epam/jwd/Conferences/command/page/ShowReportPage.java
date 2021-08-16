@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implements 'show_report' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class ShowReportPage implements Command {
 //    private static final CommandResponse SHOW_REPORT_PAGE_RESPONSE
 //            = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/report.jsp");

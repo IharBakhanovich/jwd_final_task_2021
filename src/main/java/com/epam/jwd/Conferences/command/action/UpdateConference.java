@@ -8,17 +8,18 @@ import com.epam.jwd.Conferences.dto.Conference;
 import com.epam.jwd.Conferences.dto.Role;
 import com.epam.jwd.Conferences.dto.Section;
 import com.epam.jwd.Conferences.dto.User;
-import com.epam.jwd.Conferences.exception.DuplicateException;
 import com.epam.jwd.Conferences.service.UserService;
 import com.epam.jwd.Conferences.validator.Validator;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implements 'update_conference' action. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class UpdateConference implements Command {
 
     private static final Logger logger = ApplicationConstants.LOGGER_FOR_UPDATE_CONFERENCE; //LogManager.getLogger(UpdateConference.class);
@@ -161,7 +162,7 @@ public class UpdateConference implements Command {
         final List<User> users = service.findAllUsers();
         request.setAttribute(ApplicationConstants.USERS_ATTRIBUTE_NAME, users);
         final List<Conference> conferences = service.findAllConferences();
-        for (Conference conference: conferences
+        for (Conference conference : conferences
         ) {
             if (conference.getId().equals(conferenceId)) {
                 request.setAttribute(ApplicationConstants.MANAGER_CONFERENCE_ATTRIBUTE_NAME, conference.getManagerConf());

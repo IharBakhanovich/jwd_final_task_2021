@@ -13,6 +13,11 @@ import com.epam.jwd.Conferences.validator.Validator;
 
 import java.util.List;
 
+/**
+ * Implements 'show_applications' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class ShowApplicationsPage implements Command {
 //    private static final String SECTIONS_ATTRIBUTE_NAME = "sections";
 //    private static final String CONFERENCES_ATTRIBUTE_NAME = "conferences";
@@ -51,6 +56,12 @@ public class ShowApplicationsPage implements Command {
         this.validator = Validator.retrieve();
     }
 
+    /**
+     * Executes the command. Returns the commandResponse.
+     *
+     * @param request a CommandRequest object of this command.
+     * @return a CommandResponse object of this command.
+     */
     @Override
     public CommandResponse execute(CommandRequest request) {
         final Long managerId = Long.valueOf(request.getParameter(ApplicationConstants.MANAGER_ID_PARAMETER_NAME));

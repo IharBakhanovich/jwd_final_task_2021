@@ -13,6 +13,8 @@ import java.util.Optional;
 
 /**
  * Implements 'update_report' action. The singleton.
+ *
+ * @author Ihar Bakhanovich
  */
 public class UpdateReport implements Command {
 

@@ -13,6 +13,11 @@ import com.epam.jwd.Conferences.validator.Validator;
 
 import java.util.List;
 
+/**
+ * Implements 'show_own_questions' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class ShowOwnQuestionPage implements Command {
 
 //    private static final CommandResponse SHOW_QUESTIONS_PAGE_RESPONSE
@@ -56,6 +61,12 @@ public class ShowOwnQuestionPage implements Command {
         this.validator = Validator.retrieve();
     }
 
+    /**
+     * Executes the command. Returns the commandResponse.
+     *
+     * @param request a CommandRequest object of this command.
+     * @return a CommandResponse object of this command.
+     */
     @Override
     public CommandResponse execute(CommandRequest request) {
         final String sectionName = request.getParameter(ApplicationConstants.SECTION_NAME_PARAMETER_NAME);

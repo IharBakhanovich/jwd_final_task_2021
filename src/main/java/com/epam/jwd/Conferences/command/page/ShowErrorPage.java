@@ -5,6 +5,11 @@ import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.constants.ApplicationConstants;
 
+/**
+ * Implements 'error' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class ShowErrorPage implements Command {
 
 //    private static final CommandResponse ERROR_PAGE_RESPONSE

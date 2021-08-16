@@ -5,6 +5,11 @@ import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.constants.ApplicationConstants;
 
+/**
+ * Implements 'show_help' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class ShowHelpPage implements Command {
 
 //    private static final CommandResponse SHOW_HELP_PAGE_RESPONSE

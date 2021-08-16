@@ -12,6 +12,11 @@ import com.epam.jwd.Conferences.validator.Validator;
 
 import java.util.List;
 
+/**
+ * Implements 'show_sections' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class ShowConferenceSectionsPage implements Command {
 
 //    private static final String ID_PARAMETER_NAME = "id";
@@ -73,9 +78,9 @@ public class ShowConferenceSectionsPage implements Command {
 
         final List<Conference> conferences = service.findAllConferences();
         Long conferenceManagerId = null;
-        for (Conference conference: conferences
-             ) {
-            if(conference.getId().equals(id)) {
+        for (Conference conference : conferences
+        ) {
+            if (conference.getId().equals(id)) {
                 conferenceManagerId = conference.getManagerConf();
             }
         }
@@ -88,6 +93,7 @@ public class ShowConferenceSectionsPage implements Command {
         request.setAttribute(ApplicationConstants.USERS_ATTRIBUTE_NAME, users);
         return ApplicationConstants.SHOW_SECTIONS_PAGE_RESPONSE;
     }
+
     private CommandResponse prepareErrorPageBackToMainPage(CommandRequest request,
                                                            String errorMessage) {
         final List<Conference> conferences = service.findAllConferences();

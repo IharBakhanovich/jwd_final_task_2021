@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Test for the DBConferenceDAO
+ * Tests for the DBConferenceDAO
  */
 @RunWith(JUnitPlatform.class)
 @TestInstance(value = TestInstance.Lifecycle.PER_CLASS)

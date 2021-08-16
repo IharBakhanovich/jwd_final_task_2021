@@ -12,10 +12,13 @@ import com.epam.jwd.Conferences.exception.DuplicateException;
 import com.epam.jwd.Conferences.service.UserService;
 import com.epam.jwd.Conferences.validator.Validator;
 import org.apache.logging.log4j.Logger;
+
 import java.util.List;
 
 /**
  * Implements 'create_new_report' action. The singleton.
+ *
+ * @author Ihar Bakhanovich
  */
 public class CreateReport implements Command {
 
@@ -115,7 +118,7 @@ public class CreateReport implements Command {
 
         //validation of questionReportId
         if (questionReportId != 0) {
-            if(!validator.isReportExistInSystem(questionReportId)) {
+            if (!validator.isReportExistInSystem(questionReportId)) {
                 return prepareErrorPageBackToMainPage(request, ApplicationConstants.INVALID_PARAMETERS_SOMETHING_WRONG_WITH_PARAMETERS_MSG);
             }
         }

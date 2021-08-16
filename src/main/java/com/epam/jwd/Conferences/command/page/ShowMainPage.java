@@ -12,6 +12,8 @@ import java.util.List;
 
 /**
  * This is a command for main page. The singleton.
+ *
+ * @author Ihar Bakhanovich
  */
 public class ShowMainPage implements Command {
 

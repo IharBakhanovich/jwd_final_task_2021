@@ -5,6 +5,11 @@ import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.constants.ApplicationConstants;
 
+/**
+ * Implements 'show_login' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class ShowLoginPage implements Command {
 
 //    private static final CommandResponse LOGIN_PAGE_RESPONSE

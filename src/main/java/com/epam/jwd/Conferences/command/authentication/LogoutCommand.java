@@ -5,6 +5,11 @@ import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.constants.ApplicationConstants;
 
+/**
+ * Implements 'logout' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class LogoutCommand implements Command {
 //    private static final CommandResponse MAIN_PAGE_REDIRECT
 //            = CommandResponse.getCommandResponse(true, "index.jsp");

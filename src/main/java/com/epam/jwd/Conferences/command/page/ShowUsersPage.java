@@ -9,7 +9,11 @@ import com.epam.jwd.Conferences.service.UserService;
 
 import java.util.List;
 
-
+/**
+ * Implements 'show_users' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class ShowUsersPage implements Command {
 
 //    private static final CommandResponse SHOW_USERS_PAGE_RESPONSE

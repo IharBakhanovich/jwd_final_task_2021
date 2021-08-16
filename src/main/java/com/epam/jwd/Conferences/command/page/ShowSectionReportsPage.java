@@ -14,7 +14,9 @@ import com.epam.jwd.Conferences.validator.Validator;
 import java.util.List;
 
 /**
- * This is a command for section's reports page. The singleton.
+ * Implements 'show_reports' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
  */
 public class ShowSectionReportsPage implements Command {
 

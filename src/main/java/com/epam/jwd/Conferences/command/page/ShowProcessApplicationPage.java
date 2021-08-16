@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implements 'show_process_application' command. The singleton.
+ *
+ * @author Ihar Bakhanovich
+ */
 public class ShowProcessApplicationPage implements Command {
 
 //    private static final CommandResponse PROCESS_APPLICATION_PAGE_RESPONSE
@@ -69,6 +74,12 @@ public class ShowProcessApplicationPage implements Command {
         return ShowProcessApplicationPage.ShowProcessApplicationPageHolder.instance;
     }
 
+    /**
+     * Executes the command. Returns the commandResponse.
+     *
+     * @param request a CommandRequest object of this command.
+     * @return a CommandResponse object of this command.
+     */
     @Override
     public CommandResponse execute(CommandRequest request) {
 
