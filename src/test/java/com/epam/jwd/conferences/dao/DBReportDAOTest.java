@@ -2,8 +2,11 @@ package com.epam.jwd.conferences.dao;
 
 import com.epam.jwd.Conferences.dao.ConferenceDAO;
 import com.epam.jwd.Conferences.dao.DAOFactory;
+import com.epam.jwd.Conferences.dao.ReportDAO;
 import com.epam.jwd.Conferences.dao.SectionDAO;
 import com.epam.jwd.Conferences.dto.Conference;
+import com.epam.jwd.Conferences.dto.Report;
+import com.epam.jwd.Conferences.dto.ReportType;
 import com.epam.jwd.Conferences.dto.Section;
 import com.epam.jwd.Conferences.exception.CouldNotInitializeConnectionPoolException;
 import com.epam.jwd.Conferences.exception.DuplicateException;
@@ -16,21 +19,25 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Test for the DBSectionDAO
+ * Test for the DBReportDAO
  */
 @RunWith(JUnitPlatform.class)
 @TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class DBSectionDaoTest {
+public class DBReportDAOTest {
     private final ConferenceDAO conferenceDAO = DAOFactory.getInstance().getConferenceDAO();
     private final SectionDAO sectionDAO = DAOFactory.getInstance().getSectionDAO();
+    private final ReportDAO reportDAO = DAOFactory.getInstance().getReportDAO();
     private List<Conference> conferences;
     private List<Section> sections;
+    private List<Report> reports;
     Conference conference = new Conference(1L, "TestConference", 1L);
-    Section section = null; //new Section(1L, 10L, "TestSection", 1L);
+    Section section = null;
+    Report report = null;
     private Long sectionId;
     private Long conferenceId;
-    String newSectionName;
+    private Long reportId;
+    String newReportText;
     Long conferenceManager;
 
     @BeforeAll
@@ -66,51 +73,67 @@ public class DBSectionDaoTest {
                 sectionId = sectionInLoop.getId();
             }
         }
+        report = new Report(1L, sectionId, conferenceId, "TestReport",
+                ReportType.APPLICATION, conferenceManager, 0L);
+        try {
+            reportDAO.save(report);
+            reports = reportDAO.findAllReportsBySectionID(sectionId, conferenceId);
+        } catch (DuplicateException e) {
+            e.printStackTrace();
+        }
+        for (Report reportInLoop : reports
+        ) {
+            if (reportInLoop.getReportText().equals(report.getReportText())) {
+                reportId = reportInLoop.getId();
+            }
+        }
     }
 
     @Test
     @Order(1)
-    void InsertSection() {
-        Long sectionIdFromDatabase = null;
+    void InsertReport() {
+        Long reportIdFromDatabase = null;
 
-        for (Section sectionInLoop : sections
+        for (Report reportInLoop : reports
         ) {
-            if (sectionInLoop.getSectionName().equals(section.getSectionName())) {
-                sectionIdFromDatabase = sectionInLoop.getId();
+            if (reportInLoop.getReportText().equals(report.getReportText())) {
+                reportIdFromDatabase = reportInLoop.getId();
             }
         }
-        Assertions.assertEquals(sectionIdFromDatabase, sectionId);
+        Assertions.assertEquals(reportIdFromDatabase, reportId);
     }
 
     @Test
     @Order(2)
-    void findSection() {
-        Optional<Section> sectionFromDatabase = sectionDAO.findById(sectionId);
-        Assertions.assertEquals(sectionFromDatabase.get().getSectionName(), section.getSectionName());
+    void findReport() {
+        Optional<Report> reportFromDatabase = reportDAO.findById(reportId);
+        Assertions.assertEquals(reportFromDatabase.get().getReportText(), report.getReportText());
     }
 
     @Test
     @Order(3)
-    void UpdateSection() {
-        String newSectionName = "TestsPassedSection";
-        Section updatedSection
-                = new Section(sectionId, section.getConferenceId(), newSectionName, section.getManagerSect());
-        sectionDAO.update(updatedSection);
+    void UpdateReport() {
+        String newReportText = "TestsPassedReport";
+        Report updatedReport
+                = new Report(reportId, report.getSectionId(), report.getConferenceId(),
+                newReportText, report.getReportType(), report.getApplicant(), report.getQuestionReportId());
+        reportDAO.update(updatedReport);
 
-        Optional<Section> sectionFromDatabase = sectionDAO.findById(sectionId);
-        this.newSectionName = sectionFromDatabase.get().getSectionName();
-        Assertions.assertEquals(sectionFromDatabase.get().getSectionName(), updatedSection.getSectionName());
+        Optional<Report> reportFromDatabase = reportDAO.findById(reportId);
+        this.newReportText = reportFromDatabase.get().getReportText();
+        Assertions.assertEquals(reportFromDatabase.get().getReportText(),
+                updatedReport.getReportText());
     }
 
     @Test
     @Order(4)
     void DeleteSection() {
-        Optional<Section> sectionFromDatabase = sectionDAO.findById(sectionId);
+        Optional<Report> reportFromDatabase = reportDAO.findById(reportId);
 
-        if (sectionFromDatabase.get().getSectionName().equals(newSectionName)) {
-            sectionDAO.delete(sectionId);
-            Optional<Section> foundedSection = sectionDAO.findById(sectionId);
-            Assertions.assertFalse(foundedSection.isPresent());
+        if (reportFromDatabase.get().getReportText().equals(newReportText)) {
+            reportDAO.delete(reportId);
+            Optional<Report> foundedReport = reportDAO.findById(reportId);
+            Assertions.assertFalse(foundedReport.isPresent());
         } else {
             Assertions.fail();
         }
@@ -120,6 +143,7 @@ public class DBSectionDaoTest {
     @AfterAll
     public void tearDown() {
         conferenceDAO.delete(conferenceId);
+        sectionDAO.delete(sectionId);
         conferences.clear();
         sections.clear();
         ConnectionPool.retrieve().destroy();
