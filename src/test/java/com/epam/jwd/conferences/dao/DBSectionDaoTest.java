@@ -86,7 +86,11 @@ public class DBSectionDaoTest {
     @Order(2)
     void findSection() {
         Optional<Section> sectionFromDatabase = sectionDAO.findById(sectionId);
-        Assertions.assertEquals(sectionFromDatabase.get().getSectionName(), section.getSectionName());
+        if (sectionFromDatabase.isPresent()) {
+            Assertions.assertEquals(sectionFromDatabase.get().getSectionName(), section.getSectionName());
+        } else {
+            Assertions.fail();
+        }
     }
 
     @Test
@@ -98,24 +102,30 @@ public class DBSectionDaoTest {
         sectionDAO.update(updatedSection);
 
         Optional<Section> sectionFromDatabase = sectionDAO.findById(sectionId);
-        this.newSectionName = sectionFromDatabase.get().getSectionName();
-        Assertions.assertEquals(sectionFromDatabase.get().getSectionName(), updatedSection.getSectionName());
+        if (sectionFromDatabase.isPresent()) {
+            this.newSectionName = sectionFromDatabase.get().getSectionName();
+            Assertions.assertEquals(sectionFromDatabase.get().getSectionName(), updatedSection.getSectionName());
+        } else {
+            Assertions.fail();
+        }
     }
 
     @Test
     @Order(4)
     void DeleteSection() {
         Optional<Section> sectionFromDatabase = sectionDAO.findById(sectionId);
-
-        if (sectionFromDatabase.get().getSectionName().equals(newSectionName)) {
-            sectionDAO.delete(sectionId);
-            Optional<Section> foundedSection = sectionDAO.findById(sectionId);
-            Assertions.assertFalse(foundedSection.isPresent());
+        if (sectionFromDatabase.isPresent()) {
+            if (sectionFromDatabase.get().getSectionName().equals(newSectionName)) {
+                sectionDAO.delete(sectionId);
+                Optional<Section> foundedSection = sectionDAO.findById(sectionId);
+                Assertions.assertFalse(foundedSection.isPresent());
+            } else {
+                Assertions.fail();
+            }
         } else {
             Assertions.fail();
         }
     }
-
 
     @AfterAll
     public void tearDown() {

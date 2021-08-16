@@ -107,7 +107,11 @@ public class DBReportDAOTest {
     @Order(2)
     void findReport() {
         Optional<Report> reportFromDatabase = reportDAO.findById(reportId);
-        Assertions.assertEquals(reportFromDatabase.get().getReportText(), report.getReportText());
+        if (reportFromDatabase.isPresent()) {
+            Assertions.assertEquals(reportFromDatabase.get().getReportText(), report.getReportText());
+        } else {
+            Assertions.fail();
+        }
     }
 
     @Test
@@ -120,20 +124,27 @@ public class DBReportDAOTest {
         reportDAO.update(updatedReport);
 
         Optional<Report> reportFromDatabase = reportDAO.findById(reportId);
-        this.newReportText = reportFromDatabase.get().getReportText();
-        Assertions.assertEquals(reportFromDatabase.get().getReportText(),
-                updatedReport.getReportText());
+        if (reportFromDatabase.isPresent()) {
+            this.newReportText = reportFromDatabase.get().getReportText();
+            Assertions.assertEquals(reportFromDatabase.get().getReportText(),
+                    updatedReport.getReportText());
+        } else {
+            Assertions.fail();
+        }
     }
 
     @Test
     @Order(4)
     void DeleteSection() {
         Optional<Report> reportFromDatabase = reportDAO.findById(reportId);
-
-        if (reportFromDatabase.get().getReportText().equals(newReportText)) {
-            reportDAO.delete(reportId);
-            Optional<Report> foundedReport = reportDAO.findById(reportId);
-            Assertions.assertFalse(foundedReport.isPresent());
+        if (reportFromDatabase.isPresent()) {
+            if (reportFromDatabase.get().getReportText().equals(newReportText)) {
+                reportDAO.delete(reportId);
+                Optional<Report> foundedReport = reportDAO.findById(reportId);
+                Assertions.assertFalse(foundedReport.isPresent());
+            } else {
+                Assertions.fail();
+            }
         } else {
             Assertions.fail();
         }

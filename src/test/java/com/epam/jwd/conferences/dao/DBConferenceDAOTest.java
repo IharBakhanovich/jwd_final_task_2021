@@ -74,7 +74,12 @@ public class DBConferenceDAOTest {
     @Order(3)
     void findConference() {
         Optional<Conference> conferenceFromDatabase = conferenceDAO.findById(conferenceId);
-        Assertions.assertEquals(conferenceFromDatabase.get().getConferenceTitle(), conference.getConferenceTitle());
+        if (conferenceFromDatabase.isPresent()) {
+            Assertions.assertEquals(conferenceFromDatabase.get().getConferenceTitle(), conference.getConferenceTitle());
+        } else {
+            Assertions.fail();
+        }
+
     }
 
     @Test
@@ -85,28 +90,33 @@ public class DBConferenceDAOTest {
         conferenceDAO.update(updatedConference);
 
         Optional<Conference> conferenceFromDatabase = conferenceDAO.findById(conferenceId);
-        this.newConferenceTitle = conferenceFromDatabase.get().getConferenceTitle();
-        Assertions.assertEquals(conferenceFromDatabase.get().getConferenceTitle(), updatedConference.getConferenceTitle());
+        if (conferenceFromDatabase.isPresent()) {
+            this.newConferenceTitle = conferenceFromDatabase.get().getConferenceTitle();
+            Assertions.assertEquals(conferenceFromDatabase.get().getConferenceTitle(), updatedConference.getConferenceTitle());
+        } else {
+            Assertions.fail();
+        }
     }
 
     @Test
     @Order(5)
     void DeleteConference() {
         Optional<Conference> conferenceFromDatabase = conferenceDAO.findById(conferenceId);
-
-        if (conferenceFromDatabase.get().getConferenceTitle().equals(newConferenceTitle)) {
-            conferenceDAO.delete(conferenceId);
-            Optional<Conference> foundedConference = conferenceDAO.findById(conferenceId);
-            Assertions.assertFalse(foundedConference.isPresent());
+        if (conferenceFromDatabase.isPresent()) {
+            if (conferenceFromDatabase.get().getConferenceTitle().equals(newConferenceTitle)) {
+                conferenceDAO.delete(conferenceId);
+                Optional<Conference> foundedConference = conferenceDAO.findById(conferenceId);
+                Assertions.assertFalse(foundedConference.isPresent());
+            } else {
+                Assertions.fail();
+            }
         } else {
             Assertions.fail();
         }
     }
 
-
     @AfterAll
     public void tearDown() {
-        //conferenceDAO.delete(conferenceId);
         conferences.clear();
         ConnectionPool.retrieve().destroy();
     }
