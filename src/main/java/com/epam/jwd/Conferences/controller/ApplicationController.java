@@ -42,19 +42,25 @@ public class ApplicationController extends HttpServlet {
         // now the AppCommand is used to return the command name
         final Command command = Command.withName(commandName);
 
-        // the command is executed and the response is received, with which something should be done
-        // у HttpServletRequest есть метод getRequestDispatcher, который возвращает RequestDispatcher по пути.
-        // В RequestDispatcher есть метод forward(ServletRequest request, ServletResponse response)
-        // - который пересылает запрос на соответствующую URI в рамках этого сервера и это должен быть
-        // или сервлет или jsp или html file. Вопрос на какую URI?
-        // getRequestDispatcher принимает String path.
-        // Второй способ: в HttpServletResponse есть метод sendRedirect(String location) (именно location, а не путь,
-        // как в HttpServletRequest), т.е. полноценный URL. Он почистит пару ServletRequest/ServletResponse
-        // (очистит буфер) и перешлет URL на location, причем можно заредиректиться на другой сайт.
-        // Следовательно CommandResponse должен отвечать на вопрос: является ли результат редиректом (на внешний ресурс),
-        // или форвардом - на внутренний ресурс. И еще у него должен быть путь (смотри interface CommandResponse).
-        // в параметрах создаем анонимный класс CommandRequest
-        // there is only one place where the CommandResponse is used, that is why it is realised without a realisation
+        /*
+          First option:
+          The command is executed and the response is received, with which something should be done.
+          HttpServletRequest has the method getRequestDispatcher, which returns RequestDispatcher by a path.
+          RequestDispatcher has the method forward(ServletRequest request, ServletResponse response),
+          which forwards a request to a corresponding URI insider this server and it should be either a servlet
+          or a jsp or html file. The only one question on which URI - on the 'String path;, that receives the
+          getRequestDispatcher.
+
+          Second option:
+          HttpServletResponse has the sendRedirect(String location) (a location, but not a path
+          as in the HttpServletRequest), that means an URL. It cleans the pair ServletRequest/ServletResponse
+          (cleans the buffer) and redirects URL to Location, that means that it can be redirected on an other site.
+          Therefore CommandResponse should answer to the question: is a result a redirect (to the outer source),
+          or a forward (to the inner source). Plus to all the option can work it should be a path
+          (see interface CommandResponse). In parameters the CommandRequest should be created.
+
+          there is only one place where the CommandResponse is used, that is why it is realised without a realisation
+         */
         final CommandResponse resp = command.execute(new CommandRequest() {
             @Override
             public HttpSession createSession() {
@@ -86,22 +92,25 @@ public class ApplicationController extends HttpServlet {
             }
         });
 
-        //теперь на основании response мы должны что-то делать.
-        // 1 способ
-        // У HttpServletRequest есть метод getServletDispatcher,
-        // который принимает путь(path) и возвращает объект RequestDispatcher. В этом объекте есть методы forward и include.
-        // forward(ServletRequest request, ServletResponse response) и пересылает запрос на соответствующую uri (путь).
-        // Вопрос на какую uri? А на ту, которую принимает RequestDispatcher (path).
-        // RequestDispatcher forwards a request to the resource (servlet, JSP file, HTML file в рамках этого сервера
-        // - это ресурс приложения) or includes the resource in a response. В нашем случае нас интересует forward.
-        // The resource can be dynamic or static. При форварде url в браузере не меняется. Т.е. фактически
-        // если весь сайт построить на форварде можно сделать так, что url в браузере не будет меняться ни при каких условиях.
-        // 2 способ
-        // В HttpServletResponse есть метод sendRedirect(String location) - на какой-то url. Это location,
-        // отличается от прошлого способа, т.к. там был путь в рамках сервера. Т.е. он перешлет url,
-        // а значит мы можем заредиректиться на другой сайт.
-        // Отсюда следует, что CommandResponse должен отвечать на вопрос: является ли результат редиректа или форварда.
-        // т.е. иметь метод boolean redirect(); и у него должен быть путь String path();
+
+        /*
+        Now something shoul be done with the response.
+        First option:
+        HttpServletRequest has the method getServletDispatcher, which receives a path and returns
+        an RequestDispatcher object. In that object there are methods forward and include:
+        forward(ServletRequest request, ServletResponse response) redirects a request on the corresponding URI (path),
+        which receives RequestDispatcher. RequestDispatcher forwards a request to the resource
+        (servlet, JSP file, HTML file) inside this server - the source of the application or includes the resource
+        in a response. (In our case we use the forward). The resource can be dynamic or static.
+        During forwarding URL in a browser does not change. That means if the site are built on the forward it can be so,
+         that URL in a browser will not be changed.
+        Second option:
+        HttpServletResponse has the method sendRedirect(String location) to a URL. This is a location.
+        It is different from the first option, because in the first option it is the path inside the server, that is why
+        it can not redirect to an other site. Therefore CommandResponse should answer the question
+        'whether this result a redirect result or a forward result' and that is why it should have the method
+        boolean redirect(); and to have a path 'String path()'.
+        */
         try {
             if (resp.isRedirect()) {
                 // if from redirect

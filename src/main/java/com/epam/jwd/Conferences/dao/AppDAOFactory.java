@@ -5,7 +5,8 @@ package com.epam.jwd.Conferences.dao;
  */
 public class AppDAOFactory implements DAOFactory {
 
-    AppDAOFactory() {
+    // the private default constructor, to not create the instance of the class with 'new' outside the class
+    private AppDAOFactory() {
 
     }
 
@@ -23,21 +24,41 @@ public class AppDAOFactory implements DAOFactory {
         return AppDAOFactory.AppDAOFactoryHolder.instance;
     }
 
+    /**
+     * Returns the instance of the UserDAO class.
+     *
+     * @return Object of the UserDAO class.
+     */
     @Override
     public UserDAO getUserDAO() {
         return UserDAO.retrieve();
     }
 
+    /**
+     * Returns the instance of the ConferenceDAO class.
+     *
+     * @return Object of the ConferenceDAO class.
+     */
     @Override
     public ConferenceDAO getConferenceDAO() {
         return ConferenceDAO.retrieve();
     }
 
+    /**
+     * Returns the instance of the ReportDAO class.
+     *
+     * @return Object of the ReportDAO class.
+     */
     @Override
     public ReportDAO getReportDAO() {
         return ReportDAO.retrieve();
     }
 
+    /**
+     * Returns the instance of the SectionDAO class.
+     *
+     * @return Object of the SectionDAO class.
+     */
     @Override
     public SectionDAO getSectionDAO() {
         return SectionDAO.retrieve();

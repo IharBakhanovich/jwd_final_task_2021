@@ -9,6 +9,12 @@ import java.util.Optional;
  */
 public interface ConferenceDAO extends DAO<Conference,Long> {
 
+    /**
+     * Finds {@link Optional<Conference>} by the parameter conferenceTitle of the {@link Conference}.
+     *
+     * @param title is a String, that is a title of the Conference.
+     * @return {@link Optional<Conference>}, that contains the {@link Conference} if it is exist in the system.
+     */
     Optional<Conference> findConferenceByTitle(String title);
 
     /**

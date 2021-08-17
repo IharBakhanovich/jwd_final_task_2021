@@ -4,7 +4,6 @@ import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.dto.Role;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.pool.ConnectionPool;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
@@ -130,6 +129,14 @@ public class JdbcUserDAO extends CommonDAO<User> implements UserDAO {
 
     }
 
+    /**
+     * Finds {@link Optional<User>} by the parameter nickname of {@link User}, which has the value
+     * equals to the {@param nickname}.
+     *
+     * @param nickname is the {@link String} which is the nickname to search.
+     * @return {@link Optional<User>} by the parameter nickname of {@link User}, which has the value
+     * equals to the {@param nickname}.
+     */
     @Override
     public Optional<User> findUserByNickname(String nickname) {
         return takeFirstNotNull(findPreparedEntities(
@@ -137,6 +144,12 @@ public class JdbcUserDAO extends CommonDAO<User> implements UserDAO {
         );
     }
 
+    /**
+     * Updates {@link User}s parameter role.
+     *
+     * @param userId  is the id of the {@link User} which role is to update.
+     * @param newRole is the value of the new role of the {@link User} with the id equals {@param userId}.
+     */
     @Override
     public void updateUserRoleByUserId(Long userId, Long newRole) {
         String updateUserRoleByUserIdSql = "update "

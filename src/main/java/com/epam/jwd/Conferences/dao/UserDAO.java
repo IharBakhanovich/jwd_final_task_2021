@@ -1,6 +1,5 @@
 package com.epam.jwd.Conferences.dao;
 
-import com.epam.jwd.Conferences.dto.Role;
 import com.epam.jwd.Conferences.dto.User;
 
 import java.util.Optional;
@@ -10,6 +9,14 @@ import java.util.Optional;
  */
 public interface UserDAO extends DAO<User, Long> {
 
+    /**
+     * Finds {@link Optional<User>} by the parameter nickname of {@link User}, which has the value
+     * equals to the {@param nickname}.
+     *
+     * @param nickname is the {@link String} which is the nickname to search.
+     * @return {@link Optional<User>} by the parameter nickname of {@link User}, which has the value
+     * equals to the {@param nickname}.
+     */
     Optional<User> findUserByNickname(String nickname);
 
     /**
@@ -21,5 +28,11 @@ public interface UserDAO extends DAO<User, Long> {
         return JdbcUserDAO.getInstance();
     }
 
+    /**
+     * Updates {@link User}s parameter role.
+     *
+     * @param userId  is the id of the {@link User} which role is to update.
+     * @param newRole is the value of the new role of the {@link User} with the id equals {@param userId}.
+     */
     void updateUserRoleByUserId(Long userId, Long newRole);
 }

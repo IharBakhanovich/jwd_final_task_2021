@@ -102,10 +102,10 @@ public class DBSectionDAO extends CommonDAO<Section> implements SectionDAO {
     }
 
     /**
-     * Returns the {@link Section} by the title.
+     * Finds {@link Optional<Section>} by the value of the {@link Section}s sectionName parameter.
      *
-     * @param title The title of the returned {@link Section}.
-     * @return {@link Section}.
+     * @param title is the value of the of the {@link Section}s sectionName parameter to search.
+     * @return {@link Optional<Section>} which parameter sectionName equals to the calue of the {@param title}.
      */
     @Override
     public Optional<Section> findSectionByTitle(String title) {
@@ -115,6 +115,15 @@ public class DBSectionDAO extends CommonDAO<Section> implements SectionDAO {
         );
     }
 
+    /**
+     * Finds all the sections of the {@link com.epam.jwd.Conferences.dto.Conference} with the conferenceId
+     * equals to the {@param id}.
+     *
+     * @param id is the value of the {@link com.epam.jwd.Conferences.dto.Conference}s id parameter,
+     *           which sections to find
+     * @return {@link List<Section>} with all the {@link Section}s of the conference with the id
+     * equals to the {@param id}.
+     */
     @Override
     public List<Section> findAllSectionsByConferenceID(Long id) {
         return findPreparedEntities(

@@ -89,6 +89,12 @@ public class DBConferenceDAO extends CommonDAO<Conference> implements Conference
         }
     }
 
+    /**
+     * Finds {@link Optional<Conference>} by the parameter conferenceTitle of the {@link Conference}.
+     *
+     * @param title is a String, that is a title of the Conference.
+     * @return {@link Optional<Conference>}, that contains the {@link Conference} if it is exist in the system.
+     */
     @Override
     public Optional<Conference> findConferenceByTitle(String title) {
         return takeFirstNotNull(findPreparedEntities(
