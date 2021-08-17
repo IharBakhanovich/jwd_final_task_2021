@@ -1,7 +1,7 @@
 package com.epam.jwd.Conferences.exception;
 
 /**
- * Creates the Exception by the BusinessValidation.
+ * Throws by the validation.
  */
 public class BusinessValidationException extends RuntimeException {
 

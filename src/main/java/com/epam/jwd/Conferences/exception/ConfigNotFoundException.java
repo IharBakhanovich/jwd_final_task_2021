@@ -3,7 +3,7 @@ package com.epam.jwd.Conferences.exception;
 /**
  * RuntimeException: Thrown if loading of the configuration-files
  * (config.properties and logger.properties) at startup fails or the
- *  configurtion-data from the database could not be fetched.
+ * configurtion-data from the database could not be fetched.
  */
 public class ConfigNotFoundException extends RuntimeException {
 

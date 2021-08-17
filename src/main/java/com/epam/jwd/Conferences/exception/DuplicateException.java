@@ -1,4 +1,5 @@
 package com.epam.jwd.Conferences.exception;
+
 /**
  * Exception: Thrown if a database-insertion violates a UNIQUE-constraint.
  */
