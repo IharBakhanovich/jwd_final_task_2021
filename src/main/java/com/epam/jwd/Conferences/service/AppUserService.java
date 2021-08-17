@@ -54,7 +54,12 @@ public class AppUserService implements UserService {
         return AppUserService.SimpleUserServiceHolder.instance;
     }
 
-
+    /**
+     * Creates a new user in the system.
+     *
+     * @param user is the user to create.
+     * @throws DuplicateException if there is the user with the such a nickname in the system.
+     */
     @Override
     public void createUser(User user) throws DuplicateException {
         // encryptedPassword зашифруем с помощью bcrypt
@@ -68,7 +73,6 @@ public class AppUserService implements UserService {
         final char[] rawPassword = user.getPassword().toCharArray();
 
         final String encryptedPassword = hasher.hashToString(MIN_COST, rawPassword);
-        //TODO сделать конструктор с автозаполнением некоторых полей - простой конструктор
         User userToSave
                 = new User(user.getEmail(), encryptedPassword,
                 user.getSalt(), user.getNumberLoginAttempts(), user.getVerificationToken(),
@@ -77,6 +81,12 @@ public class AppUserService implements UserService {
         userDAO.save(userToSave);
     }
 
+    /**
+     * Checks if the user can login in the system.
+     *
+     * @param user is the {@link User} to login in the system.
+     * @return true if the {@param user} can login.
+     */
     @Override
     public boolean canLogIn(User user) {
         //сначала хэшируем пароль. Даже если мы не найдем впоследствии пользователя в базе данных,
@@ -100,12 +110,23 @@ public class AppUserService implements UserService {
         }
     }
 
+    /**
+     * Finds {@link User} by its nickname.
+     *
+     * @param login is the nickname of the user to find.
+     * @return {@link User}
+     */
     @Override
     public User findByLogin(String login) {
         return userDAO.findUserByNickname(login)
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ApplicationConstants.NOT_FOUND_MESSAGE, login)));
     }
 
+    /**
+     * Returns all {@link User}s in the system.
+     *
+     * @return {@link List<User>} that contains all users in the system.
+     */
     @Override
     public List<User> findAllUsers() {
         return userDAO.findAll();
@@ -116,76 +137,176 @@ public class AppUserService implements UserService {
         //this.userDAO.clean();
     }
 
+    /**
+     * Returns all {@link Conference}es in the system.
+     *
+     * @return {@link List<Conference>} that contains all conferences in the system.
+     */
     @Override
     public List<Conference> findAllConferences() {
         return conferenceDAO.findAll();
     }
 
+    /**
+     * Returns all the {@link Section}s of the {@link Conference} with the id equals {@param id}.
+     *
+     * @param id is the id of the {@link Conference} which {@link Section}s are to return.
+     * @return all the {@link Section}s of the {@link Conference} with the id equals {@param id}.
+     */
     @Override
     public List<Section> findAllSectionsByConferenceID(Long id) {
         return sectionDAO.findAllSectionsByConferenceID(id);
     }
 
+    /**
+     * Returns all the {@link Report}s of the {@link Section} with the id equals {@param sectionId}
+     * and the {@link Conference} with the id equals {@param conferenceId}.
+     *
+     * @param sectionId    is the id of the {@link Section} which {@link Report}s are to return.
+     * @param conferenceId is the id of the {@link Conference} which {@link Report}s are to return.
+     * @return all the {@link Report}s of the {@link Section} with the id equals {@param sectionId}
+     * and the {@link Conference} with the id equals {@param conferenceId}.
+     */
     @Override
     public List<Report> findAllReportsBySectionID(Long sectionId, Long conferenceId) {
         return reportDAO.findAllReportsBySectionID(sectionId, conferenceId);
     }
 
+    /**
+     * Returns {@link Optional<User>} that contains {@link User} with the id equals {@param id} and null
+     * if there is no {@link User} with the id equals {@param id} in the system.
+     *
+     * @param id is the value of the id of the {@link User} to find.
+     * @return {@link Optional<User>} that contains {@link User} with the id equals {@param id} and null
+     * if there is no {@link User} with the id equals {@param id} in the system.
+     */
     @Override
     public Optional<User> findUserByID(Long id) {
         return userDAO.findById(id);
     }
 
+    /**
+     * Returns {@link Optional<Report>} that contains {@link Report} with the id equals {@param id} and null
+     * if there is no {@link Report} with the id equals {@param id} in the system.
+     *
+     * @param id is the value of the id of the {@link Report} to find.
+     * @return {@link Optional<Report>} that contains {@link Report} with the id equals {@param id} and null
+     * if there is no {@link Report} with the id equals {@param id} in the system.
+     */
     @Override
     public Optional<Report> findReportByID(Long id) {
         return reportDAO.findById(id);
     }
 
+    /**
+     * Returns all {@link Section}s in the system.
+     *
+     * @return {@link List<Section>} that contains all sections in the system.
+     */
     @Override
     public List<Section> findAllSections() {
         return sectionDAO.findAll();
     }
 
+    /**
+     * Updates the {@link User}.
+     *
+     * @param userToUpdate is the {@link User} to update.
+     */
     @Override
     public void updateUser(User userToUpdate) {
         userDAO.update(userToUpdate);
     }
 
+    /**
+     * Updates the {@link Report}.
+     *
+     * @param reportToUpdate is the {@link Report} to update.
+     */
     @Override
     public void updateReport(Report reportToUpdate) {
         reportDAO.update(reportToUpdate);
     }
 
+    /**
+     * Creates a new {@link Conference} in the system.
+     *
+     * @param conferenceToCreate is the {@link Conference} to create.
+     * @throws DuplicateException if there is the {@link Conference}
+     *                            with the conferenceTitle of the {@param conferenceToCreate}
+     */
     @Override
     public void createConference(Conference conferenceToCreate) throws DuplicateException {
         conferenceDAO.save(conferenceToCreate);
     }
 
+    /**
+     * Creates a new {@link Section} in the system.
+     *
+     * @param sectionToCreate is the {@link Section} to create.
+     * @throws DuplicateException if there is the {@link Section}
+     *                            with the sectionName of the {@param sectionToCreate}
+     *                            and there is a violation of unique constrains in the database.
+     */
     @Override
     public void createSection(Section sectionToCreate) throws DuplicateException {
         sectionDAO.save(sectionToCreate);
     }
 
+    /**
+     * Creates a new {@link Report} in the system.
+     *
+     * @param reportToCreate is the {@link Report} to create.
+     * @throws DuplicateException if there is the {@link Section}
+     *                            with the sectionName of the {@param reportToCreate}
+     *                            and there is a violation of unique constrains in the database.
+     */
     @Override
     public void createReport(Report reportToCreate) throws DuplicateException {
         reportDAO.save(reportToCreate);
     }
 
+    /**
+     * Updates the {@link Conference}.
+     *
+     * @param conferenceToUpdate is the {@link Conference} to update.
+     */
     @Override
     public void updateConference(Conference conferenceToUpdate) {
         conferenceDAO.update(conferenceToUpdate);
     }
 
+    /**
+     * Updates the {@link Section}.
+     *
+     * @param sectionToUpdate is the {@link Section} to update.
+     */
     @Override
     public void updateSection(Section sectionToUpdate) {
         sectionDAO.update(sectionToUpdate);
     }
 
+    /**
+     * Finds all {@link Report}s in the system that have the {@link com.epam.jwd.Conferences.dto.ReportType} equals
+     * ReportType.QUESTION, which are inherited to the sections which are managed by the user with id
+     * equals {@param managerId}.
+     *
+     * @param managerId is the {@link Long} that is id of the {@link User} which questions are found.
+     * @return {@link List<Report>} that contains all the {@link Report}s in the system with the ReportType.QUESTION,
+     * which are inherited to the sections which are managed by the user with id equals {@param managerId}.
+     */
     @Override
     public List<Report> findAllQuestions(Long managerId) {
         return reportDAO.findAllQuestionsByManagerId(managerId);
     }
 
+    /**
+     * Finds all the {@link Report}s in the system that have the parameter questionReportId equals to the value
+     * of the {@param questionReportId}
+     * @param questionReportId is the {@link Long} value of the parameter questionReportId of the Report.
+     * @return {@link List<Report>} that contains all the {@link Report}s in the system with the value of the parameter
+     * questionReportId equals to the {@param questionReportId}.
+     */
     @Override
     public List<Report> findAllReportsByQuestionId(Long questionReportId) {
         Optional<Report> question = reportDAO.findById(questionReportId);
@@ -201,26 +322,62 @@ public class AppUserService implements UserService {
         return answers;
     }
 
+    /**
+     * Sets a new {@link Role} to the {@link User} with id equals {@param userId}
+     *
+     * @param userId is the id of the {@link User} which {@link Role} is to update.
+     * @param newRole is the {@link Role} to set.
+     */
     @Override
     public void updateUserRole(Long userId, Long newRole) {
         userDAO.updateUserRoleByUserId(userId, newRole);
     }
 
+    /**
+     * Returns all {@link Report}s in the system.
+     *
+     * @return {@link List<Report>} that contains all reports in the system.
+     */
     @Override
     public List<Report> findAllReports() {
         return reportDAO.findAll();
     }
 
+    /**
+     * Finds all {@link Report}s in the system that have the {@link com.epam.jwd.Conferences.dto.ReportType} equals
+     * ReportType.APPLICATION, which are inherited to the sections which are managed by the user with id
+     * equals {@param managerId}.
+     *
+     * @param managerId is the {@link Long} that is id of the {@link User} which questions are found.
+     * @return {@link List<Report>} that contains all the {@link Report}s in the system with the ReportType.APPLICATION,
+     * which are inherited to the sections which are managed by the user with id equals {@param managerId}.
+     */
     @Override
     public List<Report> findAllApplications(Long managerId) {
         return reportDAO.findAllApplicationsByManagerId(managerId);
     }
 
+    /**
+     * Finds all {@link Report}s in the system that have the {@link com.epam.jwd.Conferences.dto.ReportType} equals
+     * ReportType.APPLICATION, which were created by a {@link User} with the id equals {@param applicantId}.
+     *
+     * @param applicantId is the {@link Long} that is id of the {@link User} application created by him to found.
+     * @return {@link List<Report>} that contains all the {@link Report}s in the system with the ReportType.APPLICATION,
+     * which are created by the {@link User} with id equals {@param applicantId}.
+     */
     @Override
     public List<Report> findApplicantApplications(Long applicantId) {
         return reportDAO.findAllApplicationsByApplicantId(applicantId);
     }
 
+    /**
+     * Finds all {@link Report}s in the system that have the {@link com.epam.jwd.Conferences.dto.ReportType} equals
+     * ReportType.QUESTION, which were created by a {@link User} with the id equals {@param managerId}.
+     *
+     * @param managerId is the {@link Long} that is id of the {@link User} questions created by him to found.
+     * @return {@link List<Report>} that contains all the {@link Report}s in the system with the ReportType.QUESTION,
+     * which are created by the {@link User} with id equals {@param managerId}.
+     */
     @Override
     public List<Report> findApplicantQuestions(Long managerId) {
         return reportDAO.findAllQuestionsByApplicantId(managerId);

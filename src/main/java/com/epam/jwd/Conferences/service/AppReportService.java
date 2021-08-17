@@ -1,6 +1,5 @@
 package com.epam.jwd.Conferences.service;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.epam.jwd.Conferences.dao.DAOFactory;
 import com.epam.jwd.Conferences.dao.ReportDAO;
 import com.epam.jwd.Conferences.dto.Report;
@@ -36,37 +35,55 @@ public class AppReportService implements ReportService {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Report> findAllReportsBySectionID(Long sectionId, Long conferenceId) {
         return reportDAO.findAllReportsBySectionID(sectionId, conferenceId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<Report> findReportByID(Long id) {
         return reportDAO.findById(id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateReport(Report reportToUpdate) {
         reportDAO.update(reportToUpdate);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void createReport(Report reportToCreate) throws DuplicateException {
         reportDAO.save(reportToCreate);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Report> findAllQuestions(Long managerId) {
         return reportDAO.findAllQuestionsByManagerId(managerId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Report> findAllReportsByQuestionId(Long questionReportId) {
         Optional<Report> question = reportDAO.findById(questionReportId);
         List<Report> answers = reportDAO.findAllReportsByQuestionReportId(questionReportId);
 
-        if(question.isPresent()) {
+        if (question.isPresent()) {
             final Report questionToAdd = new Report(question.get().getId(), question.get().getSectionId(),
                     question.get().getConferenceId(), question.get().getReportText(), question.get().getReportType(),
                     question.get().getApplicant(), question.get().getQuestionReportId());
@@ -74,5 +91,29 @@ public class AppReportService implements ReportService {
             Collections.sort(answers);
         }
         return answers;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Report> findAllApplications(Long managerId) {
+        return reportDAO.findAllApplicationsByManagerId(managerId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Report> findApplicantApplications(Long applicantId) {
+        return reportDAO.findAllApplicationsByApplicantId(applicantId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Report> findApplicantQuestions(Long managerId) {
+        return reportDAO.findAllQuestionsByApplicantId(managerId);
     }
 }

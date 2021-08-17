@@ -33,22 +33,33 @@ public class AppSectionService implements SectionService {
         return AppSectionService.AppSectionServiceHolder.instance;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Section> findAllSectionsByConferenceID(Long id) {
         return sectionDAO.findAllSectionsByConferenceID(id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Section> findAllSections() {
         return sectionDAO.findAll();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void createSection(Section sectionToCreate) throws DuplicateException {
         sectionDAO.save(sectionToCreate);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateSection(Section sectionToUpdate) {
         sectionDAO.update(sectionToUpdate);
