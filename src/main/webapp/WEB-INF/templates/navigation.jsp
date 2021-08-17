@@ -48,6 +48,8 @@
                         key="label.showYourQuestionsReference"/></a>
                 <a href="${pageContext.request.contextPath}/controller?command=show_own_applications&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}&sectionName=applicantApplications"><fmt:message
                         key="label.showYourApplicationReference"/></a>
+                <a href="${pageContext.request.contextPath}/controller?command=show_user&id=${sessionScope.userId}"><fmt:message
+                        key="label.yourProfile"/></a>
 
             </c:if>
 
