@@ -397,6 +397,10 @@ public class ApplicationConstants {
     public static final Logger LOGGER_FOR_APPLICATION_LIFECYCLE_LISTENER
             = LogManager.getLogger(ApplicationLifecycleListener.class);
     public static final String CONFIGPATH = "/config/logger.properties";
+    public static final String APP_CONNECTION_POOL_IS_INITIALISED_MESSAGE = "AppConnectionPool is initialised...";
+    public static final String APP_CONNECTION_POOL_WAS_SUCCESSFULLY_INITIALISED_MESSAGE = "AppConnectionPool was successfully initialised.";
+    public static final String APP_CONNECTION_POOL_WAS_NOT_INITIALISED_MESSAGE = "AppConnectionPool was not initialised";
+    public static final String SHUTTING_DOWN_CONNECTION_POOL_MESSAGE = "Shutting down Connection Pool...";
 
     // from class AppUserService
     public static final String NOT_FOUND_MESSAGE = "User with such a login does no exist. Login: %s";

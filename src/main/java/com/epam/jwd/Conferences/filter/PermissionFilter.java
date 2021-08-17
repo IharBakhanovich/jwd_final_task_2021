@@ -64,6 +64,7 @@ public class PermissionFilter implements Filter {
 
     // implements the 'chain of responsibility' pattern: each filter does his job and send the request further.
     // checks whether a command is allowed for a user.
+
     /**
      * {@inheritDoc}
      */

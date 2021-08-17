@@ -60,6 +60,9 @@ public class AppConnectionPool implements ConnectionPool {
     private AtomicInteger connectionsOpened;
     private final Lock lock;
 
+    /**
+     * Constructs a new AppConnectionPool.
+     */
     AppConnectionPool() {
         Configuration configuration = Configuration.getInstance();
         configuration.loadConfig(Configuration.getFilepath());
@@ -78,7 +81,6 @@ public class AppConnectionPool implements ConnectionPool {
         takenConnections = new ArrayList<>();
         this.lock = new ReentrantLock();
         connectionsOpened = new AtomicInteger(0);
-
 //        try {
 //            init();
 //        } catch (CouldNotInitializeConnectionPoolException e) {
@@ -92,6 +94,9 @@ public class AppConnectionPool implements ConnectionPool {
                 = new AppConnectionPool();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void init() throws CouldNotInitializeConnectionPoolException {
         // lock is put to prevent the entrance of another thread and to initialising pool again

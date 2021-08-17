@@ -29,7 +29,6 @@ public class ProxyConnection implements Connection {
         this.actualConnection = actualConnection;
     }
 
-
     @Override
     public Statement createStatement() throws SQLException {
         return actualConnection.createStatement();
