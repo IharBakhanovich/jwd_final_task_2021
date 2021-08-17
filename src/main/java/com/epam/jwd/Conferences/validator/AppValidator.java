@@ -1,9 +1,7 @@
 package com.epam.jwd.Conferences.validator;
 
 import com.epam.jwd.Conferences.constants.ApplicationConstants;
-import com.epam.jwd.Conferences.dao.DAOFactory;
 import com.epam.jwd.Conferences.dto.*;
-import com.epam.jwd.Conferences.service.AppSectionService;
 import com.epam.jwd.Conferences.service.UserService;
 
 import java.nio.charset.StandardCharsets;
@@ -11,7 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Contains implementations of all validator which are used in the application. The singleton.
@@ -68,7 +65,7 @@ public class AppValidator implements Validator {
      */
     @Override
     public boolean isPasswordComplex(String passwordToCheck) {
-        String password = null;
+        String password;
         password = passwordToCheck.trim();
         Matcher matcher = ApplicationConstants.PASSWORD_PATTERN.matcher(password);
         return matcher.matches();
@@ -134,7 +131,6 @@ public class AppValidator implements Validator {
         }
         final List<User> users = service.findAllUsers();
         Long userIdFrom = null;
-        String userNickName = null;
         for (User user : users
         ) {
             if (user.getId().equals(userId)) {
