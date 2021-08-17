@@ -2,11 +2,21 @@ package com.epam.jwd.Conferences.dto;
 
 import java.util.Objects;
 
-public class Conference implements DatabaseEntity<Long>{
+/**
+ * Stores the Conference.
+ */
+public class Conference implements DatabaseEntity<Long> {
     private final Long id;
     private final String conferenceTitle;
     private final Long managerConf;
 
+    /**
+     * Constructs a new {@link Conference}.
+     *
+     * @param id              is the value of the id of the new {@link Conference}
+     * @param conferenceTitle is the value of the conferenceTitle of the new {@link Conference}
+     * @param managerConf     is the value of the managerConf of the new {@link Conference}
+     */
     public Conference(Long id, String conferenceTitle, Long managerConf) {
         this.id = id;
         this.conferenceTitle = conferenceTitle;
@@ -50,11 +60,17 @@ public class Conference implements DatabaseEntity<Long>{
                 '}';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Objects.hash(id, conferenceTitle, managerConf);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

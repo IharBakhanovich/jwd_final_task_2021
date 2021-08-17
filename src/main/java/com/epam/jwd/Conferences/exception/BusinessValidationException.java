@@ -1,8 +1,15 @@
 package com.epam.jwd.Conferences.exception;
 
-// тут надо решить is that Exception runtime Exception or not
+/**
+ * Creates the Exception by the BusinessValidation.
+ */
 public class BusinessValidationException extends RuntimeException {
 
+    /**
+     * Constructs the BusinessValidationException.
+     *
+     * @param message of the Exception.
+     */
     public BusinessValidationException(String message) {
         super(message);
     }

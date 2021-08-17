@@ -5,6 +5,9 @@ import com.epam.jwd.Conferences.exception.UnknownEntityException;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Stores the ReportType.
+ */
 public enum ReportType implements DatabaseEntity<Long> {
     QUESTION(1L),
     APPLICATION(2L),
@@ -16,34 +19,51 @@ public enum ReportType implements DatabaseEntity<Long> {
 
     private final Long id;
 
+    /**
+     * Constructs a new {@link ReportType}.
+     *
+     * @param id is the value of the id of the new {@link ReportType}
+     */
     ReportType(Long id) {
         this.id = id;
     }
 
-    //сдвигаем создание листа в этот класс, чтобы каждый раз не создавать лист из всех ролей в классе AppCommand.
+    /**
+     * creates the {@link List<ReportType>} with all the values of the {@link ReportType}.
+     */
     public static final List<ReportType> ALL_AVAILABLE_ROLES = Arrays.asList(values());
 
-    // этот лист будет всегда возвращаться в единственном экземпляре, до этого единожды создавшись
+    /**
+     * Returns the List of all the ReportType values.
+     *
+     * @return {@link List<ReportType>}.
+     */
     public static List<ReportType> valuesAsList() {
         return ALL_AVAILABLE_ROLES;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getId() {
         return id;
     }
 
     /**
-     * todo via java.lang.enum methods!
+     * Returns the value of the 'name' parameter of this ReportType.
+     *
+     * @return the name of the {@link ReportType}
      */
     public String getName() {
         return this.name();
     }
 
     /**
-     * todo via java.lang.enum methods!
+     * Returns ReportType by its id.
      *
-     * @throws UnknownEntityException if such id does not exist
+     * @param id is the id of the ReportType.
+     * @throws UnknownEntityException if such id does not exist.
      */
     public static ReportType resolveReportTypeById(Long id) {
         for (ReportType reportType : ReportType.values()

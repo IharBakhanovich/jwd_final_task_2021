@@ -5,7 +5,7 @@ import java.util.Objects;
 import static com.epam.jwd.Conferences.dto.Role.USER;
 
 /**
- * Stores user data.
+ * Stores the User.
  */
 public class User implements DatabaseEntity<Long> {
     private final Long id;
@@ -20,6 +20,21 @@ public class User implements DatabaseEntity<Long> {
     private final String surname;
     private final Role role;
 
+    /**
+     * Constructs a new {@link User}.
+     *
+     * @param id                  is the value of the id of the new {@link User}
+     * @param email               is the value of the email of the new {@link User}
+     * @param password            is the value of the password of the new {@link User}
+     * @param salt                is the value of the salt of the new {@link User}
+     * @param numberLoginAttempts is the value of the numberLoginAttempts of the new {@link User}
+     * @param verificationToken   is the value of the the verificationToken of the new {@link User}
+     * @param emailVerified       is the value of the emailVerified of the new {@link User}
+     * @param nickname            is the value of the nickname of the new {@link User}
+     * @param firstName           is the value of the firstName of the new {@link User}
+     * @param surname             is the value of the surname of the new {@link User}
+     * @param role                is the value of the role of the new {@link User}
+     */
     public User(Long id, String email, String password,
                 String salt, int numberLoginAttempts, String verificationToken,
                 boolean emailVerified, String nickname, String firstName,
@@ -37,6 +52,20 @@ public class User implements DatabaseEntity<Long> {
         this.role = role;
     }
 
+    /**
+     * Constructs a new {@link User}.
+     *
+     * @param email               is the value of the email of the new {@link User}
+     * @param password            is the value of the password of the new {@link User}
+     * @param salt                is the value of the salt of the new {@link User}
+     * @param numberLoginAttempts is the value of the numberLoginAttempts of the new {@link User}
+     * @param verificationToken   is the value of the the verificationToken of the new {@link User}
+     * @param emailVerified       is the value of the emailVerified of the new {@link User}
+     * @param nickname            is the value of the nickname of the new {@link User}
+     * @param firstName           is the value of the firstName of the new {@link User}
+     * @param surname             is the value of the surname of the new {@link User}
+     * @param role                is the value of the role of the new {@link User}
+     */
     public User(String email, String password,
                 String salt, int numberLoginAttempts, String verificationToken,
                 boolean emailVerified, String nickname, String firstName,
@@ -49,7 +78,7 @@ public class User implements DatabaseEntity<Long> {
     /**
      * Constructor to make a logIn.
      */
-    public User( String nickname, String password) {
+    public User(String nickname, String password) {
         this(null, "default@email.com", password, null,
                 0, null, false,
                 nickname, null, null, USER);
@@ -154,6 +183,9 @@ public class User implements DatabaseEntity<Long> {
         return surname;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -172,11 +204,18 @@ public class User implements DatabaseEntity<Long> {
                 && role == user.role;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, salt, numberLoginAttempts, verificationToken, emailVerified, nickname, firstName, surname, role);
+        return Objects.hash(id, email, password, salt, numberLoginAttempts,
+                verificationToken, emailVerified, nickname, firstName, surname, role);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "User{" +
