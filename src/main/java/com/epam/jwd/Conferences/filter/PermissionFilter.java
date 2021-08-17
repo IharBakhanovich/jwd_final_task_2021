@@ -15,80 +15,79 @@ import java.util.*;
 //import static com.epam.jwd.Conferences.controller.ApplicationController.COMMAND_PARAM_NAME;
 import static com.epam.jwd.Conferences.dto.Role.UNAUTHORIZED;
 
-// ранее фильтры необходимо было конфигурить через web.xml, тэгом filter,
-// внутри которого задавать имя и т.д. Начиная с сервлетов 3-й версии, можно делать это с помощью аннотаций
+/**
+ * Filters the {@link Role}s of the user and decided whether him is allowed to show the page.
+ */
 @WebFilter(urlPatterns = "/*")
 public class PermissionFilter implements Filter {
 //    private static final String USER_ROLE_SESSION_ATTRIBUTE = "userRole";
 //    private static final String ERROR_REDIRECT_LOCATION = "/controller?command=main_page";
 
-    //будем хранить мапу енам, где ключи это енамы (Role), а в качестве значения команда, которую можно выполнить
+    // stores {@link Role}s in the map: keys are Role, values are command names
     private final Map<Role, Set<AppCommand>> commandsByRoles;
 
+    /**
+     * Constructs a new PermissionFilter.
+     */
     public PermissionFilter() {
         this.commandsByRoles = new EnumMap<>(Role.class);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        // у filterConfig есть следующие методы и это может быть удобно, если нужно,
-        // например воспользоваться servletContextом
-//        filterConfig.getServletContext();
-//        filterConfig.getInitParameter();
-//        filterConfig.getFilterName();
-//        filterConfig.getInitParameterNames();
         Filter.super.init(filterConfig);
-        // чтобы знать какие команды может выполнять какая роль
-        //достаем все команды, которые у нас присутствуют
+
+        // fetches all the available command
         for (AppCommand command : AppCommand.values()) {
-            //достаем из каждой из них доступные роли, проходимся по ним и раскладываем по этой мапе
+
+            // fetches from the command roles, which are available for the command and stores in the map
             for (Role allowedRole : command.getAllowedRoles()) {
                 Set<AppCommand> commands = commandsByRoles.get(allowedRole);
-                //если в мапе уже по такой роли кто-то что-то положил в ее сет,
-                // то мы достаем этот сет и просто добавляем в него команду.
-                // А если по такой роли еще никто ничего не клал,
-                // то мы сперва создаем сет и кладем его в мапу,
-                // а уже потом добавляем в него команду
+
+                // if in the map yet there is a set, fetches this set and add the commant in it.
+                // If there is no set for this Role, creates a set, stores it in the map
+                // and adds to the set this command
                 if (commands == null) {
                     commands = EnumSet.noneOf(AppCommand.class);
                     commandsByRoles.put(allowedRole, commands);
                 }
-                // все это можно было бы сделать с помощью computeIfAbsent
-                // Set<AppCommand> commands = commandsByRoles.computeIfAbsent(allowedRole, k -> EnumSet.noneOf(AppCommand.class));
+                // second option: to do it with the 'computeIfAbsent'
+                // Set<AppCommand> commands
+                // = commandsByRoles.computeIfAbsent(allowedRole, k -> EnumSet.noneOf(AppCommand.class));
                 commands.add(command);
             }
         }
     }
 
-    // это как раз паттерн chain of responsibility - есть несколько фильтров,
-// какждый из которых фильтрует по своему назначению
-    // нас будет интересовать из request достать команду и проверить, чтобы команда была доступной для роли пользователя
+    // implements the 'chain of responsibility' pattern: each filter does his job and send the request further.
+    // checks whether a command is allowed for a user.
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
 
-
-        // первым делом request нужно преобразовать в httpServletRequest
+        // transforming the request into httpServletRequest
         final HttpServletRequest req = (HttpServletRequest) servletRequest;
         final AppCommand command = AppCommand.of(req.getParameter(ApplicationConstants.COMMAND_PARAM_NAME));
-        //затем достаем из request сессию, причем так, чтобы она не создалась, если ее нет
+        // get from request the session without its creation if is there no session
         final HttpSession session = req.getSession(false);
-        //далее логика фильтра
+
+        // the logic of the filter
         Role currentRole = extractRoleFromSession(session);
-        // теперь из мапы по текущей роли мы можем достать сет дозволенных команд
+        // fetches from the map a set of allowed commands by a role
         final Set<AppCommand> allowedCommands = commandsByRoles.get(currentRole);
-        // и проверить есть ли такая команда. И если все хорошо, то мы должны request пропустить
+        // checks whether the such a command exist. If yes - allow the request go futher
         if (allowedCommands.contains(command)) {
-            // как пропустить request? В будущем могут появиться следующие фильтры,
-            // следовательно он должен пройти всю цепочку фильтров до конца
-            //Поэтому мы говорим цепочке - выполняй фильтер
-            // эта строка продолжит цепочку фильтров, если такие есть и в конце концов придет к сервлету (передаст ему выполнение)
-            // можно здесь и прервать выполнение
+            // does filter: a chain of filters are executed and at the end transfers the control to the servlet
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            // появляется error.jsp и здесь мы должны на эту страницу перейти
-            ((HttpServletResponse) servletResponse).sendRedirect(ApplicationConstants.ERROR_REDIRECT_LOCATION); //тут заменил command=error на command=main_page, чтобы сбрасывать всех у кого не хватает прав на главную страницу
-            // после error можно &errorCode=403, а в ShowErrorPage в методе execute позаполнять эти поля
+            // the error appears and here it should go to the error page. If there are no rights - redirects to the main.jsp
+            ((HttpServletResponse) servletResponse).sendRedirect(ApplicationConstants.ERROR_REDIRECT_LOCATION);
         }
     }
 
