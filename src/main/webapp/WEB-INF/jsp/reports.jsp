@@ -17,6 +17,47 @@
 <div class="outer">
     <h2><fmt:message key="label.reports"/></h2>
     <c:choose>
+        <c:when test="${requestScope.conferenceTitle eq 'question'}">
+            <c:choose>
+                <c:when test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userRole eq Role.MANAGER}">
+                    <c:choose>
+                        <c:when test="${requestScope.sectionName eq 'applicantQuestions'}">
+                            <p><fmt:message key="label.clickBelowToBackToQuestions"/></p>
+                            <div class="link">
+                                <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}&sectionName=applicantQuestions"><fmt:message
+                                        key="label.BackToQuestions"/></a>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <p><fmt:message key="label.clickBelowToBackToQuestions"/></p>
+                            <div class="link">
+                                <a href="${pageContext.request.contextPath}/controller?command=show_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message
+                                        key="label.BackToQuestions"/></a>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </c:when>
+                <c:otherwise>
+                    <p><fmt:message key="label.clickBelowToBackToQuestions"/></p>
+                    <div class="link">
+                        <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}&sectionName=applicantQuestions"><fmt:message
+                                key="label.BackToQuestions"/></a>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </c:when>
+        <c:otherwise>
+            <c:if test="${not empty sessionScope.userName}">
+                <div class="link">
+                    <a href="${pageContext.request.contextPath}/controller?command=show_create_report&conferenceId=${requestScope.conferenceId}&conferenceTitle=${requestScope.conferenceTitle}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}&sectionId=${requestScope.sectionId}&sectionName=${requestScope.sectionName}"><fmt:message
+                            key="label.createNewReportInSectionPart1"/>
+                        '${requestScope.conferenceTitle}'/'${requestScope.sectionName}' <fmt:message
+                                key="label.createNewReportInSectionPart2"/></a>
+                </div>
+            </c:if>
+        </c:otherwise>
+    </c:choose>
+    <c:choose>
         <c:when test="${not empty requestScope.reports}">
             <table border="2" cellpadding="5">
                 <c:choose>
@@ -67,49 +108,6 @@
         </c:when>
         <c:otherwise>
             <p class="error_message"><fmt:message key="label.thereAreNoReportsInThisSection"/></p>
-        </c:otherwise>
-    </c:choose>
-
-    <br>
-    <c:choose>
-        <c:when test="${requestScope.conferenceTitle eq 'question'}">
-            <c:choose>
-                <c:when test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userRole eq Role.MANAGER}">
-                    <c:choose>
-                        <c:when test="${requestScope.sectionName eq 'applicantQuestions'}">
-                            <p><fmt:message key="label.clickBelowToBackToQuestions"/></p>
-                            <div class="link">
-                                <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}&sectionName=applicantQuestions"><fmt:message
-                                        key="label.BackToQuestions"/></a>
-                            </div>
-                        </c:when>
-                        <c:otherwise>
-                            <p><fmt:message key="label.clickBelowToBackToQuestions"/></p>
-                            <div class="link">
-                                <a href="${pageContext.request.contextPath}/controller?command=show_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}"><fmt:message
-                                        key="label.BackToQuestions"/></a>
-                            </div>
-                        </c:otherwise>
-                    </c:choose>
-                </c:when>
-                <c:otherwise>
-                    <p><fmt:message key="label.clickBelowToBackToQuestions"/></p>
-                    <div class="link">
-                        <a href="${pageContext.request.contextPath}/controller?command=show_own_questions&managerId=${sessionScope.userId}&managerRole=${sessionScope.userRole}&sectionName=applicantQuestions"><fmt:message
-                                key="label.BackToQuestions"/></a>
-                    </div>
-                </c:otherwise>
-            </c:choose>
-        </c:when>
-        <c:otherwise>
-            <c:if test="${not empty sessionScope.userName}">
-                <div class="link">
-                    <a href="${pageContext.request.contextPath}/controller?command=show_create_report&conferenceId=${requestScope.conferenceId}&conferenceTitle=${requestScope.conferenceTitle}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}&sectionId=${requestScope.sectionId}&sectionName=${requestScope.sectionName}"><fmt:message
-                            key="label.createNewReportInSectionPart1"/>
-                        '${requestScope.conferenceTitle}'/'${requestScope.sectionName}' <fmt:message
-                                key="label.createNewReportInSectionPart2"/></a>
-                </div>
-            </c:if>
         </c:otherwise>
     </c:choose>
 </div>

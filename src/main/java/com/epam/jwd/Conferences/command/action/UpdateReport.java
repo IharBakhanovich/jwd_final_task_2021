@@ -220,6 +220,10 @@ public class UpdateReport implements Command {
             request.setAttribute(ApplicationConstants.SECTION_NAME_ATTRIBUTE_NAME, sectionName);
             request.setAttribute(ApplicationConstants.USERS_ATTRIBUTE_NAME, users);
             request.setAttribute(ApplicationConstants.CONFERENCE_TITLE_PARAMETER_NAME, conferenceTitle);
+            request.setAttribute(ApplicationConstants.SECTION_ID_ATTRIBUTE_NAME, sectionId);
+            request.setAttribute(ApplicationConstants.CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
+            request.setAttribute(ApplicationConstants.CONFERENCES_ATTRIBUTE_NAME, conferences);
+            request.setAttribute(ApplicationConstants.SECTIONS_ATTRIBUTE_NAME, sections);
             return ApplicationConstants.SHOW_REPORTS_PAGE_RESPONSE;
         }
     }

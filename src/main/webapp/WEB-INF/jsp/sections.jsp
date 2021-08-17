@@ -15,6 +15,15 @@
 <jsp:include page="${pageContext.request.contextPath}/WEB-INF/templates/composition.jsp"/>
 <div class="outer">
     <h2><fmt:message key="label.sections"/></h2>
+    <c:if test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userId == requestScope.conferenceManager}">
+        <br>
+        <div class="link">
+            <a class="link"
+               href="${pageContext.request.contextPath}/controller?command=show_create_section&conferenceId=${requestScope.conferenceId}&conferenceTitle=${requestScope.conferenceTitle}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}"><fmt:message
+                    key="label.createSectionInConferencePart1"/> '${requestScope.conferenceTitle}' <fmt:message
+                    key="label.createSectionInConferencePart2"/></a>
+        </div>
+    </c:if>
     <c:choose>
         <c:when test="${not empty requestScope.sections}">
             <table border="2" cellpadding="5">
@@ -56,20 +65,6 @@
             <p class="error_message"><fmt:message key="label.noSectionsInThisConference"/></p>
         </c:otherwise>
     </c:choose>
-    <br>
-    <c:if test="${sessionScope.userRole eq Role.ADMIN or sessionScope.userId == requestScope.conferenceManager}">
-        <br>
-        <div class="link">
-            <a class="link"
-               href="${pageContext.request.contextPath}/controller?command=show_create_section&conferenceId=${requestScope.conferenceId}&conferenceTitle=${requestScope.conferenceTitle}&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}"><fmt:message
-                    key="label.createSectionInConferencePart1"/> '${requestScope.conferenceTitle}' <fmt:message
-                    key="label.createSectionInConferencePart2"/></a>
-        </div>
-    </c:if>
-
-    <%--<br>--%>
-    <%--<br>--%>
-    <%--<a href="${pageContext.request.contextPath}/controller"><fmt:message key="label.backToMainPage"/></a>--%>
 </div>
 </body>
 </html>

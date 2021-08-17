@@ -36,13 +36,20 @@
             <h2><fmt:message key="label.conference.section"/></h2>
         </c:otherwise>
     </c:choose>
-
     <c:choose>
         <c:when test="${not empty requestScope.error}">
             <p class="error_message"><fmt:message key="label.${requestScope.error}"/></p>
-            <a href="${pageContext.request.contextPath}/controller?command=main_page"><fmt:message key="label.doNotWorry"/></a>
+            <a href="${pageContext.request.contextPath}/controller?command=main_page"><fmt:message
+                    key="label.doNotWorry"/></a>
         </c:when>
         <c:otherwise>
+            <c:if test="${sessionScope.userRole eq Role.ADMIN}">
+                <div class="link">
+                    <a href="${pageContext.request.contextPath}/controller?command=show_create_conference&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}"><fmt:message
+                            key="label.createConferenceReference"/></a>
+                </div>
+
+            </c:if>
             <c:if test="${not empty requestScope.conferences}">
                 <table border="2" cellpadding="5">
                     <caption><h3><fmt:message key="label.conference.content"/></h3></caption>
@@ -52,7 +59,8 @@
                                 <th width="30"><fmt:message key="label.conferenceTable.id"/></th>
                                 <th width="150"><fmt:message key="label.conferenceTable.title"/></th>
                                 <th width="70"><fmt:message key="label.conferenceTable.managerNickname"/></th>
-                                <th width="150"><fmt:message key="label.conferenceTable.updateConferenceReference"/></th>
+                                <th width="150"><fmt:message
+                                        key="label.conferenceTable.updateConferenceReference"/></th>
                             </tr>
                             <c:forEach var="conference" items="${requestScope.conferences}">
                                 <tr>
@@ -99,13 +107,7 @@
                     </c:choose>
                 </table>
             </c:if>
-            <c:if test="${sessionScope.userRole eq Role.ADMIN}">
-                <div class="link">
-                    <a href="${pageContext.request.contextPath}/controller?command=show_create_conference&creatorId=${sessionScope.userId}&creatorRole=${sessionScope.userRole}"><fmt:message
-                            key="label.createConferenceReference"/></a>
-                </div>
 
-            </c:if>
 
             <%--    <h2><fmt:message key="label.personal.section"/></h2>--%>
             <%--    <c:choose>--%>

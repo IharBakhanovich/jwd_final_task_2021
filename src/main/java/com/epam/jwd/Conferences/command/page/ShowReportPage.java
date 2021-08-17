@@ -119,40 +119,80 @@ public class ShowReportPage implements Command {
                         allowedReportTypes.add(ReportType.ANSWER);
                         break;
                 }
-            } else if (managerRole.equals(ApplicationConstants.ADMIN_CONSTANT)
-                    || managerId.equals(sectionManagerId)) {
-                switch (report.get().getReportType()) {
-                    case CANCELLED:
-                        allowedReportTypes.add(ReportType.CANCELLED);
-                        break;
-                    case ANSWER:
-                        allowedReportTypes.add(ReportType.ANSWER);
-                        allowedReportTypes.add(ReportType.QUESTION);
-                        break;
-                    case REJECTED:
-                        allowedReportTypes.add(ReportType.APPLICATION);
-                        allowedReportTypes.add(ReportType.QUESTION);
-                        allowedReportTypes.add(ReportType.REJECTED);
-                        allowedReportTypes.add(ReportType.APPROVED);
-                        break;
-                    case APPROVED:
-                        allowedReportTypes.add(ReportType.APPLICATION);
-                        allowedReportTypes.add(ReportType.QUESTION);
-                        allowedReportTypes.add(ReportType.REJECTED);
-                        allowedReportTypes.add(ReportType.APPROVED);
-                        break;
-                    case QUESTION:
-                        allowedReportTypes.add(ReportType.APPLICATION);
-                        allowedReportTypes.add(ReportType.QUESTION);
-                        allowedReportTypes.add(ReportType.REJECTED);
-                        allowedReportTypes.add(ReportType.APPROVED);
-                        break;
-                    case APPLICATION:
-                        allowedReportTypes.add(ReportType.APPLICATION);
-                        allowedReportTypes.add(ReportType.QUESTION);
-                        allowedReportTypes.add(ReportType.REJECTED);
-                        allowedReportTypes.add(ReportType.APPROVED);
-                        break;
+            } else if ((managerRole.equals(ApplicationConstants.ADMIN_CONSTANT)
+                    || managerId.equals(sectionManagerId))) {
+                if (!managerId.equals(report.get().getApplicant())) {
+                    switch (report.get().getReportType()) {
+                        case CANCELLED:
+                            allowedReportTypes.add(ReportType.CANCELLED);
+                            break;
+                        case ANSWER:
+                            allowedReportTypes.add(ReportType.ANSWER);
+                            allowedReportTypes.add(ReportType.QUESTION);
+                            break;
+                        case REJECTED:
+                            allowedReportTypes.add(ReportType.APPLICATION);
+                            allowedReportTypes.add(ReportType.QUESTION);
+                            allowedReportTypes.add(ReportType.REJECTED);
+                            allowedReportTypes.add(ReportType.APPROVED);
+                            break;
+                        case APPROVED:
+                            allowedReportTypes.add(ReportType.APPLICATION);
+                            allowedReportTypes.add(ReportType.QUESTION);
+                            allowedReportTypes.add(ReportType.REJECTED);
+                            allowedReportTypes.add(ReportType.APPROVED);
+                            break;
+                        case QUESTION:
+                            allowedReportTypes.add(ReportType.APPLICATION);
+                            allowedReportTypes.add(ReportType.QUESTION);
+                            allowedReportTypes.add(ReportType.REJECTED);
+                            allowedReportTypes.add(ReportType.APPROVED);
+                            break;
+                        case APPLICATION:
+                            allowedReportTypes.add(ReportType.APPLICATION);
+                            allowedReportTypes.add(ReportType.QUESTION);
+                            allowedReportTypes.add(ReportType.REJECTED);
+                            allowedReportTypes.add(ReportType.APPROVED);
+                            break;
+                    }
+                } else {
+                    switch (report.get().getReportType()) {
+                        case CANCELLED:
+                            allowedReportTypes.add(ReportType.CANCELLED);
+                            break;
+                        case ANSWER:
+                            allowedReportTypes.add(ReportType.ANSWER);
+                            allowedReportTypes.add(ReportType.QUESTION);
+                            break;
+                        case REJECTED:
+                            allowedReportTypes.add(ReportType.APPLICATION);
+                            allowedReportTypes.add(ReportType.QUESTION);
+                            allowedReportTypes.add(ReportType.REJECTED);
+                            allowedReportTypes.add(ReportType.APPROVED);
+                            allowedReportTypes.add(ReportType.CANCELLED);
+                            break;
+                        case APPROVED:
+                            allowedReportTypes.add(ReportType.APPLICATION);
+                            allowedReportTypes.add(ReportType.QUESTION);
+                            allowedReportTypes.add(ReportType.REJECTED);
+                            allowedReportTypes.add(ReportType.APPROVED);
+                            allowedReportTypes.add(ReportType.CANCELLED);
+                            break;
+                        case QUESTION:
+                            allowedReportTypes.add(ReportType.APPLICATION);
+                            allowedReportTypes.add(ReportType.QUESTION);
+                            allowedReportTypes.add(ReportType.REJECTED);
+                            allowedReportTypes.add(ReportType.APPROVED);
+                            allowedReportTypes.add(ReportType.CANCELLED);
+                            break;
+                        case APPLICATION:
+                            allowedReportTypes.add(ReportType.APPLICATION);
+                            allowedReportTypes.add(ReportType.QUESTION);
+                            allowedReportTypes.add(ReportType.REJECTED);
+                            allowedReportTypes.add(ReportType.APPROVED);
+                            allowedReportTypes.add(ReportType.CANCELLED);
+                            break;
+                    }
                 }
             }
         }

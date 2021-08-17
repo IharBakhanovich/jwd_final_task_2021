@@ -4,10 +4,7 @@ import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.constants.ApplicationConstants;
-import com.epam.jwd.Conferences.dto.Conference;
-import com.epam.jwd.Conferences.dto.Report;
-import com.epam.jwd.Conferences.dto.ReportType;
-import com.epam.jwd.Conferences.dto.User;
+import com.epam.jwd.Conferences.dto.*;
 import com.epam.jwd.Conferences.exception.DuplicateException;
 import com.epam.jwd.Conferences.service.UserService;
 import com.epam.jwd.Conferences.validator.Validator;
@@ -152,6 +149,10 @@ public class CreateReport implements Command {
             request.setAttribute(ApplicationConstants.SECTION_ID_ATTRIBUTE_NAME, sectionId);
             request.setAttribute(ApplicationConstants.CONFERENCE_ID_ATTRIBUTE_NAME, conferenceId);
             request.setAttribute(ApplicationConstants.USERS_ATTRIBUTE_NAME, users);
+            final List<Conference> conferences = service.findAllConferences();
+            final List<Section> sections = service.findAllSections();
+            request.setAttribute(ApplicationConstants.CONFERENCES_ATTRIBUTE_NAME, conferences);
+            request.setAttribute(ApplicationConstants.SECTIONS_ATTRIBUTE_NAME, sections);
             return ApplicationConstants.REPORT_CREATION_SUCCESS_RESPONSE;
         } catch (DuplicateException e) {
             logger.info(ApplicationConstants.DUPLICATE_SECTION_MESSAGE);
