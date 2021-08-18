@@ -371,6 +371,16 @@ public class AppUserService implements UserService {
     }
 
     /**
+     * Deletes the {@link Report}.
+     *
+     * @param reportId is the id value of the {@link Report} to delete.
+     */
+    @Override
+    public void deleteReport(Long reportId) {
+        reportDAO.delete(reportId);
+    }
+
+    /**
      * Finds all {@link Report}s in the system that have the {@link com.epam.jwd.Conferences.dto.ReportType} equals
      * ReportType.QUESTION, which were created by a {@link User} with the id equals {@param managerId}.
      *

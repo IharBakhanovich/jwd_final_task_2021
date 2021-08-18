@@ -20,7 +20,8 @@ public class ApplicationConstants {
     /*
      * the private default constructor, to not create the instance of the class with 'new' outside the class.
      */
-    private ApplicationConstants() {}
+    private ApplicationConstants() {
+    }
 
     // Constants
     // from all the classes
@@ -494,4 +495,9 @@ public class ApplicationConstants {
     // from class ShowHelpPage
     public static final CommandResponse SHOW_HELP_PAGE_RESPONSE
             = CommandResponse.getCommandResponse(false, "/WEB-INF/jsp/help.jsp");
+
+    // from Class DeleteReport
+    public static final String DELETER_ID_PARAMETER_NAME = "deleterId";
+    public static final String DELETER_ROLE_PARAMETER_NAME = "deleterRole";
+    public static final String REPORT_ID_PARAMETER_NAME = "reportId";
 }

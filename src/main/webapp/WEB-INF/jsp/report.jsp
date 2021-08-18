@@ -163,12 +163,18 @@
                             <fmt:message key="label.updateReportDetailsButton"/> class="button">
                     </c:if>
                 </form>
+                <c:if test="${sessionScope.userRole eq Role.ADMIN or requestScope.report.get().applicant == sessionScope.userId or sessionScope.userId == requestScope.idOfManagerOfReportsSection}">
+                    <div class="link">
+                        <a href="${pageContext.request.contextPath}/controller?command=delete_report&reportId=${requestScope.report.get().id}&deleterId=${sessionScope.userId}&deleterRole=${sessionScope.userRole}&applicant=${requestScope.report.get().applicant}&sectionId=${requestScope.report.get().sectionId}&conferenceId=${requestScope.report.get().conferenceId}"><fmt:message
+                                key="label.deleteReport"/></a>
+                    </div>
+                </c:if>
             </c:otherwise>
         </c:choose>
     </c:if>
     <br>
-<%--    <br>--%>
-<%--    <a href="${pageContext.request.contextPath}/controller"><fmt:message key="label.backToMainPage"/></a>--%>
+    <%--    <br>--%>
+    <%--    <a href="${pageContext.request.contextPath}/controller"><fmt:message key="label.backToMainPage"/></a>--%>
 </div>
 </body>
 </html>

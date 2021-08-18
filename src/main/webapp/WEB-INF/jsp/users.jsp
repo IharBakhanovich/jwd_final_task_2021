@@ -15,10 +15,15 @@
 <jsp:include page="${pageContext.request.contextPath}/WEB-INF/templates/composition.jsp"/>
 <%--<jsp:include page="${pageContext.request.contextPath}/WEB-INF/templates/header.jsp"/>--%>
 <div class="outer">
+    <h2><fmt:message key="label.usersTable"/></h2>
+    <c:if test="${not empty sessionScope.userName and sessionScope.userRole eq Role.ADMIN}">
+        <div class="link">
+            <a href="${pageContext.request.contextPath}/controller?command=show_create_new_user"><fmt:message
+                    key="label.createNewUser"/></a>
+        </div>
+    </c:if>
     <c:if test="${not empty requestScope.users}">
-
         <table border="2" cellpadding="5">
-            <h2><fmt:message key="label.usersTable"/></h2>
             <caption><h3><fmt:message key="label.users"/></h3></caption>
             <tr>
                 <th width="30"><fmt:message key="label.userIdColumn"/></th>
@@ -35,15 +40,6 @@
                 </tr>
             </c:forEach>
         </table>
-    </c:if>
-
-    <br>
-    <br>
-    <c:if test="${not empty sessionScope.userName and sessionScope.userRole eq Role.ADMIN}">
-        <div class="link">
-            <a href="${pageContext.request.contextPath}/controller?command=show_create_new_user"><fmt:message
-                    key="label.createNewUser"/></a>
-        </div>
     </c:if>
 
 <%--    <br>--%>

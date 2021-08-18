@@ -51,6 +51,7 @@ public enum AppCommand {
     CREATE_NEW_REPORT(CreateReport.getInstance(), ADMIN, USER, MANAGER), // creates new report and shows reports.jsp page
     UPDATE_USER(UpdateUser.getInstance(), ADMIN, USER, MANAGER), // updates user data
     UPDATE_REPORT(UpdateReport.getInstance(), ADMIN, USER, MANAGER), // updates report data
+    DELETE_REPORT(DeleteReport.getInstance(), ADMIN, USER, MANAGER), // deletes report
     UPDATE_CONFERENCE(UpdateConference.getInstance(), ADMIN), // updates report data
     UPDATE_SECTION(UpdateSection.getInstance(), ADMIN, USER, MANAGER), // updates report data
     DEFAULT(ShowMainPage.getInstance()); // show by default main page

@@ -224,4 +224,11 @@ public interface UserService {
      * which are created by the {@link User} with id equals {@param applicantId}.
      */
     List<Report> findApplicantApplications(Long applicantId);
+
+    /**
+     * Deletes the {@link Report}.
+     *
+     * @param reportId is the id value of the {@link Report} to delete.
+     */
+    void deleteReport(Long reportId);
 }
