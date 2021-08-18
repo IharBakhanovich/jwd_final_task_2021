@@ -126,15 +126,20 @@ public class UpdateSection implements Command {
         // to have sections and the status of the former section manager before the section update
         List<Section> sectionsBeforeUpdate = service.findAllSections();
         boolean isTheManagerOfThisSectionRemainsManager = isTheManagerOfThisSectionRemainsManager(sectionId);
-        Long formerManagerOrThisSectionId = null;
+        Long formerManagerOfThisSectionId = null;
         for (Section section : sectionsBeforeUpdate
         ) {
             if (section.getId().equals(sectionId)) {
-                formerManagerOrThisSectionId = section.getManagerSect();
+                formerManagerOfThisSectionId = section.getManagerSect();
             }
         }
-        Optional<User> oldSectionManager = service.findUserByID(formerManagerOrThisSectionId);
-        Role currentRoleOfFormerSectionManager = oldSectionManager.get().getRole();
+        Role currentRoleOfFormerSectionManager = null;
+        if (validator.isUserWithIdExistInSystem(formerManagerOfThisSectionId)
+                && formerManagerOfThisSectionId != null) {
+            Optional<User> oldSectionManager = service.findUserByID(formerManagerOfThisSectionId);
+            currentRoleOfFormerSectionManager = oldSectionManager.get().getRole();
+        }
+
         // to update the section
         service.updateSection(sectionToUpdate);
         // to update role of the newSectionManager
@@ -143,9 +148,11 @@ public class UpdateSection implements Command {
         if (currentRoleOfNewSectionManager != Role.ADMIN && currentRoleOfNewSectionManager != Role.MANAGER) {
             service.updateUserRole(sectionManagerId, Role.MANAGER.getId());
         }
-        // to check if it needed and update the role of the formerSectionManager
-        if (!isTheManagerOfThisSectionRemainsManager && currentRoleOfFormerSectionManager != Role.USER) {
-            service.updateUserRole(formerManagerOrThisSectionId, Role.USER.getId());
+        // to check if it needed and update the role of the formerSectionManager if he exists in the system
+        if (currentRoleOfFormerSectionManager != null) {
+            if (!isTheManagerOfThisSectionRemainsManager && currentRoleOfFormerSectionManager != Role.USER) {
+                service.updateUserRole(formerManagerOfThisSectionId, Role.USER.getId());
+            }
         }
         request.setAttribute(ApplicationConstants.CONFERENCE_MANAGER_ID_ATTRIBUTE_NAME_TO_SECTIONS, conferenceManagerId);
         final List<Section> sections = service.findAllSectionsByConferenceID(conferenceId);

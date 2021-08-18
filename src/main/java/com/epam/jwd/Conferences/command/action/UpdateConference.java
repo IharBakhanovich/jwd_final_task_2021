@@ -124,15 +124,19 @@ public class UpdateConference implements Command {
         // to have conferences and the status of the former conference manager before the conference update
         List<Conference> conferencesBeforeUpdate = service.findAllConferences();
         boolean isTheManagerOfThisConferenceRemainsManager = isTheManagerOfThisConferenceRemainsManager(conferenceId);
-        Long formerManagerOrThisConferenceId = null;
+        Long formerManagerOfThisConferenceId = null;
         for (Conference conference : conferencesBeforeUpdate
         ) {
             if (conference.getId().equals(conferenceId)) {
-                formerManagerOrThisConferenceId = conference.getManagerConf();
+                formerManagerOfThisConferenceId = conference.getManagerConf();
             }
         }
-        Optional<User> oldConferenceManager = service.findUserByID(formerManagerOrThisConferenceId);
-        Role currentRoleOfFormerConferenceManager = oldConferenceManager.get().getRole();
+        Role currentRoleOfFormerConferenceManager = null;
+        if (validator.isUserWithIdExistInSystem(formerManagerOfThisConferenceId)
+                && formerManagerOfThisConferenceId != null) {
+            Optional<User> oldConferenceManager = service.findUserByID(formerManagerOfThisConferenceId);
+            currentRoleOfFormerConferenceManager = oldConferenceManager.get().getRole();
+        }
 
         // to update this conference
         Conference conferencetoUpdate = new Conference(conferenceId, conferenceTitle, managerId);
@@ -144,9 +148,11 @@ public class UpdateConference implements Command {
         if (currentRoleOfNewConferenceManager != Role.ADMIN && currentRoleOfNewConferenceManager != Role.MANAGER) {
             service.updateUserRole(managerId, Role.MANAGER.getId());
         }
-        // to check if it needed and update the role of the formerSectionManager
-        if (!isTheManagerOfThisConferenceRemainsManager && currentRoleOfFormerConferenceManager != Role.USER) {
-            service.updateUserRole(formerManagerOrThisConferenceId, Role.USER.getId());
+        // to check if it needed and update the role of the formerSectionManager if he exists in the system
+        if (currentRoleOfFormerConferenceManager != null) {
+            if (!isTheManagerOfThisConferenceRemainsManager && currentRoleOfFormerConferenceManager != Role.USER) {
+                service.updateUserRole(formerManagerOfThisConferenceId, Role.USER.getId());
+            }
         }
 
         final List<Conference> conferences = service.findAllConferences();
