@@ -22,7 +22,7 @@ import java.util.Optional;
 @RunWith(JUnitPlatform.class)
 @TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ServiceTest {
+public class UserServiceTest {
     String nickNameUserForTest = "testUser";
     String passwordUserForTest = "password";
     User userForTest = new User(nickNameUserForTest, passwordUserForTest);
