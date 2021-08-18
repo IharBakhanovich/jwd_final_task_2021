@@ -1,5 +1,6 @@
 package com.epam.jwd.Conferences.dao;
 
+import com.epam.jwd.Conferences.dto.Conference;
 import com.epam.jwd.Conferences.dto.Section;
 
 import java.util.List;
@@ -34,4 +35,13 @@ public interface SectionDAO extends DAO<Section, Long> {
     static SectionDAO retrieve() {
         return DBSectionDAO.getInstance();
     }
+
+    /**
+     * Finds all {@link Section}s in the database with the parameter managerSect equals {@param userId}.
+     *
+     * @param userId is the {@link Long} that value equals to value of {@link Section}s parameter managerSect to find.
+     * @return {@link List<Section>} that contains all the {@link Section}s in the database with the parameter
+     * managerSect equals {@param userId}.
+     */
+    List<Section> findAllSectionsWhereUserIsManager(Long userId);
 }

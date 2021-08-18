@@ -381,6 +381,52 @@ public class AppUserService implements UserService {
     }
 
     /**
+     * Finds all {@link Report}s in the system that have with the parameter applicant equals {@param userId}.
+     *
+     * @param userId is the {@link Long} that value equals to value of {@link Report}s parameter applicant to find.
+     * @return {@link List<Report>} that contains all the {@link Report}s in the system with the parameter applicant
+     * equals {@param userId}.
+     */
+    @Override
+    public List<Report> findAllReportsByUserId(Long userId) {
+        return reportDAO.findAllReportsByUserId(userId);
+    }
+
+    /**
+     * Deletes the {@link User}.
+     *
+     * @param userId is the id value of the {@link User} to delete.
+     */
+    @Override
+    public void deleteUser(Long userId) {
+        userDAO.delete(userId);
+    }
+
+    /**
+     * Finds all {@link Conference}s in the system with the parameter managerConf equals {@param userId}.
+     *
+     * @param userId is the {@link Long} that value equals to value of {@link Conference}s parameter managerConf to find.
+     * @return {@link List<Conference>} that contains all the {@link Conference}s in the system with the parameter
+     * managerConf equals {@param userId}.
+     */
+    @Override
+    public List<Conference> findAllConferencesWhereUserIsManager(Long userId) {
+        return conferenceDAO.findAllConferencesWhereUserIsManager(userId);
+    }
+
+    /**
+     * Finds all {@link Section}s in the system with the parameter managerSect equals {@param userId}.
+     *
+     * @param userId is the {@link Long} that value equals to value of {@link Section}s parameter managerSect to find.
+     * @return {@link List<Section>} that contains all the {@link Section}s in the system with the parameter
+     * managerSect equals {@param userId}.
+     */
+    @Override
+    public List<Section> findAllSectionsWhereUserIsManager(Long userId) {
+        return sectionDAO.findAllSectionsWhereUserIsManager(userId);
+    }
+
+    /**
      * Finds all {@link Report}s in the system that have the {@link com.epam.jwd.Conferences.dto.ReportType} equals
      * ReportType.QUESTION, which were created by a {@link User} with the id equals {@param managerId}.
      *

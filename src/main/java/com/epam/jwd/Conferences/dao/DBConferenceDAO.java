@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -26,11 +27,15 @@ public class DBConferenceDAO extends CommonDAO<Conference> implements Conference
 //    public static final String SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_CONFERENCE_DAO = "select * from %s where %s = ?";
 
     private final String findByTitleSql;
+    private final String findAllConferencesWhereUserIsManagerSql;
 
     protected DBConferenceDAO(String tableName) {
         super(tableName, ApplicationConstants.COLUMN_NAMES_FOR_DB_CONFERENCE_DAO);
         findByTitleSql = String.format(ApplicationConstants.SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_CONFERENCE_DAO,
                 ApplicationConstants.TABLE_NAME_CONFERENCES, ApplicationConstants.CONFERENCE_TITLE_COLUMN);
+        findAllConferencesWhereUserIsManagerSql
+                = String.format(ApplicationConstants.SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_REPORT_DAO_SQL,
+                ApplicationConstants.TABLE_NAME_CONFERENCES, ApplicationConstants.MANAGER_CONF_COLUMN);
     }
 
     private static class DBConferenceDAOHolder {
@@ -101,5 +106,19 @@ public class DBConferenceDAO extends CommonDAO<Conference> implements Conference
                 statement -> statement.setString(1, title), // 1 потому что это первый вопросик в запросе
                 findByTitleSql)
         );
+    }
+
+    /**
+     * Finds all {@link Conference}s in the database with the parameter managerConf equals {@param userId}.
+     *
+     * @param userId is the {@link Long} that value equals to value of {@link Conference}s parameter managerConf to find.
+     * @return {@link List <Conference>} that contains all the {@link Conference}s in the database with the parameter
+     * managerConf equals {@param userId}.
+     */
+    @Override
+    public List<Conference> findAllConferencesWhereUserIsManager(Long userId) {
+        return findPreparedEntities(
+                statement -> statement.setLong(1, userId),
+                findAllConferencesWhereUserIsManagerSql);
     }
 }

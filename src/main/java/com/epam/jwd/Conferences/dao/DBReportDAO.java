@@ -55,6 +55,7 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
     private final String findAllQuestionsByApplicantIdSql;
     private final String findAllApplicationsByManagerIdSql;
     private final String findAllApplicationsByApplicantIdSql;
+    private final String findAllReportsByUserIdSql;
 
     protected DBReportDAO(String tableName) {
         super(tableName, ApplicationConstants.REPORT_TABLE_COLUMN_NAMES);
@@ -89,6 +90,8 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
                 ApplicationConstants.SECTION_ID_COLUMN, ApplicationConstants.TABLE_NAME_SECTIONS,
                 ApplicationConstants.ID_COLUMN, ApplicationConstants.TABLE_NAME_SECTIONS,
                 ApplicationConstants.MANAGER_SECT_COLUMN);
+        findAllReportsByUserIdSql = String.format(ApplicationConstants.SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_REPORT_DAO_SQL,
+                ApplicationConstants.TABLE_NAME_REPORTS, ApplicationConstants.APPLICANT_COLUMN);
     }
 
     private static class DBReportDAOHolder {
@@ -259,6 +262,20 @@ public class DBReportDAO extends CommonDAO<Report> implements ReportDAO {
         return findPreparedEntities(
                 statement -> statement.setLong(1, applicantId),
                 findAllApplicationsByApplicantIdSql);
+    }
+
+    /**
+     * Finds all {@link Report}s in the database that have the parameter applicant equals {@param userId}.
+     *
+     * @param userId is the {@link Long} that value equals to value of {@link Report}s parameter applicant to find.
+     * @return {@link List<Report>} that contains all the {@link Report}s in the database with the parameter applicant
+     * equals {@param userId}.
+     */
+    @Override
+    public List<Report> findAllReportsByUserId(Long userId) {
+        return findPreparedEntities(
+                statement -> statement.setLong(1, userId),
+                findAllReportsByUserIdSql);
     }
 
     /**

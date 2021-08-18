@@ -29,6 +29,7 @@ public class DBSectionDAO extends CommonDAO<Section> implements SectionDAO {
 
     private final String findByTitleSql;
     private final String findAllSectionsByConferenceIdSql;
+    private final String findAllSectionsWhereUserIsManagerSql;
 
 
     protected DBSectionDAO(String tableName) {
@@ -38,6 +39,9 @@ public class DBSectionDAO extends CommonDAO<Section> implements SectionDAO {
         findAllSectionsByConferenceIdSql
                 = String.format(ApplicationConstants.SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_SECTION_DAO,
                 ApplicationConstants.TABLE_NAME_SECTIONS, ApplicationConstants.CONFERENCE_ID_COLUMN);
+        findAllSectionsWhereUserIsManagerSql
+                = String.format(ApplicationConstants.SELECT_ALL_FROM_TABLE_BY_COLUMN_FOR_DB_REPORT_DAO_SQL,
+                ApplicationConstants.TABLE_NAME_SECTIONS, ApplicationConstants.MANAGER_SECT_COLUMN);
     }
 
     private static class DBSectionDAOHolder {
@@ -129,5 +133,19 @@ public class DBSectionDAO extends CommonDAO<Section> implements SectionDAO {
         return findPreparedEntities(
                 statement -> statement.setLong(1, id), findAllSectionsByConferenceIdSql
         );
+    }
+
+    /**
+     * Finds all {@link Section}s in the database with the parameter managerSect equals {@param userId}.
+     *
+     * @param userId is the {@link Long} that value equals to value of {@link Section}s parameter managerSect to find.
+     * @return {@link List<Section>} that contains all the {@link Section}s in the database with the parameter
+     * managerSect equals {@param userId}.
+     */
+    @Override
+    public List<Section> findAllSectionsWhereUserIsManager(Long userId) {
+        return findPreparedEntities(
+                statement -> statement.setLong(1, userId),
+                findAllSectionsWhereUserIsManagerSql);
     }
 }

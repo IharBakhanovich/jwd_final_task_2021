@@ -2,6 +2,7 @@ package com.epam.jwd.Conferences.dao;
 
 import com.epam.jwd.Conferences.dto.Conference;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -25,4 +26,13 @@ public interface ConferenceDAO extends DAO<Conference,Long> {
     static ConferenceDAO retrieve() {
         return DBConferenceDAO.getInstance();
     }
+
+    /**
+     * Finds all {@link Conference}s in the database with the parameter managerConf equals {@param userId}.
+     *
+     * @param userId is the {@link Long} that value equals to value of {@link Conference}s parameter managerConf to find.
+     * @return {@link List<Conference>} that contains all the {@link Conference}s in the database with the parameter
+     * managerConf equals {@param userId}.
+     */
+    List<Conference> findAllConferencesWhereUserIsManager(Long userId);
 }

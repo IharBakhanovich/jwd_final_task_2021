@@ -94,9 +94,14 @@
             </c:otherwise>
         </c:choose>
     </c:if>
-<%--    <br>--%>
-<%--    <br>--%>
-<%--    <a href="${pageContext.request.contextPath}/controller"><fmt:message key="label.backToMainPage"/></a>--%>
+    <c:if test="${sessionScope.userRole eq Role.ADMIN or requestScope.user.get().id == sessionScope.userId}">
+        <c:if test="${requestScope.user.get().role != Role.ADMIN}">
+            <div class="link">
+                <a href="${pageContext.request.contextPath}/controller?command=delete_user&userId=${requestScope.user.get().id}&userRole=${requestScope.user.get().role}&deleterId=${sessionScope.userId}&deleterRole=${sessionScope.userRole}"><fmt:message
+                        key="label.deleteUser"/></a>
+            </div>
+        </c:if>
+    </c:if>
 </div>
 </body>
 </html>

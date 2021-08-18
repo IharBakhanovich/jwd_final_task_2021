@@ -51,9 +51,10 @@ public class ShowUsersPage implements Command {
      */
     @Override
     public CommandResponse execute(CommandRequest request) {
-        //перед тем как отдать респонс нужно в атрибуты HttpServletRequest положить пользователя
-        //т.е. в CommandRequest (интерфейс) будет метод void setAttribute()
-        //TODO из репозитория с помощью сервиса забрать конференции о положить в аттрибут users
+        /*
+         before the returning the response 'users' should be setted in the HttpServletRequest attributes.
+         That means that we need a method 'void setAttribute()' in the CommandRequest.
+         */
         final List<User> users = userService.findAllUsers();
         request.setAttribute(ApplicationConstants.USERS_ATTRIBUTE_NAME, users);
         return ApplicationConstants.SHOW_USERS_PAGE_RESPONSE;

@@ -231,4 +231,38 @@ public interface UserService {
      * @param reportId is the id value of the {@link Report} to delete.
      */
     void deleteReport(Long reportId);
+
+    /**
+     * Finds all {@link Report}s in the system that have with the parameter applicant equals {@param userId}.
+     *
+     * @param userId is the {@link Long} that value equals to value of {@link Report}s parameter applicant to find.
+     * @return {@link List<Report>} that contains all the {@link Report}s in the system with the parameter applicant
+     * equals {@param userId}.
+     */
+    List<Report> findAllReportsByUserId(Long userId);
+
+    /**
+     * Deletes the {@link User}.
+     *
+     * @param userId is the id value of the {@link User} to delete.
+     */
+    void deleteUser(Long userId);
+
+    /**
+     * Finds all {@link Conference}s in the system with the parameter managerConf equals {@param userId}.
+     *
+     * @param userId is the {@link Long} that value equals to value of {@link Conference}s parameter managerConf to find.
+     * @return {@link List<Conference>} that contains all the {@link Conference}s in the system with the parameter
+     * managerConf equals {@param userId}.
+     */
+    List<Conference> findAllConferencesWhereUserIsManager(Long userId);
+
+    /**
+     * Finds all {@link Section}s in the system with the parameter managerSect equals {@param userId}.
+     *
+     * @param userId is the {@link Long} that value equals to value of {@link Section}s parameter managerSect to find.
+     * @return {@link List<Conference>} that contains all the {@link Section}s in the system with the parameter
+     * managerSect equals {@param userId}.
+     */
+    List<Section> findAllSectionsWhereUserIsManager(Long userId);
 }

@@ -85,4 +85,13 @@ public interface ReportDAO extends DAO<Report, Long> {
      * which are created by the {@link User} with id equals {@param applicantId}.
      */
     List<Report> findAllApplicationsByApplicantId(Long applicantId);
+
+    /**
+     * Finds all {@link Report}s in the database that have the parameter applicant equals {@param userId}.
+     *
+     * @param userId is the {@link Long} that value equals to value of {@link Report}s parameter applicant to find.
+     * @return {@link List<Report>} that contains all the {@link Report}s in the database with the parameter applicant
+     * equals {@param userId}.
+     */
+    List<Report> findAllReportsByUserId(Long userId);
 }

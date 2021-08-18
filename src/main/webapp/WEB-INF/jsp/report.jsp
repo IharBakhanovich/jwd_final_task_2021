@@ -172,9 +172,6 @@
             </c:otherwise>
         </c:choose>
     </c:if>
-    <br>
-    <%--    <br>--%>
-    <%--    <a href="${pageContext.request.contextPath}/controller"><fmt:message key="label.backToMainPage"/></a>--%>
 </div>
 </body>
 </html>

@@ -500,4 +500,9 @@ public class ApplicationConstants {
     public static final String DELETER_ID_PARAMETER_NAME = "deleterId";
     public static final String DELETER_ROLE_PARAMETER_NAME = "deleterRole";
     public static final String REPORT_ID_PARAMETER_NAME = "reportId";
+
+    // from Class DeleteUser
+    public  static final String USER_ID_PARAMETER_NAME = "userId";
+    public  static final String USER_ROLE_PARAMETER_NAME = "userRole";
+    public static final String NO_PERMISSION_TO_DELETE_ADMIN_MSG = "noPermissionToDeleteAdminMSG";
 }
