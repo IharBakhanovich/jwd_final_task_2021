@@ -309,7 +309,9 @@ public class AppUserService implements UserService {
      */
     @Override
     public List<Report> findAllReportsByQuestionId(Long questionReportId) {
+        // it is the question themself
         Optional<Report> question = reportDAO.findById(questionReportId);
+        // all the answers which are inherited to the question with id equals questionReportId
         List<Report> answers = reportDAO.findAllReportsByQuestionReportId(questionReportId);
 
         if (question.isPresent()) {
