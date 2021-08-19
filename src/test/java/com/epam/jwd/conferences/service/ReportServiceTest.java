@@ -26,7 +26,6 @@ public class ReportServiceTest {
     public static final String CONFERENCE_TITLE = "testConference";
     public static final String FIRST_SECTION_NAME = "testSection";
     public static final Long MANAGER_CONFERENCE_ID = 1L;
-    public static final Long MANAGER_SECTION_ID = 1L;
     public static final String REPORT_APPLICATION_ONE_TEXT = "testApplicationReport";
     public static final String REPORT_QUESTION_TEXT = "testQuestionReport";
     public static final String UPDATED_REPORT_QUESTION_TEXT = "RossiForever";
