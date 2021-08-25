@@ -1,6 +1,7 @@
-package com.epam.jwd.Conferences.dao;
+package com.epam.jwd.Conferences.dao.impl;
 
 import com.epam.jwd.Conferences.constants.ApplicationConstants;
+import com.epam.jwd.Conferences.dao.UserDAO;
 import com.epam.jwd.Conferences.dto.Role;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.pool.ConnectionPool;

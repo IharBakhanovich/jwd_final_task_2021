@@ -1,6 +1,7 @@
-package com.epam.jwd.Conferences.dao;
+package com.epam.jwd.Conferences.dao.impl;
 
 import com.epam.jwd.Conferences.constants.ApplicationConstants;
+import com.epam.jwd.Conferences.dao.ReportDAO;
 import com.epam.jwd.Conferences.dto.Report;
 import com.epam.jwd.Conferences.dto.ReportType;
 import com.epam.jwd.Conferences.dto.User;

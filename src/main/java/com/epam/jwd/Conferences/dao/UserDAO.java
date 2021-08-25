@@ -1,5 +1,6 @@
 package com.epam.jwd.Conferences.dao;
 
+import com.epam.jwd.Conferences.dao.impl.JdbcUserDAO;
 import com.epam.jwd.Conferences.dto.User;
 
 import java.util.Optional;

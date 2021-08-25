@@ -4,7 +4,9 @@ import com.epam.jwd.Conferences.command.Command;
 import com.epam.jwd.Conferences.command.CommandRequest;
 import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.constants.ApplicationConstants;
+import com.epam.jwd.Conferences.dto.Conference;
 import com.epam.jwd.Conferences.dto.Report;
+import com.epam.jwd.Conferences.dto.Section;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.service.UserService;
 import com.epam.jwd.Conferences.validator.Validator;
@@ -85,6 +87,10 @@ public class ShowQuestionContextPage implements Command {
         } else {
             questionContextReports = service.findAllReportsByQuestionId(questionId);
         }
+        final List<Conference> conferences = service.findAllConferences();
+        final List<Section> sections = service.findAllSections();
+        request.setAttribute(ApplicationConstants.CONFERENCES_ATTRIBUTE_NAME, conferences);
+        request.setAttribute(ApplicationConstants.SECTIONS_ATTRIBUTE_NAME, sections);
         request.setAttribute(ApplicationConstants.REPORTS_ATTRIBUTE_NAME, questionContextReports);
         request.setAttribute(ApplicationConstants.CONFERENCE_TITLE_ATTRIBUTE_NAME,
                 ApplicationConstants.QUESTION_TOKEN_NAME);

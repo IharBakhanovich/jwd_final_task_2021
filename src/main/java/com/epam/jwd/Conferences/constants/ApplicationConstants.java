@@ -3,7 +3,7 @@ package com.epam.jwd.Conferences.constants;
 import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.command.action.*;
 import com.epam.jwd.Conferences.controller.ApplicationController;
-import com.epam.jwd.Conferences.dao.*;
+import com.epam.jwd.Conferences.dao.impl.*;
 import com.epam.jwd.Conferences.listener.ApplicationLifecycleListener;
 import com.epam.jwd.Conferences.pool.AppConnectionPool;
 import com.epam.jwd.Conferences.system.Configuration;

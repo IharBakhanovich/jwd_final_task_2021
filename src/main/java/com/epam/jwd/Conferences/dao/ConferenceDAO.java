@@ -1,5 +1,6 @@
 package com.epam.jwd.Conferences.dao;
 
+import com.epam.jwd.Conferences.dao.impl.DBConferenceDAO;
 import com.epam.jwd.Conferences.dto.Conference;
 
 import java.util.List;

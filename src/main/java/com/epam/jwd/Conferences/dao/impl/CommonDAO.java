@@ -1,6 +1,8 @@
-package com.epam.jwd.Conferences.dao;
+package com.epam.jwd.Conferences.dao.impl;
 
 import com.epam.jwd.Conferences.constants.ApplicationConstants;
+import com.epam.jwd.Conferences.dao.DAO;
+import com.epam.jwd.Conferences.dao.SqlThrowingConsumer;
 import com.epam.jwd.Conferences.dto.DatabaseEntity;
 import com.epam.jwd.Conferences.exception.DatabaseException;
 import com.epam.jwd.Conferences.exception.DuplicateException;

@@ -1,5 +1,6 @@
 package com.epam.jwd.Conferences.dao;
 
+import com.epam.jwd.Conferences.dao.impl.DBReportDAO;
 import com.epam.jwd.Conferences.dto.Report;
 import com.epam.jwd.Conferences.dto.User;
 

@@ -1,8 +1,8 @@
-package com.epam.jwd.Conferences.dao;
+package com.epam.jwd.Conferences.dao.impl;
 
 import com.epam.jwd.Conferences.constants.ApplicationConstants;
+import com.epam.jwd.Conferences.dao.ConferenceDAO;
 import com.epam.jwd.Conferences.dto.Conference;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.PreparedStatement;
