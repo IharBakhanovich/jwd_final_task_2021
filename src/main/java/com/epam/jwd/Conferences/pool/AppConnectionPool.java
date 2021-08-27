@@ -4,7 +4,6 @@ import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.exception.CouldNotInitializeConnectionPoolException;
 import com.epam.jwd.Conferences.exception.DatabaseException;
 import com.epam.jwd.Conferences.system.Configuration;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
@@ -13,6 +12,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
@@ -81,12 +82,6 @@ public class AppConnectionPool implements ConnectionPool {
         takenConnections = new ArrayList<>();
         this.lock = new ReentrantLock();
         connectionsOpened = new AtomicInteger(0);
-//        try {
-//            init();
-//        } catch (CouldNotInitializeConnectionPoolException e) {
-//            logger.error(e.getMessage());
-//            throw new DatabaseException(e.getMessage());
-//        }
     }
 
     private static class AppConnectionPoolHolder {
@@ -117,6 +112,7 @@ public class AppConnectionPool implements ConnectionPool {
                 } catch (SQLException e) {
                     logger.error(ApplicationConstants.UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE);
                     initialized.set(false);
+                    deregisterDrivers();
                     throw new CouldNotInitializeConnectionPoolException(ApplicationConstants.FAILED_TO_OPEN_CONNECTION_MESSAGE, e);
                 }
                 connectionsOpened.set(ApplicationConstants.INIT_CONNECTIONS_AMOUNT);
@@ -129,7 +125,6 @@ public class AppConnectionPool implements ConnectionPool {
     private void registerDrivers() throws CouldNotInitializeConnectionPoolException {
         logger.info(ApplicationConstants.SQL_DRIVERS_REGISTRATION_START_MESSAGE);
         try {
-            //jdbc:mysql://localhost:3306/conferences
             DriverManager.registerDriver(DriverManager.getDriver(DB_PATH));
             logger.info(ApplicationConstants.REGISTRATION_SUCCESSFUL_MESSAGE);
         } catch (SQLException e) {
@@ -176,21 +171,30 @@ public class AppConnectionPool implements ConnectionPool {
             final int currentOpenedConnections = connectionsOpened.get();
             if (availableConnections.size() <= currentOpenedConnections * 0.25
                     && currentOpenedConnections < MAX_CONNECTIONS_AMOUNT) {
+                ExecutorService executorService = Executors.newSingleThreadExecutor();
                 if (MAX_CONNECTIONS_AMOUNT - currentOpenedConnections <= 4) {
-                    try {
-                        addConnections(currentOpenedConnections, ApplicationConstants.CONNECTIONS_GROW_FACTOR);
-                    } catch (SQLException e) {
-                        logger.error(ApplicationConstants.UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE
-                                + ApplicationConstants.DURING_CROWING_CONNECTION_POOL_MESSAGE);
-                    }
+                    // grows ConnectionPool in an another thread
+                    executorService.submit(new ConnectionPoolEnlarger(currentOpenedConnections,
+                            ApplicationConstants.CONNECTIONS_GROW_FACTOR,
+                            availableConnections, connectionsOpened));
+//                    try {
+//                        // addConnections(currentOpenedConnections, ApplicationConstants.CONNECTIONS_GROW_FACTOR);
+//                    } catch (SQLException e) {
+//                        logger.error(ApplicationConstants.UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE
+//                                + ApplicationConstants.DURING_CROWING_CONNECTION_POOL_MESSAGE);
+//                    }
                 } else {
                     int amountConnectionsToCreate = MAX_CONNECTIONS_AMOUNT - currentOpenedConnections;
-                    try {
-                        addConnections(currentOpenedConnections, amountConnectionsToCreate);
-                    } catch (SQLException e) {
-                        logger.error(ApplicationConstants.UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE
-                                + ApplicationConstants.DURING_CROWING_CONNECTION_POOL_MESSAGE);
-                    }
+                    // grows ConnectionPool in an another thread
+                    executorService.submit(new ConnectionPoolEnlarger(currentOpenedConnections,
+                            amountConnectionsToCreate,
+                            availableConnections, connectionsOpened));
+//                    try {
+//                        addConnections(currentOpenedConnections, amountConnectionsToCreate);
+//                    } catch (SQLException e) {
+//                        logger.error(ApplicationConstants.UNSUCCESSFULL_CONNECTIONPOOL_INITIALISATION_MESSAGE
+//                                + ApplicationConstants.DURING_CROWING_CONNECTION_POOL_MESSAGE);
+//                    }
                 }
             }
         } finally {
@@ -217,6 +221,54 @@ public class AppConnectionPool implements ConnectionPool {
         connectionsOpened.set(amountOpenedConnections);
     }
 
+    public class ConnectionPoolEnlarger implements Runnable {
+        private final int currentOpenedConnections;
+        private final int amountConnectionsToCreate;
+        private final ArrayBlockingQueue<ProxyConnection> availableConnections;
+        private final AtomicInteger connectionsOpened;
+
+        public ConnectionPoolEnlarger(int currentOpenedConnections, int amountConnectionsToCreate,
+                                      ArrayBlockingQueue<ProxyConnection> availableConnections,
+                                      AtomicInteger connectionsOpened) {
+            this.currentOpenedConnections = currentOpenedConnections;
+            this.amountConnectionsToCreate = amountConnectionsToCreate;
+            this.availableConnections = availableConnections;
+            this.connectionsOpened = connectionsOpened;
+        }
+
+        /**
+         * When an object implementing interface <code>Runnable</code> is used
+         * to create a thread, starting the thread causes the object's
+         * <code>run</code> method to be called in that separately executing
+         * thread.
+         * <p>
+         * The general contract of the method <code>run</code> is that it may
+         * take any action whatsoever.
+         *
+         * @see Thread#run()
+         */
+        @Override
+        public void run() {
+            if (availableConnections.size() <= currentOpenedConnections * 0.25
+                    && currentOpenedConnections < MAX_CONNECTIONS_AMOUNT) {
+
+            }int amountOpenedConnections = currentOpenedConnections;
+            for (int i = 0; i < amountConnectionsToCreate; i++) {
+                logger.info(ApplicationConstants.OPENING_DATABASE_CONNECTION_MESSAGE);
+                try {
+                    final Connection addedConnection = DriverManager.getConnection(DB_PATH, DB_USER, DB_PASSWORD);
+                    final ProxyConnection proxyConnection = new ProxyConnection(addedConnection);
+                    availableConnections.add(proxyConnection);
+                    amountOpenedConnections = amountOpenedConnections + 1;
+                } catch (SQLException e) {
+                    logger.error(e.getMessage());
+                    throw new DatabaseException(e.getSQLState());
+                }
+            }
+            connectionsOpened.set(amountOpenedConnections);
+        }
+    }
+
     /**
      * Releases a no longer needed connection.
      *
@@ -224,10 +276,6 @@ public class AppConnectionPool implements ConnectionPool {
      */
     @Override
     public void releaseConnection(Connection connection) {
-        // TODO уменьшать connectionPool, если заметили, что свободных коннекшенов стало больше, чем надо.
-        //  И это по-хорошему нужно делать в потоке демоне, который будет осматривать connectionPool
-        //  и периодически проверять что там происходит (сигнализировать ему будет availableConnection),
-        //  а в этом месте давать сигнал, чтобы он начал сокраать connectionPool
         if (connection != null) {
             if (connection instanceof ProxyConnection) {
                 try {
@@ -243,6 +291,64 @@ public class AppConnectionPool implements ConnectionPool {
                 }
             }
         }
+        // shrinks connections if there are to much
+        final int currentOpenedConnections = connectionsOpened.get();
+        if (availableConnections.size() > currentOpenedConnections * 0.75
+                && (availableConnections.size() - currentOpenedConnections * 0.25) > 8) {
+            int amountConnectionsToShrink = (int) (currentOpenedConnections * 0.25);
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            executorService.submit(new ConnectionPoolShrinker(currentOpenedConnections,
+                    amountConnectionsToShrink, availableConnections, connectionsOpened));
+        }
+    }
+
+    public class ConnectionPoolShrinker implements Runnable {
+        private final int currentOpenedConnections;
+        private final int amountConnectionsToShrink;
+        private final ArrayBlockingQueue<ProxyConnection> availableConnections;
+        private final AtomicInteger connectionsOpened;
+
+        public ConnectionPoolShrinker(int currentOpenedConnections, int amountConnectionsToShrink,
+                                      ArrayBlockingQueue<ProxyConnection> availableConnections,
+                                      AtomicInteger connectionsOpened) {
+            this.currentOpenedConnections = currentOpenedConnections;
+            this.amountConnectionsToShrink = amountConnectionsToShrink;
+            this.availableConnections = availableConnections;
+            this.connectionsOpened = connectionsOpened;
+        }
+
+        /**
+         * When an object implementing interface <code>Runnable</code> is used
+         * to create a thread, starting the thread causes the object's
+         * <code>run</code> method to be called in that separately executing
+         * thread.
+         * <p>
+         * The general contract of the method <code>run</code> is that it may
+         * take any action whatsoever.
+         *
+         * @see Thread#run()
+         */
+        @Override
+        public void run() {
+            if (availableConnections.size() > connectionsOpened.get() * 0.75
+                    && (availableConnections.size() - connectionsOpened.get() * 0.25) > 8) {
+                int amountOpenedConnections = currentOpenedConnections;
+                for (int i = 0; i < amountConnectionsToShrink; i++) {
+                    logger.info(ApplicationConstants.SHRINKING_DATABASE_CONNECTION_MESSAGE);
+                    try {
+                        final ProxyConnection proxyConnection = availableConnections.poll();
+                        if (proxyConnection != null) {
+                            proxyConnection.realClose();
+                            amountOpenedConnections = amountOpenedConnections - 1;
+                        }
+                    } catch (SQLException e) {
+                        logger.error(e.getMessage());
+                        throw new DatabaseException(e.getSQLState());
+                    }
+                }
+                connectionsOpened.set(amountOpenedConnections);
+            }
+        }
     }
 
     /**
@@ -250,27 +356,32 @@ public class AppConnectionPool implements ConnectionPool {
      */
     @Override
     public void destroy() {
-        // it can be destroyed only if it is initialized
-        if (initialized.compareAndSet(true, false)) {
-            // destroying of available connections
-            for (ProxyConnection connection : availableConnections) {
-                try {
-                    logger.info("connection " + connection + " is trying to close ...");
-                    connection.realClose();
-                } catch (SQLException e) {
-                    logger.error("Connection " + connection + " was not closed");
+        lock.lock();
+        try{
+            // it can be destroyed only if it is initialized
+            if (initialized.compareAndSet(true, false)) {
+                // destroying of available connections
+                for (ProxyConnection connection : availableConnections) {
+                    try {
+                        logger.info("connection " + connection + " is trying to close ...");
+                        connection.realClose();
+                    } catch (SQLException e) {
+                        logger.error("Connection " + connection + " was not closed");
+                    }
                 }
-            }
-            // destroying of taken connections
-            for (ProxyConnection connection : takenConnections) {
-                try {
-                    logger.info("connection " + connection + " is trying to close ...");
-                    connection.realClose();
-                } catch (SQLException e) {
-                    logger.error("Connection " + connection + " was not closed");
+                // destroying of taken connections
+                for (ProxyConnection connection : takenConnections) {
+                    try {
+                        logger.info("connection " + connection + " is trying to close ...");
+                        connection.realClose();
+                    } catch (SQLException e) {
+                        logger.error("Connection " + connection + " was not closed");
+                    }
                 }
+                deregisterDrivers();
             }
-            deregisterDrivers();
+        } finally {
+            lock.unlock();
         }
     }
 

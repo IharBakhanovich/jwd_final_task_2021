@@ -417,7 +417,8 @@ public class ApplicationConstants {
     public static final String REGISTRATION_UNSUCCESSFUL_MESSAGE = "registration unsuccessful";
     public static final String DRIVER_REGISTRATION_FAILED_MESSAGE = "driver registration failed";
     public static final String DURING_CROWING_CONNECTION_POOL_MESSAGE = " during crowing connectionPool";
-    public static final String OPENING_DATABASE_CONNECTION_MESSAGE = "Opening Database Connection...";
+    public static final String OPENING_DATABASE_CONNECTION_MESSAGE = "Opening database connection...";
+    public static final String SHRINKING_DATABASE_CONNECTION_MESSAGE = "Shrinking database connection...";
     public static final String SQL_DRIVERS_UNREGISTERING_START_MESSAGE = "sql drivers unregistering start...";
     public static final String UNREGISTERING_DRIVERS_FAILED_MESSAGE = "unregistering drivers failed";
     public static final int INIT_CONNECTIONS_AMOUNT = 8;

@@ -1,4 +1,6 @@
-package com.epam.jwd.Conferences.dao;
+package com.epam.jwd.Conferences.dao.impl;
+
+import com.epam.jwd.Conferences.dao.*;
 
 /**
  * This is a factory for the DAOs. The singleton.

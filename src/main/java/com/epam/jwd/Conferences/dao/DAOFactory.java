@@ -1,5 +1,7 @@
 package com.epam.jwd.Conferences.dao;
 
+import com.epam.jwd.Conferences.dao.impl.AppDAOFactory;
+
 public interface DAOFactory {
 
     /**
