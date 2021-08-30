@@ -10,7 +10,10 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -251,21 +254,21 @@ public class AppConnectionPool implements ConnectionPool {
         public void run() {
             if (availableConnections.size() <= currentOpenedConnections * 0.25
                     && currentOpenedConnections < MAX_CONNECTIONS_AMOUNT) {
-
-            }int amountOpenedConnections = currentOpenedConnections;
-            for (int i = 0; i < amountConnectionsToCreate; i++) {
-                logger.info(ApplicationConstants.OPENING_DATABASE_CONNECTION_MESSAGE);
-                try {
-                    final Connection addedConnection = DriverManager.getConnection(DB_PATH, DB_USER, DB_PASSWORD);
-                    final ProxyConnection proxyConnection = new ProxyConnection(addedConnection);
-                    availableConnections.add(proxyConnection);
-                    amountOpenedConnections = amountOpenedConnections + 1;
-                } catch (SQLException e) {
-                    logger.error(e.getMessage());
-                    throw new DatabaseException(e.getSQLState());
+                int amountOpenedConnections = currentOpenedConnections;
+                for (int i = 0; i < amountConnectionsToCreate; i++) {
+                    logger.info(ApplicationConstants.OPENING_DATABASE_CONNECTION_MESSAGE);
+                    try {
+                        final Connection addedConnection = DriverManager.getConnection(DB_PATH, DB_USER, DB_PASSWORD);
+                        final ProxyConnection proxyConnection = new ProxyConnection(addedConnection);
+                        availableConnections.add(proxyConnection);
+                        amountOpenedConnections = amountOpenedConnections + 1;
+                    } catch (SQLException e) {
+                        logger.error(e.getMessage());
+                        throw new DatabaseException(e.getSQLState());
+                    }
                 }
+                connectionsOpened.set(amountOpenedConnections);
             }
-            connectionsOpened.set(amountOpenedConnections);
         }
     }
 
@@ -357,7 +360,7 @@ public class AppConnectionPool implements ConnectionPool {
     @Override
     public void destroy() {
         lock.lock();
-        try{
+        try {
             // it can be destroyed only if it is initialized
             if (initialized.compareAndSet(true, false)) {
                 // destroying of available connections

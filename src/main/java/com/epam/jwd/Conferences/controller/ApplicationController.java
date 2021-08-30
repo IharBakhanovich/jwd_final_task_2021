@@ -6,12 +6,15 @@ import com.epam.jwd.Conferences.command.CommandResponse;
 import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
-import java.util.Optional;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Optional;
 
 /**
  * This is a controller by MVC architecture. The application uses the 'Command' pattern.
@@ -94,7 +97,7 @@ public class ApplicationController extends HttpServlet {
 
 
         /*
-        Now something shoul be done with the response.
+        Now something should be done with the response.
         First option:
         HttpServletRequest has the method getServletDispatcher, which receives a path and returns
         an RequestDispatcher object. In that object there are methods forward and include:

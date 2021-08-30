@@ -2,8 +2,6 @@ package com.epam.jwd.Conferences.system;
 
 import com.epam.jwd.Conferences.constants.ApplicationConstants;
 import com.epam.jwd.Conferences.exception.ConfigNotFoundException;
-import com.epam.jwd.Conferences.pool.AppConnectionPool;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.FileInputStream;

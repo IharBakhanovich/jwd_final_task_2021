@@ -4,14 +4,14 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.epam.jwd.Conferences.dto.User;
 import com.epam.jwd.Conferences.exception.CouldNotInitializeConnectionPoolException;
 import com.epam.jwd.Conferences.pool.AppConnectionPool;
-import com.epam.jwd.Conferences.pool.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.lang.reflect.Array;
-
 import static at.favre.lib.crypto.bcrypt.BCrypt.MIN_COST;
 
+/**
+ * This class is for testing the ideas before an implementation those.
+ */
 public class Main {
     private static final Logger logger = LogManager.getLogger(AppConnectionPool.class);
 

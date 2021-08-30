@@ -26,8 +26,10 @@ public class AppUserService implements UserService {
     private final ReportDAO reportDAO;
     private final SectionDAO sectionDAO;
 
-    // TODO по хорошему надо создать отдельные классы, которые инкапсулируют доступ к api BCrypt,
-    //  чтобы если в будущем мы решим изменить библиотеку - не пришлось переписывать много кода.
+    /*
+     TODO: to create classes which encapsulate access to the Bcrypt api,
+      to make it easy in the feature to change an encrypting library
+     */
     private final BCrypt.Hasher hasher;
     private final BCrypt.Verifyer verifyer;
 
@@ -62,17 +64,16 @@ public class AppUserService implements UserService {
      */
     @Override
     public void createUser(User user) throws DuplicateException {
-        // encryptedPassword зашифруем с помощью bcrypt
-        // hash-функции необратимы, т.е. расхешировать пароль не получится,
-        // поэтому при логине verifier будет хэшировать то, что ввел пользователь
-        // и сравнивать с тем, что сохранено (захешировано)
-
-
-        // перед тем как сохранить пользователя придется его создать
-
+        /*
+         encryptedPassword is encrypted by bcrypt. hash functions are irreversible,
+         i.e. you won't be able to decrypt the password, so when logging in,
+         verifier will hash what the user entered and compare with what is saved (hashed)
+        */
         final char[] rawPassword = user.getPassword().toCharArray();
 
         final String encryptedPassword = hasher.hashToString(MIN_COST, rawPassword);
+
+        // before saving a user, we have to create it.
         User userToSave
                 = new User(user.getEmail(), encryptedPassword,
                 user.getSalt(), user.getNumberLoginAttempts(), user.getVerificationToken(),
@@ -89,14 +90,15 @@ public class AppUserService implements UserService {
      */
     @Override
     public boolean canLogIn(User user) {
-        //сначала хэшируем пароль. Даже если мы не найдем впоследствии пользователя в базе данных,
-        // мы хотим защититься от тайминг-атаки, которая направлена на сравнение времени:
-        // если бы мы делали это после поиска юзера, то отследив потраченное время на респонз
-        // (примечание: хеширование тратит какое-то время),
-        // можно было бы выяснить какие пользователи на сайте есть, а каких нет, потому что для одних ответ,
-        // что пароль не подходит приходил бы достаточно быстро (валилось бы сразу на findByLogin),
-        // а для других чуть медленнее (проходило бы findByLogin, а потом пыталась бы захешироваться).
-        // Поэтому сразу хешируемся.
+        /*
+         at the beginning the password is hashed. Even if the user in database will be not found we hash a password,
+         because we want to protect against timing-attack, which aims to compare the time.
+         If we do it after a user search, then tracking a time that is spent to response (hashing has its time costs)
+         an attacker can define which users there are in the system and which not, because for some users the response
+         that the password is wrong would come faster (it would fall on findByLogin) and for others a bit slower,
+         because at first findByLogin works and then there would be an attempt to hash the password.
+         That is why a hashing is at the beginning.
+         */
         final byte[] enteredPassword = user.getPassword().getBytes(UTF_8);
         //final String encryptedPassword = hasher.hashToString(MIN_COST, rawPassword);
         //затем ищем пользователя в системе
@@ -303,6 +305,7 @@ public class AppUserService implements UserService {
     /**
      * Finds all the {@link Report}s in the system that have the parameter questionReportId equals to the value
      * of the {@param questionReportId}
+     *
      * @param questionReportId is the {@link Long} value of the parameter questionReportId of the Report.
      * @return {@link List<Report>} that contains all the {@link Report}s in the system with the value of the parameter
      * questionReportId equals to the {@param questionReportId}.
@@ -327,7 +330,7 @@ public class AppUserService implements UserService {
     /**
      * Sets a new {@link Role} to the {@link User} with id equals {@param userId}
      *
-     * @param userId is the id of the {@link User} which {@link Role} is to update.
+     * @param userId  is the id of the {@link User} which {@link Role} is to update.
      * @param newRole is the {@link Role} to set.
      */
     @Override

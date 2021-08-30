@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.*;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.Map;
+import java.util.Set;
 
-//import static com.epam.jwd.Conferences.controller.ApplicationController.COMMAND_PARAM_NAME;
 import static com.epam.jwd.Conferences.dto.Role.UNAUTHORIZED;
 
 /**

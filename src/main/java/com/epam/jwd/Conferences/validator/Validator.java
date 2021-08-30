@@ -1,8 +1,6 @@
 package com.epam.jwd.Conferences.validator;
 
 import com.epam.jwd.Conferences.dto.Role;
-import com.epam.jwd.Conferences.service.AppSectionService;
-import com.epam.jwd.Conferences.service.SectionService;
 
 /**
  * Contains all the application validators.
